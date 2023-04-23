@@ -9,9 +9,9 @@ import {
   flattenErrorList
 } from './helper'
 import { Core } from './interface/core'
+export * from './interface/core'
 export * from './decorators'
 export { flattenErrorList }
-export type { Core }
 /**
  * @module Container
  * @class Container

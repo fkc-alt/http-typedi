@@ -1,10 +1,10 @@
 {
   "name": "http-typedi",
   "private": false,
-  "version": "0.0.8",
-  "main": "/dist/http-typedi.umd.js",
+  "version": "0.0.9",
+  "main": "dist/http-typedi.umd.js",
   "files": [
-    "dist/plugins/*"
+    "dist/*"
   ],
   "types": "dist/plugins/index.d.ts",
   "typings": "dist/plugins/index.d.ts",
