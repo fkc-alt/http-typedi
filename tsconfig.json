@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "strictNullChecks": true,
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": [
+      "ESNext",
+      "DOM",
+      "ES2015.Promise"
+    ],
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "keyofStringsOnly": false,
+    "noImplicitOverride": true,
+    "extendedDiagnostics": false,
+    "outDir": "./dist",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "~@/*": [
+        "./*"
+      ],
+    },
+    "types": [
+      "node"
+    ],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+  ],
+  "ts-node": {
+    "swc": true,
+    "esm": true
+  }
+}

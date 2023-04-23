@@ -1,0 +1,6 @@
+export const STRING = '[object String]'
+export const NUMBER = '[object Number]'
+export const OBJECT = '[object Object]'
+export const ARRAY = '[object Array]'
+export const FUNCTION = '[object Function]'
+export const SYMBOL = '[object Symbol]'
