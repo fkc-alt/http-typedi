@@ -13,7 +13,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint src --no-error-on-unmatched-pattern --fix"
+    "lint": "eslint src --no-error-on-unmatched-pattern --fix",
+    "pre-commit": "lint-staged"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.6.1",

@@ -2,7 +2,7 @@ import { Module, HttpFactory, Injectable } from '../plugins'
 
 @Injectable()
 class RequestService {
-  age = 20
+  url = 'http://localhost:8080'
 }
 
 @Module({
