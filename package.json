@@ -6,6 +6,17 @@
   "files": [
     "dist/*"
   ],
+  "author": "Jack",
+  "keywords": ["http", "typedi", "http-typedi", "type", "class", "decorators"],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fkc-alt/http-typedi/issues"
+  },
+  "homepage": "https://github.com/fkc-alt/http-typedi#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fkc-alt/http-typedi.git"
+  },
   "types": "dist/http-typedi/index.d.ts",
   "typings": "dist/http-typedi/index.d.ts",
   "scripts": {
