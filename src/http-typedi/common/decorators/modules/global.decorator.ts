@@ -1,5 +1,5 @@
 import { Core } from '../../interface/core'
-import { MetadataKey } from '../../interface/enums'
+import { MetadataKey } from '../../enums'
 
 /**
  * @module Global

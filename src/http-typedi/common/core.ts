@@ -2,16 +2,30 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable new-cap */
 /* eslint-disable @typescript-eslint/ban-types */
-import { ModuleMetadata, MetadataKey } from './interface/enums'
+import {
+  ModuleMetadata,
+  MetadataKey,
+  HttpStatus,
+  Method,
+  RouteParamtypes
+} from './enums'
 import {
   deepRegisterModulesAllProvider,
   isFunction,
   flattenErrorList
 } from './helper'
 import { Core } from './interface/core'
-export * from './interface/core'
 export * from './decorators'
-export { flattenErrorList }
+export {
+  ModuleMetadata,
+  MetadataKey,
+  HttpStatus,
+  Method,
+  RouteParamtypes,
+  flattenErrorList
+}
+export type { Core }
+
 /**
  * @module Container
  * @class Container

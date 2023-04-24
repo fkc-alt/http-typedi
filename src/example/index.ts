@@ -1,4 +1,4 @@
-import { Module, HttpFactory, Injectable } from '../plugins'
+import { Module, HttpFactory, Injectable } from '../http-typedi'
 
 @Injectable()
 class RequestService {

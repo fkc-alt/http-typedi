@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { MetadataKey, RouteParamtypes } from '../../interface/enums'
+import { MetadataKey, RouteParamtypes } from '../../enums'
 import { isArray, isFunction, isString } from '../../helper'
 import { Core } from '../../interface/core'
 /**

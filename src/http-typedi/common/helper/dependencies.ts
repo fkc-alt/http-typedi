@@ -1,5 +1,5 @@
 import { Core } from '../interface/core'
-import { MetadataKey, ModuleMetadata } from '../interface/enums'
+import { MetadataKey, ModuleMetadata } from '../enums'
 
 /**
  *

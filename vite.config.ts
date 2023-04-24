@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [Swc.vite() as PluginOption, dts()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/plugins/index.ts'),
+      entry: resolve(__dirname, 'src/http-typedi/index.ts'),
       name: 'http-typedi',
       fileName: 'http-typedi'
     }

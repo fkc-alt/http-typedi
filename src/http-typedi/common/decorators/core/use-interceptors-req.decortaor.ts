@@ -1,5 +1,5 @@
 import { InterceptorReq } from '../../core'
-import { MetadataKey } from '../../interface/enums'
+import { MetadataKey } from '../../enums'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const UseInterceptorsReq = (...interceptors: InterceptorReq[]) => {

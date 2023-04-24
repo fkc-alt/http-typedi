@@ -1,5 +1,5 @@
 /* eslint-disable new-cap */
-import { MetadataKey, ModuleMetadata } from '../../interface/enums'
+import { MetadataKey, ModuleMetadata } from '../../enums'
 import { isString } from '../../helper'
 import { Core } from '../../interface/core'
 

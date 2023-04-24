@@ -2,12 +2,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { plainToInstance } from 'class-transformer'
 import { ValidationError, validateSync } from 'class-validator'
-import {
-  InterceptorReq,
-  InterceptorRes,
-  HttpFactory
-} from '../../../support/core'
-import { MetadataKey, Method } from '../../interface/enums'
+import { InterceptorReq, InterceptorRes, HttpFactory } from '../../core'
+import { MetadataKey, Method } from '../../enums'
 import { flattenErrorList } from '../../helper/param-error'
 import { isFunction } from '../../helper'
 import { Core } from '../../interface/core'

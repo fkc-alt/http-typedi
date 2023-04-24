@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { MetadataKey } from '../../interface/enums'
+import { MetadataKey } from '../../enums'
 
 /**
  * Request method Decorator.  Sets a request header.

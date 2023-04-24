@@ -39,7 +39,7 @@ export declare namespace Core {
   }
   interface RequestConfig<D = unknown> {
     url?: string
-    method?: import('./enums').Method
+    method?: import('../enums').Method
     headers?: Record<string, string | number | boolean>
     params?: any
     data?: D
