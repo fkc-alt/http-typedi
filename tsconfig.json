@@ -45,7 +45,7 @@
   ],
   "exclude": [
     "node_modules",
-    "dist",
+    "dist"
   ],
   "ts-node": {
     "swc": true,

@@ -1,4 +1,5 @@
 * files
 node_modules
 dist
+lib
 package-lock.json

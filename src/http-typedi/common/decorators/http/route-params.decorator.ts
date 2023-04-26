@@ -68,7 +68,7 @@ export const Inject = (): MethodDecorator => {
  * @auther kaichao.feng
  * @returns { Record<string, any> } Record<string, any>
  */
-export const assignMetadata = <TParamtype = any, TArgs = any>(
+const assignMetadata = <TParamtype = any, TArgs = any>(
   args: TArgs,
   paramtype: TParamtype,
   index: number,
@@ -91,7 +91,7 @@ export const assignMetadata = <TParamtype = any, TArgs = any>(
  * @auther kaichao.feng
  * @description this is @Param Helper Function
  */
-export const createParamDecorator =
+const createParamDecorator =
   (paramtype: RouteParamtypes) =>
   (data?: any, pipe?: Array<Core.Constructor<any> | Object>) =>
   (target: Object, propertyKey: string | symbol, index: number): void => {
@@ -102,7 +102,7 @@ export const createParamDecorator =
         propertyKey
       ) || {}
     const hasParamData = isString(data) || isArray(data)
-    const paramData = hasParamData ? data : undefined
+    const paramData = hasParamData ? data : void 0
     Reflect.defineMetadata(
       MetadataKey.ROUTE_ARGS_METADATA,
       assignMetadata(args, paramtype, index, paramData, pipe),

@@ -305,7 +305,7 @@ const getAllModuleAndProviders: GetAllModuleAndProviders = target => {
  * @auther kaichao.feng
  * @description 依赖注入工厂函数
  */
-export const Factory = <T>(target: Core.Constructor<T>): T => {
+const Factory = <T>(target: Core.Constructor<T>): T => {
   const { providers, constructorProviders, deepAllProvider } =
     getAllModuleAndProviders<T>(target)
   deepAllProvider.forEach(target => providers.add(target))
