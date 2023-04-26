@@ -1,6 +1,11 @@
 # http-typedi
 
-description: http Dependency Injection (依赖注入)
+description: http Dependency Injection (HTTP 依赖注入)
+# 介绍
+ http-typedi 致力于书写更高效，可维护性强的TypeScript代码。
+ 由于实际业务中，封装的请求方法后期维护过于困难（如：时间很久，请求方法参数和参数类型遗忘）都给后期维护带来极大困扰，有时还需要向后端同事询问具体的接口约定。极大的浪费了开发时间，因此http-typedi的出现，就是为了解决这一痛点。
+ <br />
+ <br />
 
 # 第一步
 
