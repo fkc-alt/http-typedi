@@ -448,13 +448,23 @@ Before...
 如上所述, 上面的构造将拦截器附加到此控制器声明的每个处理程序。如果我们决定只限制其中一个, 我们只需在**方法级别**设置拦截器。为了绑定全局前置拦截器, 我们使用 http-typedi应用程序实例的 `useGlobalInterceptorsReq()` 方法
 
 ```typescript
+import { HttpFactory, useGlobalInterceptorsReq, useGlobalInterceptorsRes } from 'http-typedi'
+import { ApplicationModule } from './app.module'
+
 function InterceptorsReq (config) {
   console.log(`Before...`)
   return config
 }
 
-const app = await HttpFactory.create(ApplicationModule);
-app.useGlobalInterceptorsReq(InterceptorsReq);
+function bootstrap(): ApplicationModule {
+  const app = await HttpFactory.create(ApplicationModule)
+  app.useGlobalInterceptorsReq(InterceptorsReq)
+  app.useGlobalInterceptorsRes(InterceptorsReq);
+  return app
+}
+
+const application = bootstrap()
+export { application }
 ```
 
 全局拦截器用于整个应用程序、每个控制器和每个路由处理程序。
