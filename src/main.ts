@@ -1,8 +1,8 @@
 import 'reflect-metadata'
 import './style.css'
-import { app } from './example'
+import { application } from './example/main'
 
-console.log(app.service)
+console.log(application.requestService)
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
