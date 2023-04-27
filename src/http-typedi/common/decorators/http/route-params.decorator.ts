@@ -3,12 +3,12 @@ import { MetadataKey, RouteParamtypes } from '../../enums'
 import { isArray, isFunction, isString } from '../../helper'
 import { Core } from '../../interface/core'
 /**
- * @module Inject
+ * @module Override
  * @auther kaichao.feng
  * @description 具名依赖注入 搭配Param使用
  * @returns { MethodDecorator } MethodDecorator
  */
-export const Inject = (): MethodDecorator => {
+export const Override = (): MethodDecorator => {
   return function (target, propertyName, descriptor: PropertyDescriptor) {
     const method: (...params: any[]) => any = descriptor.value
     const data: Record<string, any> =
