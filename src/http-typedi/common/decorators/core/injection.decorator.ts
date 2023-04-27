@@ -51,6 +51,7 @@ export const Injection = (provide?: string) => {
     } else {
       target[propertyName] =
         propertyValue && registerDeepClass([propertyValue])[0]
+      console.log(target[propertyName])
     }
   }
 }

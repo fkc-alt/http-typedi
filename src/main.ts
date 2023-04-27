@@ -1,8 +1,13 @@
 import 'reflect-metadata'
 import './style.css'
 import { application } from './example/main'
-
-console.log(application.requestService)
+const {
+  articleController: { GetTableDataList }
+} = application
+GetTableDataList({
+  currentPage: 1,
+  pageSize: 10
+})
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>

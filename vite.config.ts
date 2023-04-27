@@ -5,6 +5,13 @@ import { terser as Terser } from 'rollup-plugin-terser'
 import Swc from 'unplugin-swc'
 export default defineConfig({
   plugins: [Swc.vite() as PluginOption, Dts(), Terser()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+      '~@': resolve(__dirname, './')
+    },
+    extensions: ['.ts', '.js', '.vue', '.json', '.d.ts', '.tsx']
+  },
   build: {
     lib: {
       entry: resolve(__dirname, 'src/http-typedi/index.ts'),
