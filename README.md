@@ -5,8 +5,12 @@ description: http Dependency Injection (HTTP 依赖注入)
  http-typedi 致力于编写更高效，可维护性强的TypeScript代码。
  由于实际业务中，封装的请求方法不够模块化，后期维护过于困难（如：时间拉长，请求方法参数和参数类型遗忘）都给后期维护带来极大困扰，有时还需要向后端同事询问具体的接口约定。极大的浪费了开发时间，因此http-typedi的出现，就是为了解决这一痛点。
  
- 功能描述： http-typedi依靠强大的依赖注入设计模式来运行程序，支持聚合装饰器（`applyDecorators`）、方法装饰器（`Override | Post | Get ...等常用请求方法`）、参数装饰器（`Param`）、类装饰器（`Controller | Module | Injectable`）、`DTO(参数自动验证)`、`管道（Pipe）`、`（全局 | 控制器 | 单例路由方法）请求（前置、后置）拦截器、（全局 | 控制器 | 单例路由方法）错误回调方法`
+ 功能描述： http-typedi依靠强大的依赖注入设计模式来运行程序，支持聚合装饰器（`applyDecorators`）、方法装饰器（`Override | Post | Get ...等常用请求方法`）、参数装饰器（`Param`）、类装饰器（`Controller | Module | Injectable`）、`DTO(参数自动验证)`、`管道（Pipe）`、`（全局 | 控制器 | 单例路由方法）请求（前置、后置）拦截器、（全局 | 控制器 | 单例路由方法）错误回调方法`。
 
+ 上述为`http-typedi`的大概描述，具体使用方式请往下看
+
+
+当前默认支持vite+vue3+ts结构项目
 
 # 第一步
 
@@ -14,8 +18,56 @@ description: http Dependency Injection (HTTP 依赖注入)
 
 ```sh
 npm install http-typedi --save
+npm install @swc/core unplugin-swc --save
 ```
 
+由于`esbuild`不支持装饰器写法，所以这里用了`@swc/core unplugin-swc`来编译代码，使其可在vite上运行
+另外还需在tsconfig.json中开启装饰器功能
+>tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "strictNullChecks": true,
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": [
+      "ESNext",
+      "DOM",
+      "ES2015.Promise"
+    ],
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true, // 设置为true
+    "emitDecoratorMetadata": true, // 设置为true
+    "keyofStringsOnly": false,
+    "noImplicitOverride": true,
+    "extendedDiagnostics": false,
+  },
+  "ts-node": {
+    "swc": true,
+    "esm": true
+  }
+}
+```
+
+>vite.config.ts
+```typescript
+import Swc from 'unplugin-swc'
+export default defineConfig({
+  plugins: [Swc.vite() as PluginOption]
+})
+
+```
 
 
 #### 以下是这些核心文件的简要概述：
