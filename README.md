@@ -71,6 +71,24 @@ export default defineConfig({
 
 ```
 
+配置完之后运行项目不出意外还是会遇到这种错误，
+
+```
+Error: Dynamic require of "path" is not supported
+    at file:///Users/stickb/Code/niwc-pac/cosmos/node_modules/.pnpm/unplugin-swc@1.3.2_g6o72fkdx62msvhc7bd7opzgc4/node_modules/unplugin-swc/dist/index.mjs:29:9
+    at node_modules/.pnpm/picomatch@2.3.0/node_modules/picomatch/lib/picomatch.js (file:///Users/stickb/Code/niwc-pac/cosmos/node_modules/.pnpm/unplugin-swc@1.3.2_g6o72fkdx62msvhc7bd7opzgc4/node_modules/unplugin-swc/dist/index.mjs:1377:17)
+    at __require2 (file:///Users/stickb/Code/niwc-pac/cosmos/node_modules/.pnpm/unplugin-swc@1.3.2_g6o72fkdx62msvhc7bd7opzgc4/node_modules/unplugin-swc/dist/index.mjs:47:50)
+    at node_modules/.pnpm/picomatch@2.3.0/node_modules/picomatch/index.js (file:///Users/stickb/Code/niwc-pac/cosmos/node_modules/.pnpm/unplugin-swc@1.3.2_g6o72fkdx62msvhc7bd7opzgc4/node_modules/unplugin-swc/dist/index.mjs:1522:22)
+    at __require2 (file:///Users/stickb/Code/niwc-pac/cosmos/node_modules/.pnpm/unplugin-swc@1.3.2_g6o72fkdx62msvhc7bd7opzgc4/node_modules/unplugin-swc/dist/index.mjs:47:50)
+    at file:///Users/stickb/Code/niwc-pac/cosmos/node_modules/.pnpm/unplugin-swc@1.3.2_g6o72fkdx62msvhc7bd7opzgc4/node_modules/unplugin-swc/dist/index.mjs:1583:32
+    at ModuleJob.run (node:internal/modules/esm/module_job:198:25)
+    at async Promise.all (index 0)
+    at async ESMLoader.import (node:internal/modules/esm/loader:385:24)
+    at async importModuleDynamicallyWrapper (node:internal/vm/module:437:15)
+
+```
+
+解决方法只需要将`package.json`中的`"type": "module"`去掉重新运行即可
 
 #### 以下是这些核心文件的简要概述：
 
