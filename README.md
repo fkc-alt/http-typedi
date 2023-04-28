@@ -17,12 +17,14 @@ description: http Dependency Injection (HTTP 依赖注入)
 ## Installation(安装)
 
 ```sh
-npm install http-typedi --save
+npm install http-typedi reflect-metadata --save
 npm install @swc/core unplugin-swc --save
 ```
+typescript：依赖装饰器特性
+需要在tsconfig.json开启特性experimentalDecorators和emitDecoratorMetadata
+reflect-metadata：获取类型信息，需要在项目入口文件中`import 'reflect-metadata'`;
+由于`esbuild`不支持装饰器特性，所以这里用了`@swc/core unplugin-swc`来编译代码，使其可在vite上运行
 
-由于`esbuild`不支持装饰器写法，所以这里用了`@swc/core unplugin-swc`来编译代码，使其可在vite上运行
-另外还需在tsconfig.json中开启装饰器功能
 >tsconfig.json
 
 ```json
