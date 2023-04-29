@@ -1,6 +1,7 @@
 http-typedi
 
 ps：DTO使用部分文档五一之后会补上。（目前还在休假），example文件有DTO使用案例。也可以自行查看。嘻嘻😁
+
 description: http Dependency Injection (HTTP 依赖注入)
 # 介绍
  http-typedi 致力于编写更高效，可维护性强的TypeScript代码。
