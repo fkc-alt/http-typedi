@@ -4,7 +4,14 @@ import Dts from 'vite-plugin-dts'
 import { terser as Terser } from 'rollup-plugin-terser'
 import Swc from 'unplugin-swc'
 export default defineConfig({
-  plugins: [Swc.vite() as PluginOption, Dts(), Terser()],
+  plugins: [
+    Swc.vite() as PluginOption,
+    Dts({
+      outputDir: 'dist/types',
+      entryRoot: 'src/http-typedi'
+    }),
+    Terser()
+  ],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),

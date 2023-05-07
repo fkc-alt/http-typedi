@@ -1,7 +1,7 @@
 {
   "name": "http-typedi",
   "private": false,
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "http Dependency Injection",
   "main": "dist/http-typedi.umd.js",
   "files": [
@@ -26,8 +26,8 @@
     "type": "git",
     "url": "git+https://github.com/fkc-alt/http-typedi.git"
   },
-  "types": "dist/http-typedi/index.d.ts",
-  "typings": "dist/http-typedi/index.d.ts",
+  "types": "dist/types/index.d.ts",
+  "typings": "dist/types/index.d.ts",
   "scripts": {
     "prepare": "husky install",
     "dev": "vite",
