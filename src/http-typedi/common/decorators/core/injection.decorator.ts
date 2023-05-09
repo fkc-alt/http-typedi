@@ -30,28 +30,53 @@ const registerDeepClass = (
   }
 }
 
-export const Injection = (provide?: string) => {
+export const Injection = (token?: string) => {
   return function (target: any, propertyName: string) {
     const propertyValue = Reflect.getMetadata(
       MetadataKey.TYPE_METADATA,
       target,
       propertyName
     )
-    if (isString(provide)) {
+    const injections: Array<{
+      propertyName: string
+      provide: Core.Constructor<any>
+    }> = Reflect.getMetadata(MetadataKey.INJECTIONS, target.constructor) || []
+    if (isString(token)) {
       setTimeout(() => {
         const propertyValue = (
           Reflect.getMetadata(
             ModuleMetadata.PROVIDERS,
             target.constructor
           ) as any[]
-        )?.filter(provider => provider.provide === provide)[0]
-        target[propertyName] =
-          propertyValue?.useFactory?.() ?? propertyValue?.useValue
+        )?.filter(provider => provider.provide === token)[0]
+        Reflect.defineMetadata(
+          MetadataKey.INJECTIONS,
+          [
+            ...injections,
+            {
+              provide: propertyValue?.useFactory?.() ?? propertyValue?.useValue,
+              propertyName
+            }
+          ],
+          target.constructor
+        )
+        // target[propertyName] =
+        //   propertyValue?.useFactory?.() ?? propertyValue?.useValue
       }, 0)
     } else {
-      target[propertyName] =
-        propertyValue && registerDeepClass([propertyValue])[0]
-      console.log(target[propertyName])
+      Reflect.defineMetadata(
+        '__injections__',
+        [
+          ...injections,
+          {
+            provide: propertyValue && registerDeepClass([propertyValue])[0],
+            propertyName
+          }
+        ],
+        target.constructor
+      )
+      // target[propertyName] =
+      //   propertyValue && registerDeepClass([propertyValue])[0]
     }
   }
 }

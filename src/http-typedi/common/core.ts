@@ -200,12 +200,37 @@ const registerDeepClass = (
         provider
       )
       const isFactoryProvide = isFunction(currentProvide)
-      return !childrenProviders
-        ? isFactoryProvide
-          ? new currentProvide()
-          : currentProvide
-        : new currentProvide(...registerDeepClass(container, childrenProviders))
+      let instance
+      if (!childrenProviders) {
+        instance = isFactoryProvide ? new currentProvide() : currentProvide
+      } else {
+        instance = new currentProvide(
+          ...registerDeepClass(container, childrenProviders)
+        )
+      }
+      registerPropertes(currentProvide, instance)
+      return instance
+      // return !childrenProviders
+      //   ? isFactoryProvide
+      //     ? new currentProvide()
+      //     : currentProvide
+      //   : new currentProvide(...registerDeepClass(container, childrenProviders))
     }) ?? []
+  )
+}
+
+/**
+ * @param { Core.Constructor<any> } target
+ * @param { any } instance
+ * @description Object register properties
+ */
+const registerPropertes = (target: Core.Constructor<any>, instance: any) => {
+  const properties: Array<{
+    propertyName: string
+    provide: Core.Constructor<any>
+  }> = Reflect.getMetadata(MetadataKey.INJECTIONS, target)
+  properties?.forEach(
+    ({ propertyName, provide }) => (instance[propertyName] = provide)
   )
 }
 
@@ -265,7 +290,9 @@ const initFactory = <T>(
       return new target(...registerDeepClass(container, currentProviders))
     }
   )
-  return new target(...params)
+  const instance = new target(...params)
+  registerPropertes(target, instance)
+  return instance
 }
 
 type GetAllModuleAndProviders = <T>(target: Core.Constructor<T>) => {

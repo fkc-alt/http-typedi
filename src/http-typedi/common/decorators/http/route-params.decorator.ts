@@ -114,7 +114,7 @@ const createParamDecorator =
 /**
  * @method Param
  * @auther kaichao.feng
- * @description 搭配Inject使用，Param传递的property会通过Inject读取原始参数并返回指定的key对应的value，并返回到当前装饰器形参位置
+ * @description 搭配Override使用
  */
 export const Param = (
   property?: string | string[],

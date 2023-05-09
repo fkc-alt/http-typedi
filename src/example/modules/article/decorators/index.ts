@@ -29,7 +29,7 @@ export const ArticleControllerApplydecorators = (): ClassDecorator => {
       if (!callError) return result.data
       return Promise.reject(result) // or throw result
     })
-  ) as ClassDecorator
+  )
 }
 
 export const GetArticleListApplyDecorators = () => {

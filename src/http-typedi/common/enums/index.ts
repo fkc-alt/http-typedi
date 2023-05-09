@@ -15,6 +15,7 @@ export enum MetadataKey {
   ROUTE_ARGS_METADATA = '__routeArguments__',
   PARSE_INT_PIPE = '__parseIntPipe__',
   DEFAULT_VALUE_PIPE = '__defaultValuePipe__',
+  INJECTIONS = '__injections__',
   CATCH_METADATA = 'design:catch',
   REQUEST_METADATA = 'design:request',
   INTERCEPTORSREQ_METADATA = 'design:interceptorsreq',
