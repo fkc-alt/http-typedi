@@ -8,7 +8,7 @@ GetTableDataList({
   currentPage: 1,
   pageSize: 10
 })
-
+console.log(application)
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
    <h1>http-typedi</h1>
