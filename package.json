@@ -1,7 +1,7 @@
 {
   "name": "http-typedi",
   "private": false,
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "http Dependency Injection",
   "main": "dist/http-typedi.umd.js",
   "files": [
@@ -30,7 +30,7 @@
   "typings": "dist/types/index.d.ts",
   "scripts": {
     "prepare": "husky install",
-    "dev": "vite",
+    "dev": "vite --mode=dev",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src --no-error-on-unmatched-pattern --fix",
@@ -49,11 +49,13 @@
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.1",
+    "mockjs": "^1.1.0",
     "prettier": "^2.8.7",
     "rollup-plugin-terser": "^7.0.2",
     "typescript": "^5.0.2",
     "vite": "^4.3.0",
-    "vite-plugin-dts": "^2.3.0"
+    "vite-plugin-dts": "^2.3.0",
+    "vite-plugin-mock": "^3.0.0"
   },
   "dependencies": {
     "@swc/core": "^1.3.53",

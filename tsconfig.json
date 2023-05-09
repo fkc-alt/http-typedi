@@ -42,7 +42,8 @@
   },
   "include": [
     "src",
-    "typings"
+    "typings",
+    "mock"
   ],
   "exclude": [
     "node_modules",

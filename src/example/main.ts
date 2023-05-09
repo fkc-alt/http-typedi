@@ -12,7 +12,7 @@ function bootstrap(): AppModule {
   application.setGlobalCatchCallback((error: any) => {
     console.error(error, 'global catch callback')
   })
-  application.setGlobalPrefix('api/v1')
+  application.setGlobalPrefix(import.meta.env.VITE_APP_BASE_API)
   application.useInterceptorsReq(configure => {
     const Authorization = 'this is authorization'
     if (Authorization && configure.headers)
