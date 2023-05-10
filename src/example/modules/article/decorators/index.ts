@@ -6,11 +6,15 @@ import {
   Post,
   UseInterceptorsReq,
   UseInterceptorsRes,
-  applyDecorators
+  applyDecorators,
+  Sleep
 } from '../../../../http-typedi'
 import { Route, RouteChildren } from '../..'
 import { catchCallback } from '../catch/catch-callback'
 import { validationErrorMessage } from '../validation/validate'
+
+// 获取随机id
+const getRandomId = () => Math.random().toString().slice(2, 8)
 
 export const ArticleControllerApplydecorators = (): ClassDecorator => {
   return applyDecorators(
@@ -35,7 +39,7 @@ export const ArticleControllerApplydecorators = (): ClassDecorator => {
 export const GetArticleListApplyDecorators = () => {
   return applyDecorators(
     Catch(catchCallback),
-    Header('RequestId', () => Math.random().toString().slice(2, 8)),
+    Header('RequestId', getRandomId),
     Header('Content-Type', ContentTypeService.JSON),
     Post(RouteChildren.GETARTICLELIST, validationErrorMessage),
     UseInterceptorsReq(
@@ -54,9 +58,10 @@ export const GetArticleListApplyDecorators = () => {
 
 export const GetTableDataApplyDecorators = () => {
   return applyDecorators(
-    Header('RequestId', () => Math.random().toString().slice(2, 8)),
+    Header('RequestId', getRandomId),
     Header(RouteChildren.TABLEDATA, RouteChildren.TABLEDATA),
     Catch(catchCallback),
-    Post(RouteChildren.TABLEDATA, validationErrorMessage)
+    Post(RouteChildren.TABLEDATA, validationErrorMessage),
+    Sleep(3000)
   )
 }

@@ -41,12 +41,25 @@ const getCatchCallback = (
 
 const getDataTransferObject = (
   target: Object,
-  key: string | symbol
+  propertyKey: string | symbol
 ): Core.Constructor[] => {
   return (
-    Reflect.getMetadata(MetadataKey.PARAMTYPES_METADATA, target, key)?.filter(
-      (target: any) => target.name !== 'Object'
-    ) ?? []
+    Reflect.getMetadata(
+      MetadataKey.PARAMTYPES_METADATA,
+      target,
+      propertyKey
+    )?.filter((target: any) => target.name !== 'Object') ?? []
+  )
+}
+
+const getSleepTimer = (
+  target: Object,
+  propertyKey: string | symbol
+): number => {
+  return (
+    Reflect.getMetadata(MetadataKey.SLEEPTIMER, target, propertyKey) ??
+    Reflect.getMetadata(MetadataKey.SLEEPTIMER, target.constructor) ??
+    (HttpFactory as any).globalSleepTimer
   )
 }
 
@@ -68,13 +81,21 @@ async function handlerResult(
       propertyKey,
       MetadataKey.INTERCEPTORSRES_METADATA
     )
-    const result: Record<string, any> = await fn.call(
-      this,
-      interceptorsReq.reduce((prev, next) => next(prev), param)
-    )
-    const response = interceptorsRes.reduce((prev, next) => next(prev), result)
-    // eslint-disable-next-line @typescript-eslint/return-await
-    return await response
+    const sleepTimer = getSleepTimer(target, propertyKey)
+    return new Promise(resolve => {
+      setTimeout(async () => {
+        const result: Record<string, any> = await fn.call(
+          this,
+          interceptorsReq.reduce((prev, next) => next(prev), param)
+        )
+        // eslint-disable-next-line @typescript-eslint/return-await
+        const response = interceptorsRes.reduce(
+          (prev, next) => next(prev),
+          result
+        )
+        resolve(response)
+      }, sleepTimer)
+    })
   } catch (error) {
     const catchCallback = getCatchCallback(target, propertyKey)
     catchCallback?.(error)
@@ -101,11 +122,14 @@ const handelParam = (
   const currentHeaders: Record<string, any> =
     Reflect.getMetadata(MetadataKey.REQUEST_METADATA, target, key) ?? {}
   Object.assign(currentTargetHeaders, currentHeaders)
-  for (const key in currentTargetHeaders) {
-    if (isFunction(currentTargetHeaders[key])) {
-      currentTargetHeaders[key] = currentTargetHeaders[key]()
+  const headers = Object.keys(currentTargetHeaders).reduce((prev, next) => {
+    return {
+      ...prev,
+      [next]: isFunction(currentTargetHeaders[next])
+        ? currentTargetHeaders[next]()
+        : currentTargetHeaders[next]
     }
-  }
+  }, {})
   const data = {
     [hasGet ? 'params' : 'data']: params
   }
@@ -119,7 +143,7 @@ const handelParam = (
     url,
     method,
     ...(paramList.length ? {} : data),
-    headers: currentTargetHeaders
+    headers
   }
   return reqJson
 }
@@ -164,7 +188,6 @@ export const RequestMapping = (
   message?: string | ((validationError: ValidationError[]) => any)
 ): MethodDecorator => {
   return function (target, key, descriptor: PropertyDescriptor) {
-    Reflect.defineMetadata('CustomRequest', true, target, key)
     const originalMethod: (params: any) => any = descriptor.value
     const dataTransferObject: Array<Core.Constructor<any>> =
       getDataTransferObject(target, key)

@@ -27,6 +27,5 @@ function bootstrap(): AppModule {
   })
   return application
 }
-const application = bootstrap()
 
-export { application }
+export const application = bootstrap()

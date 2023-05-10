@@ -34,16 +34,16 @@ export type { Core }
  * @description 依赖容器
  */
 class Container {
-  providers = new Map<Core.Constructor<any>, Core.ClassProvider<any>>()
+  providers = new Map<Core.Constructor<any>, Core.ClassProvider<any> | any>()
   /**
-   * 注册
+   * register
    */
   addProvider<T>(provider: Core.ClassProvider<T>): void {
     this.providers.set(provider.provide, provider)
   }
 
   /**
-   * 获取
+   * get
    */
   inject(token: Core.Constructor<any>): Core.Constructor<any> {
     return this.providers.get(token)?.useClass as Core.Constructor<any>
@@ -79,6 +79,8 @@ export class HttpFactoryStatic {
   private globalCatchCallback!: (...args: any[]) => any
 
   private globalPrefix = ''
+
+  private globalSleepTimer = 0
 
   private globalInterceptorsReq: InterceptorReq[] = []
 
@@ -128,6 +130,7 @@ export class HttpFactoryStatic {
         ...exposeProperties,
         setGlobalCatchCallback: this.setGlobalCatchCallback.bind(this),
         setGlobalPrefix: this.setGlobalPrefix.bind(this),
+        setGlobalSleepTimer: this.setGlobalSleepTimer.bind(this),
         useInterceptorsReq: this.useInterceptorsReq.bind(this),
         useInterceptorsRes: this.useInterceptorsRes.bind(this)
       }
@@ -153,6 +156,16 @@ export class HttpFactoryStatic {
    */
   public setGlobalPrefix(prefix: string) {
     this.globalPrefix = prefix ? prefix.replace(/^\//g, '') + '/' : ''
+  }
+
+  /**
+   *
+   * @param { number } timer
+   * @memberof HttpFactoryStatic
+   * @description set global sleepTimer
+   */
+  public setGlobalSleepTimer(timer: number) {
+    this.globalSleepTimer = timer
   }
 
   /**

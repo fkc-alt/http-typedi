@@ -2,8 +2,12 @@
 
 /**
  *
+ * For example:
+ * `@applyDecorators(Post('example'), Header('Content-Type', 'application/json'))`
+ *
  * @param { Array<ClassDecorator | MethodDecorator | PropertyDecorator } decorators
  * @author kaichao.feng
+ * @publicApi
  */
 export const applyDecorators = (
   ...decorators: Array<ClassDecorator | MethodDecorator | PropertyDecorator>
