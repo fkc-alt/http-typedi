@@ -65,7 +65,7 @@ export const Injection = (token?: string) => {
       }, 0)
     } else {
       Reflect.defineMetadata(
-        '__injections__',
+        MetadataKey.INJECTIONS,
         [
           ...injections,
           {
