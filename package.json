@@ -64,6 +64,11 @@
     "reflect-metadata": "^0.1.13",
     "unplugin-swc": "^1.3.2"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "src/**/*.{ts,d.ts}": [
       "eslint --fix"
