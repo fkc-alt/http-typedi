@@ -1,7 +1,6 @@
 import 'reflect-metadata'
 import './style.css'
 import { application } from './example/main'
-var a = 'test'
 const {
   articleController: { GetTableDataList, GetArticleList }
 } = application

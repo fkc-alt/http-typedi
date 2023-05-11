@@ -1,6 +1,7 @@
 import { HttpFactory } from '../http-typedi'
 import AppModule from './app.module'
-var a = 'test'
+const a = 'test'
+
 /**
  *
  * @module Services
