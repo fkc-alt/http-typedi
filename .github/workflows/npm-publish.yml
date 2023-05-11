@@ -20,8 +20,7 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: npm install
-      - run: npm run prepare
-      - run: npm run pre-commit
+      - run: npx lint-staged
       - run: npm ci
       - run: npm run build
       - run: npm publish
