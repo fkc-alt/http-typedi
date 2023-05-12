@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Get Package Version
         id: get_package_version
-        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+        run: echo "::set-output name=version::$(node -p "require('../../package.json').version")"
       - name: Publish
         run: |
           if [ "$PACKAGE_VERSION" != "${{ steps.get_package_version.outputs.version }}" ]; then
