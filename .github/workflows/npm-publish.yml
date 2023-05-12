@@ -22,7 +22,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm install
       - name: Get Package Version
-        run: echo "::set-env name=PACKAGE_VERSION::$(node -p "require('../../package.json').version")"
+        run: echo "::set-env name=PACKAGE_VERSION::$(node -p "require('./package.json').version")"
       - run: npm run build
       - name: Check version and publish
         env:
