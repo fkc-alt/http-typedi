@@ -1,11 +1,10 @@
 import { HttpFactory } from '@/http-typedi'
 import AppModule from './app.module'
-const a = 'test'
 
 /**
  *
  * @module Services
- * @return { application } AppModule
+ * @return { AppModule } AppModule
  * @description service for entry file
  */
 function bootstrap(): AppModule {
