@@ -7,10 +7,11 @@ name: http-typedi
 on:
   pull_request:
     branches:
-    - main
+      - main
   push:
     branches:
-    - main
+      - main
+
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
@@ -20,11 +21,14 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
+          cache: 'npm'
       - name: Check version and publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          NEW_VERSION=$(npm show http-typedi version)
-          if [ "${{ env.PACKAGE_VERSION }}" != "$NEW_VERSION" ]; then
-            npm install && npm run build && npm publish
+          NEW_VERSION=$(npm show http-typedi version --silent)
+          if [ "$(node -p "require('semver').gt('$NEW_VERSION', '${{ env.PACKAGE_VERSION }}')")" = true ]; then
+            npm install
+            npm run build
+            npm publish
           fi
