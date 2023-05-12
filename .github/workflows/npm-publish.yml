@@ -21,7 +21,12 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: npm install
+      - name: Get Package Version
+        run: echo "PACKAGE_VERSION=$(node -p "require('../../package.json').version")" >> $GITHUB_ENV
       - run: npm run build
-      - run: npm publish
+      - name: Publish to NPM
+        if: env.PACKAGE_VERSION != previous.PACKAGE_VERSION
+      - run: | 
+         npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
