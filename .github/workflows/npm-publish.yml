@@ -28,5 +28,7 @@ jobs:
         run: |
           NEW_VERSION=$(npm show http-typedi version) 
           if [ "${{ env.PACKAGE_VERSION }}" != "$NEW_VERSION" ]; then 
-            npm install && npm run build && npm publish 
+            npm install
+            npm run build
+            npm publish 
           fi 
