@@ -3,31 +3,28 @@
 # npm ci === npm install
 
 name: http-typedi
-
-on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
-
-jobs:
-  publish-npm:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
-      - name: Check version and publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+ 
+on: 
+  pull_request: 
+    branches: 
+    - main 
+  push: 
+    branches: 
+    - main 
+jobs: 
+  publish-npm: 
+    runs-on: ubuntu-latest 
+    steps: 
+      - uses: actions/checkout@v3 
+      - uses: actions/setup-node@v3 
+        with: 
+          node-version: 16 
+          registry-url: https://registry.npmjs.org/ 
+      - name: Check version and publish 
+        env: 
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} 
         run: | 
-          NEW_VERSION=$(npm show http-typedi version) 
+          NEW_VERSION=$(npm show http-typediversion) 
           if [ "${{ env.PACKAGE_VERSION }}" != "$NEW_VERSION" ]; then 
-            echo $NEW_VERSION
-            echo env.PACKAGE_VERSION
             npm install && npm run build && npm publish 
           fi 
