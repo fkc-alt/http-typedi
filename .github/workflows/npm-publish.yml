@@ -14,18 +14,14 @@ on:
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
+    env:
+      PACKAGE_VERSION: ${{ steps.get_package_version.outputs.version }}
     steps:
       - name: Checkout
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Get Package Version
         id: get_package_version
         run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
-      - run: npm install
-      - run: npm run build
       - name: Publish
         run: |
           if [ "$PACKAGE_VERSION" != "${{ steps.get_package_version.outputs.version }}" ]; then
@@ -34,6 +30,3 @@ jobs:
           else
             echo "Package version has not changed. Skipping NPM publish."
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          PACKAGE_VERSION: ${{ steps.get_package_version.outputs.version }}
