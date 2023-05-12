@@ -31,4 +31,8 @@ jobs:
             npm install
             npm run build
             npm publish 
+            echo "Published new version $PACKAGE_VERSION"
+          else 
+            echo "Nothing to do. Package version $PACKAGE_VERSION already exists."
+            exit 0
           fi 
