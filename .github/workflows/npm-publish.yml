@@ -20,13 +20,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+      - name: Get Package Version
+        id: get_package_version
+        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+      - name: set Node Version AND Npm Register
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: npm install
       - run: npm run lint
       - run: npm run build
-      - run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
       - run: |
           if [ "$PACKAGE_VERSION" != "${{ steps.get_package_version.outputs.version }}" ]; then
             echo "Package version has changed. Publishing new version to NPM..."
