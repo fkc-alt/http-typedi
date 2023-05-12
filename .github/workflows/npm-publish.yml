@@ -25,7 +25,7 @@ jobs:
       - name: Check version and publish 
         env: 
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} 
-        run: | 
+        run: |
           NEW_VERSION=$(npm show http-typedi version) 
           if [ "${{ env.PACKAGE_VERSION }}" != "$NEW_VERSION" ]; then 
             npm install && npm run build && npm publish 

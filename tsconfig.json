@@ -27,7 +27,7 @@
     "outDir": "./dist",
     "paths": {
       "@/*": [
-        "src/*"
+        "packages/*"
       ],
       "~@/*": [
         "./*"
@@ -41,7 +41,8 @@
     ],
   },
   "include": [
-    "src",
+    "packages",
+    "example",
     "typings",
     "mock"
   ],

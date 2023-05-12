@@ -33,7 +33,7 @@
     "dev": "vite --mode=dev",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint src --no-error-on-unmatched-pattern --fix",
+    "lint": "eslint packages --no-error-on-unmatched-pattern --fix",
     "pre-commit": "lint-staged"
   },
   "devDependencies": {

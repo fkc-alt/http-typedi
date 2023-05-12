@@ -11,7 +11,7 @@ export default defineConfig(({ command }) => {
       Swc.vite() as PluginOption,
       Dts({
         outputDir: 'dist/types',
-        entryRoot: 'src/http-typedi'
+        entryRoot: 'packages/http-typedi'
       }),
       Terser(),
       ViteMockServe({
@@ -22,14 +22,14 @@ export default defineConfig(({ command }) => {
     ],
     resolve: {
       alias: {
-        '@': resolve(__dirname, 'src'),
+        '@': resolve(__dirname, 'packages'),
         '~@': resolve(__dirname, './')
       },
       extensions: ['.ts', '.js', '.json', '.d.ts']
     },
     build: {
       lib: {
-        entry: resolve(__dirname, 'src/http-typedi/index.ts'),
+        entry: resolve(__dirname, './packages/http-typedi/index.ts'),
         name: 'http-typedi',
         fileName: 'http-typedi'
       },

@@ -10,7 +10,7 @@ declare namespace Services {
       data: T
     }
     interface UplaodReq {
-      file: import('element-plus').UploadFile
+      file: any
     }
     interface UplaodRes {
       url: string
