@@ -26,7 +26,7 @@ jobs:
       - run: npm run build
       - name: Publish to NPM
         if: env.PACKAGE_VERSION != previous.PACKAGE_VERSION
-      - run: | 
+        run: | 
          npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
