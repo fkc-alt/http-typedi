@@ -15,7 +15,7 @@ jobs:
   publish-npm:
     runs-on: ubuntu-latest
     env:
-      PACKAGE_VERSION: ${{steps.get_package_version.outputs.version}}
+      PACKAGE_VERSION: ${{get_package_version.outputs.version}}
       NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
     steps:
       - name: Checkout
