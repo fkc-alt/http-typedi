@@ -12,27 +12,21 @@ on:
     branches:
     - main
 jobs:
-  publish-npm:
+  publish:
     runs-on: ubuntu-latest
     env:
-      PACKAGE_VERSION: ${{steps.get_package_version.outputs.version}}
-      NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      PACKAGE_VERSION: ${{ steps.get_package_version.outputs.version }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Get Package Version
         id: get_package_version
         run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
-      - name: set Node Version AND Npm Register
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
-      - run: npm install
-      - run: npm run lint
-      - run: npm run build
-      - run: |
+      - name: Publish
+        run: |
           if [ "$PACKAGE_VERSION" != "${{ steps.get_package_version.outputs.version }}" ]; then
             echo "Package version has changed. Publishing new version to NPM..."
             npm publish
           else
             echo "Package version has not changed. Skipping NPM publish."
+          fi
