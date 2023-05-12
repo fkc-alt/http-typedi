@@ -24,23 +24,35 @@ jobs:
   publish-npm: 
     runs-on: ubuntu-latest 
     steps: 
+      # 拉取代码
       - uses: actions/checkout@v3 
+
+      # 安装 Node.js
       - uses: actions/setup-node@v3 
         with: 
           node-version: 16 
           registry-url: https://registry.npmjs.org/ 
+
+      # 获取软件包版本并将其添加到环境变量中以供后续步骤使用
       - name: Get Package Version 
         run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV 
-      - name: Check version and publish 
+
+      # 检查新的软件包版本是否存在于NPM存储库中，如果不存在，则构建并发布新的软件包版
+      - name: Check for Existing Package and Publish New Version
         env: 
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} 
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # NPM 认证密钥
         run: |
+          # 获取远程软件包版本
           NEW_VERSION=$(npm show http-typedi version) 
+
+          # 如果新的 software 包版本不存在，那么构建并发布新的软件包版本
           if [ "${{ env.PACKAGE_VERSION }}" != "$NEW_VERSION" ]; then 
             npm install
             npm run build
             npm publish 
             echo "Published new version $PACKAGE_VERSION"
+
+          # 如果新的软件包版本已存在，则不执行任何操作
           else 
             echo "Nothing to do. Package version $PACKAGE_VERSION already exists."
             exit 0
