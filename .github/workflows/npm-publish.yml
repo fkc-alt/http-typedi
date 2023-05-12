@@ -29,6 +29,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           PREVIOUS_VERSION: ${{ env.PACKAGE_VERSION }}
         run: |
-          if: env.PACKAGE_VERSION != env.PREVIOUS_VERSION
+          if [ "${{ env.PACKAGE_VERSION }}" != "${{ env.PREVIOUS_VERSION }}" ]; then
             npm publish
           fi
