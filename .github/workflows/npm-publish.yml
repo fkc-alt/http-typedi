@@ -25,9 +25,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          NEW_VERSION=$(npm show http-typedi version --silent)
-          if [ "$(node -p "require('semver').gt('$NEW_VERSION', '${{ env.PACKAGE_VERSION }}')")" = true ]; then
+          NEW_VERSION=$(npm show http-typedi version)
+          if [ "${{ env.PACKAGE_VERSION }}" != "$NEW_VERSION" ]; then  
             npm install
             npm run build
-            npm publish
-          fi
+            npm publish  
+          fi  
