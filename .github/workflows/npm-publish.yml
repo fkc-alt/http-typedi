@@ -12,11 +12,12 @@ on:
     branches: 
     - main 
 env:
+  DIST_NAME: dist
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   REGISTRY_URL: https://registry.npmjs.org/
   PACKAGE_VERSION: $(node -p "require('./package.json').version")
 jobs: 
-  build-and-test:
+  test-and-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3 
@@ -34,14 +35,13 @@ jobs:
       - name: Build Package
         run: npm run build
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2
         with:
-          name: dist
-          path: dist
+          name: ${{ env.DIST_NAME }}
+          path: ${{ env.DIST_NAME }}
 
   publish-npm: 
-    needs: build-and-test
+    needs: test-and-build
     runs-on: ubuntu-latest 
     steps: 
       # From https://github.com/http-typedi Extract code from
@@ -53,11 +53,10 @@ jobs:
           node-version: 16 
           registry-url: ${{ env.REGISTRY_URL }}
 
-      - name: Download Artifact
-        uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v2
         with:
-          name: dist
-          path: dist
+          name: ${{ env.DIST_NAME }}
+          path: ${{ env.DIST_NAME }}
 
       - name: Install Dependencies
         run: npm install
