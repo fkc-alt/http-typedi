@@ -1,5 +1,15 @@
-import { test } from 'vitest'
+import { describe, it, assert, expect } from 'vitest'
 
-test('name', async () => {
-  /* ... */
-}, 1000)
+describe('suite name', () => {
+  it('foo', () => {
+    assert.equal(Math.sqrt(4), 2)
+  })
+
+  it('bar', () => {
+    expect(1 + 3).eq(2)
+  })
+
+  it('snapshot', () => {
+    expect({ foo: 'bar' }).toMatchSnapshot()
+  })
+})
