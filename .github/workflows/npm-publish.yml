@@ -35,7 +35,7 @@ jobs:
       - name: Build Package
         run: npm run build
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: ${{ env.DIST_NAME }}
           path: ${{ env.DIST_NAME }}
@@ -53,7 +53,7 @@ jobs:
           node-version: 16 
           registry-url: ${{ env.REGISTRY_URL }}
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: ${{ env.DIST_NAME }}
           path: ${{ env.DIST_NAME }}
