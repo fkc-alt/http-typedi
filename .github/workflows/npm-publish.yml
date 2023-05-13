@@ -37,8 +37,8 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: http-typedi
-          path: dist/
+          name: dist
+          path: dist
 
   publish-npm: 
     needs: build-and-test
@@ -56,7 +56,7 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v2
         with:
-          name: http-typedi
+          name: dist
 
       - name: Install Dependencies
         run: npm install
