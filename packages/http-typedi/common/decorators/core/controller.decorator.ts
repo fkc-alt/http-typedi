@@ -1,4 +1,5 @@
 import { MetadataKey } from '../../enums'
+import { CONNECTSTRING } from '../../helper/constant'
 
 const optionsDefault = {
   version: ''
@@ -16,7 +17,7 @@ export const Controller = (
 ): ClassDecorator => {
   return function (target: any) {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    target.prototype[`${target.name}-Prefix`] = prefix
+    target.prototype[`${target.name}${CONNECTSTRING}`] = prefix
       ? prefix.replace(/^\//g, '') + '/'
       : ''
     Reflect.defineMetadata(MetadataKey.INJECTABLE_WATERMARK, true, target)

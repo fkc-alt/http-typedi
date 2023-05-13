@@ -5,6 +5,7 @@ import { InterceptorReq, InterceptorRes, HttpFactory, Core } from '../core'
 import { MetadataKey, Method } from '../enums'
 import { flattenErrorList } from './param-error'
 import { isFunction } from './utils'
+import { CONNECTSTRING } from './constant'
 
 export type CatchCallback = (err: any) => void
 
@@ -118,7 +119,9 @@ export const handelParam = (
 ): Record<string, any> => {
   const hasGet = [Method.GET, Method.get].includes(method)
   const globalPrefix: string = (HttpFactory as any).globalPrefix
-  const controllerPrefix = (<any>target)[`${target.constructor.name}-Prefix`]
+  const controllerPrefix = (<any>target)[
+    `${target.constructor.name}${CONNECTSTRING}`
+  ]
   const requestPath: string = path.replace(/^\//g, '')
   const _controllerVersion = getVersion(target.constructor).replace(/^\//g, '')
   const controllerVersion = _controllerVersion ? `v${_controllerVersion}/` : ''
