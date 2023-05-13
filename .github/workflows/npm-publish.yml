@@ -35,7 +35,8 @@ jobs:
       - name: Build Package
         run: npm run build
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.DIST_NAME }}
           path: ${{ env.DIST_NAME }}
@@ -53,7 +54,8 @@ jobs:
           node-version: 16 
           registry-url: ${{ env.REGISTRY_URL }}
 
-      - uses: actions/download-artifact@v3
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
         with:
           name: ${{ env.DIST_NAME }}
           path: ${{ env.DIST_NAME }}
@@ -61,10 +63,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # 检查新的软件包版本是否存在于NPM存储库中，如果不存在，则构建并发布新的软件包版
       - name: Check for Existing Package and Publish New Version
         run: |
-          # Check if the newly built package version already exists in the NPM repository
           NEW_VERSION=$(npm show http-typedi version) 
 
           # If the new package version does not exist, then publish new package version
@@ -72,7 +72,7 @@ jobs:
             npm publish 
             echo "Published new version $PACKAGE_VERSION"
 
-          # 如果新的软件包版本已存在，则不执行任何操作
+          # If a new software package version already exists, no action will be taken
           else 
             echo "Nothing to do. Package version $PACKAGE_VERSION already exists."
             exit 0
