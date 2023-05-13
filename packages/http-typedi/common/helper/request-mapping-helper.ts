@@ -14,6 +14,44 @@ export const factoryPropertyKey: Record<string, string> = {
   [MetadataKey.INTERCEPTORSRES_METADATA]: 'globalInterceptorsRes'
 }
 
+/**
+ * @module RequestFactory
+ * @method RequestMapping
+ * @param { string }
+ * @auther kaichao.feng
+ * @returns { MethodDecorator } MethodDecorator
+ * @description Request Factory
+ */
+export const RequestMapping = (
+  path: string,
+  method: Method,
+  message?: string | ((validationError: ValidationError[]) => any)
+): MethodDecorator => {
+  return function (target, key, descriptor: PropertyDescriptor) {
+    const originalMethod: (params: any) => any = descriptor.value
+    const dataTransferObject: Array<Core.Constructor<any>> =
+      getDataTransferObject(target, key)
+    descriptor.value = async function (params: Record<string, any>) {
+      const boundMethod = originalMethod.bind(this)
+      const result = await handlerResult.call(
+        this,
+        target,
+        key,
+        handelParam(path, method, target, key, params),
+        boundMethod
+      )
+      const errors: ValidationError[] = getErrorMessage(
+        dataTransferObject,
+        target,
+        params
+      )
+      callHander(errors, message)
+      return result
+    }
+    return descriptor
+  }
+}
+
 export const getVersion = (
   target: Object,
   propertyKey?: string | symbol

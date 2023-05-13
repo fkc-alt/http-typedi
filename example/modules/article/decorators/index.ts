@@ -21,7 +21,7 @@ export const ArticleControllerApplydecorators = (): ClassDecorator => {
   return applyDecorators(
     Controller(Route.ARTICLE, { version: '' }),
     Catch(error => {
-      console.log(error, 'Controller')
+      console.log(error, 'Controller error')
     }),
     Header('Request-Route', Route.ARTICLE),
     UseInterceptorsReq(configure => {
@@ -64,6 +64,6 @@ export const GetTableDataApplyDecorators = () => {
     Catch(catchCallback),
     Post(ArticleRouteChildren.TABLEDATA, validationErrorMessage),
     Sleep(3000),
-    Version('30')
+    Version('')
   )
 }
