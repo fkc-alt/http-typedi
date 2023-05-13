@@ -34,6 +34,12 @@ jobs:
       - name: Build Package
         run: npm run build
 
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: http-typedi-package
+          path: dist/
+
   publish-npm: 
     needs: build-and-test
     runs-on: ubuntu-latest 
@@ -47,6 +53,14 @@ jobs:
           node-version: 16 
           registry-url: ${{ env.REGISTRY_URL }}
 
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: http-typedi-package
+
+      - name: Install Dependencies
+        run: npm install
+
       # 检查新的软件包版本是否存在于NPM存储库中，如果不存在，则构建并发布新的软件包版
       - name: Check for Existing Package and Publish New Version
         run: |
@@ -55,7 +69,6 @@ jobs:
 
           # If the new package version does not exist, then publish new package version
           if [ "${{ env.PACKAGE_VERSION }}" != "$NEW_VERSION" ]; then 
-            npm install
             npm publish 
             echo "Published new version $PACKAGE_VERSION"
 
