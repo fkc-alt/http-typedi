@@ -17,6 +17,8 @@ export enum MetadataKey {
   DEFAULT_VALUE_PIPE = '__defaultValuePipe__',
   INJECTIONS = '__injections__',
   SLEEPTIMER = '__sleepTimer__',
+  OPTIONAL = '__optional__',
+  VERSION = '__version__',
   CATCH_METADATA = 'design:catch',
   REQUEST_METADATA = 'design:request',
   INTERCEPTORSREQ_METADATA = 'design:interceptorsreq',

@@ -7,7 +7,8 @@ import {
   UseInterceptorsReq,
   UseInterceptorsRes,
   applyDecorators,
-  Sleep
+  Sleep,
+  Version
 } from '@/http-typedi'
 import { Route, ArticleRouteChildren } from '../..'
 import { catchCallback } from '../catch/catch-callback'
@@ -18,7 +19,7 @@ const getRandomId = () => Math.random().toString().slice(2, 8)
 
 export const ArticleControllerApplydecorators = (): ClassDecorator => {
   return applyDecorators(
-    Controller(Route.ARTICLE),
+    Controller(Route.ARTICLE, { version: '' }),
     Catch(error => {
       console.log(error, 'Controller')
     }),
@@ -62,6 +63,7 @@ export const GetTableDataApplyDecorators = () => {
     Header(ArticleRouteChildren.TABLEDATA, ArticleRouteChildren.TABLEDATA),
     Catch(catchCallback),
     Post(ArticleRouteChildren.TABLEDATA, validationErrorMessage),
-    Sleep(3000)
+    Sleep(3000),
+    Version('30')
   )
 }

@@ -5,12 +5,12 @@ import { Core } from '../../interface/core'
 /**
  * @module Override
  * @auther kaichao.feng
- * @description 具名依赖注入 搭配Param使用
+ * @description 搭配Param使用
  * @returns { MethodDecorator } MethodDecorator
  */
 export const Override = (): MethodDecorator => {
   return function (target, propertyName, descriptor: PropertyDescriptor) {
-    const method: (...params: any[]) => any = descriptor.value
+    const originalMethod: (...params: any[]) => any = descriptor.value
     const data: Record<string, any> =
       Reflect.getMetadata(
         MetadataKey.ROUTE_ARGS_METADATA,
@@ -22,7 +22,7 @@ export const Override = (): MethodDecorator => {
         Object.values(data) || []
       ).sort((a, b) => a.index - b.index)
       if (values.length) {
-        return method.apply(
+        return originalMethod.apply(
           this,
           args.map((param, index) => {
             const item = values.find(_ => _.index === index)
@@ -58,7 +58,7 @@ export const Override = (): MethodDecorator => {
           })
         )
       }
-      return method.apply(this, args)
+      return originalMethod.apply(this, args)
     }
   }
 }
