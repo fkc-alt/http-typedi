@@ -55,6 +55,7 @@ jobs:
 
           # If the new package version does not exist, then publish new package version
           if [ "${{ env.PACKAGE_VERSION }}" != "$NEW_VERSION" ]; then 
+            npm install
             npm publish 
             echo "Published new version $PACKAGE_VERSION"
 
