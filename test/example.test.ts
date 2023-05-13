@@ -6,7 +6,7 @@ describe('suite name', () => {
   })
 
   it('bar', () => {
-    expect(1 + 3).eq(2)
+    expect(1 + 1).eq(2)
   })
 
   it('snapshot', () => {
