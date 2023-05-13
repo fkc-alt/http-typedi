@@ -14,7 +14,7 @@ on:
 env:
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   REGISTRY_URL: https://registry.npmjs.org/
-  PACKAGE_VERSION: $(node -p "require('./package.json').version"
+  PACKAGE_VERSION: $(node -p "require('./package.json').version")
 jobs: 
   build-and-test:
     runs-on: ubuntu-latest
