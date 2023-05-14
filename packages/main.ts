@@ -1,10 +1,10 @@
 import 'reflect-metadata'
-import { application } from '../example/main'
+import { HTTPClient } from '../example/main'
 import './style.css'
 
 const {
   articleController: { GetTableDataList, GetArticleList }
-} = application
+} = HTTPClient
 
 GetTableDataList({
   currentPage: 1,
@@ -28,7 +28,7 @@ GetArticleList({
   }
 })
 
-console.log(application)
+console.log(HTTPClient)
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>

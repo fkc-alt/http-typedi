@@ -623,15 +623,15 @@ function InterceptorsReq (config) {
   return config
 }
 
-function bootstrap(): ApplicationModule {
+function createHTTPClient(): ApplicationModule {
   const app = await HttpFactory.create(ApplicationModule)
   app.useGlobalInterceptorsReq(InterceptorsReq)
   app.useGlobalInterceptorsRes(InterceptorsReq);
   return app
 }
 
-const application = bootstrap()
-export { application }
+const HTTPClient = createHTTPClient()
+export { HTTPClient }
 ```
 
 全局拦截器用于整个应用程序、每个控制器和每个路由处理程序。
@@ -767,11 +767,11 @@ export class ValidationPipe implements PipeTransform {
 import { HttpFactory } from 'http-typedi'
 import { ApplicationModule } from './app.module'
 
-function bootstrap(): ApplicationModule {
-  const application = await HttpFactory.create(ApplicationModule)
-  return application
+function createHTTPClient(): ApplicationModule {
+  const HTTPClient = await HttpFactory.create(ApplicationModule)
+  return HTTPClient
 }
-const application = bootstrap()
+const HTTPClient = createHTTPClient()
 ```
 
 要创建一个 Http 请求应用实例，我们使用了`HttpFactory`核心类。`HttpFactory` 暴露了一些静态方法用于创建应用实例。 `create()`方法返回一个实现 `HttpServicesApplication<AppModule>`接口的对象。该对象提供了一组可用的方法，我们会在后面的章节中对这些方法进行详细描述。 在上面的 main.ts 示例中，我们只是在程序中挂载上 HTTP 服务，让应用程序可以使用 HTTP 请求。
