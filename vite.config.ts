@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { PluginOption, defineConfig } from 'vite'
+import { defineConfig } from 'vite'
 import Dts from 'vite-plugin-dts'
 import { terser as Terser } from 'rollup-plugin-terser'
 import Swc from 'unplugin-swc'
@@ -8,7 +8,7 @@ import { viteMockServe as ViteMockServe } from 'vite-plugin-mock'
 export default defineConfig(({ command }) => {
   return {
     plugins: [
-      Swc.vite() as PluginOption,
+      Swc.vite(),
       Dts({
         outputDir: 'dist/types',
         entryRoot: 'packages/http-typedi'
