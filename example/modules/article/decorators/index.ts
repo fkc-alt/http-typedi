@@ -8,7 +8,8 @@ import {
   UseInterceptorsRes,
   applyDecorators,
   Sleep,
-  Version
+  Version,
+  Timeout
 } from '@/http-typedi'
 import { Route, ArticleRouteChildren } from '../..'
 import { catchCallback } from '../catch/catch-callback'
@@ -64,6 +65,9 @@ export const GetTableDataApplyDecorators = () => {
     Catch(catchCallback),
     Post(ArticleRouteChildren.TABLEDATA, validationErrorMessage),
     Sleep(3000),
-    Version('')
+    Version(''),
+    Timeout(2000, () => {
+      console.log('timeout callback')
+    })
   )
 }

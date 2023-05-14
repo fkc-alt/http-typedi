@@ -108,6 +108,32 @@ const getSleepTimer = (
   )
 }
 
+const getTimeout = (target: Object, propertyKey: string | symbol): number => {
+  return (
+    Reflect.getMetadata(MetadataKey.TIMEOUT, target, propertyKey) ??
+    Reflect.getMetadata(MetadataKey.TIMEOUT, target.constructor) ??
+    (HttpFactory as any).globalTimeout
+  )
+}
+
+const getTimeoutCallback = (
+  target: Object,
+  propertyKey: string | symbol
+): (() => any) => {
+  return (
+    Reflect.getMetadata(
+      MetadataKey.TIMEOUTCALLBACK_METADATA,
+      target,
+      propertyKey
+    ) ??
+    Reflect.getMetadata(
+      MetadataKey.TIMEOUTCALLBACK_METADATA,
+      target.constructor
+    ) ??
+    (HttpFactory as any).globalTimeoutCallback
+  )
+}
+
 export async function handlerResult(
   this: any,
   target: Object,
@@ -130,16 +156,40 @@ export async function handlerResult(
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
         try {
-          const result: Record<string, any> = await fn.call(
-            this,
-            interceptorsReq.reduce((prev, next) => next(prev), param)
+          let result: Record<string, any> = <Record<string, any>>(
+            (<unknown>void 0)
           )
+          if (propertyKey === 'GetTableDataList') {
+            result = await fn.call(
+              this,
+              interceptorsReq.reduce((prev, next) => next(prev), param)
+            )
+          } else {
+            result = await fn.call(
+              this,
+              interceptorsReq.reduce((prev, next) => next(prev), param)
+            )
+          }
           // eslint-disable-next-line @typescript-eslint/return-await
           const response = interceptorsRes.reduce(
             (prev, next) => next(prev),
             result
           )
-          resolve(response)
+          const timeout = getTimeout(target, propertyKey)
+          if (timeout) {
+            setTimeout(() => {
+              if (!result) {
+                getTimeoutCallback(target, propertyKey)?.()
+                reject({
+                  code: 'ECONNABORTED',
+                  data: null,
+                  msg: 'timeout'
+                })
+              }
+            }, timeout)
+          } else {
+            resolve(response)
+          }
         } catch (error) {
           const catchCallback = getCatchCallback(target, propertyKey)
           catchCallback?.(error)

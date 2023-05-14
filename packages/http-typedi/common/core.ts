@@ -74,17 +74,21 @@ interface CreateOptions {
  * @publicApi
  */
 export class HttpFactoryStatic {
-  private globalModule!: Array<Core.Constructor<any>>
-
-  private globalCatchCallback!: (...args: any[]) => any
-
   private globalPrefix = ''
 
+  private globalTimeout = 0
+
   private globalSleepTimer = 0
+
+  private globalModule!: Array<Core.Constructor<any>>
 
   private globalInterceptorsReq: InterceptorReq[] = []
 
   private globalInterceptorsRes: InterceptorRes[] = []
+
+  private globalCatchCallback!: (cb: (error: any) => any) => any
+
+  private globalTimeoutCallback!: (cb: () => any) => any
 
   create<T>(
     target: Core.Constructor<T>,
@@ -130,22 +134,12 @@ export class HttpFactoryStatic {
         ...exposeProperties,
         setGlobalCatchCallback: this.setGlobalCatchCallback.bind(this),
         setGlobalPrefix: this.setGlobalPrefix.bind(this),
+        setGlobalTimeout: this.setGlobalTimeout.bind(this),
         setGlobalSleepTimer: this.setGlobalSleepTimer.bind(this),
         useInterceptorsReq: this.useInterceptorsReq.bind(this),
         useInterceptorsRes: this.useInterceptorsRes.bind(this)
       }
     ))
-  }
-
-  /**
-   *
-   *
-   * @param {(error: any) => any} catchCallback
-   * @memberof HttpFactoryStatic
-   * @description set global error callback
-   */
-  public setGlobalCatchCallback(catchCallback: (error: any) => any) {
-    this.globalCatchCallback = catchCallback
   }
 
   /**
@@ -156,6 +150,16 @@ export class HttpFactoryStatic {
    */
   public setGlobalPrefix(prefix: string) {
     this.globalPrefix = prefix ? prefix.replace(/^\//g, '') + '/' : ''
+  }
+
+  /**
+   *
+   * @param { number } timer
+   * @memberof HttpFactoryStatic
+   * @description set global timeout
+   */
+  public setGlobalTimeout(timer: number) {
+    this.globalTimeout = timer
   }
 
   /**
@@ -186,6 +190,28 @@ export class HttpFactoryStatic {
    */
   public useInterceptorsRes(...interceptors: InterceptorRes[]) {
     this.globalInterceptorsRes = interceptors
+  }
+
+  /**
+   *
+   *
+   * @param {(error: any) => any} catchCallback
+   * @memberof HttpFactoryStatic
+   * @description set global error callback
+   */
+  public setGlobalCatchCallback(cb: (error: any) => any) {
+    this.globalCatchCallback = cb
+  }
+
+  /**
+   *
+   *
+   * @param {() => any} timeoutCallback
+   * @memberof HttpFactoryStatic
+   * @description set global timeout callback
+   */
+  public setGlobalTimeoutCallback(cb: () => any) {
+    this.globalTimeoutCallback = cb
   }
 }
 
