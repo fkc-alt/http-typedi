@@ -127,18 +127,24 @@ export async function handlerResult(
       MetadataKey.INTERCEPTORSRES_METADATA
     )
     const sleepTimer = getSleepTimer(target, propertyKey)
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       setTimeout(async () => {
-        const result: Record<string, any> = await fn.call(
-          this,
-          interceptorsReq.reduce((prev, next) => next(prev), param)
-        )
-        // eslint-disable-next-line @typescript-eslint/return-await
-        const response = interceptorsRes.reduce(
-          (prev, next) => next(prev),
-          result
-        )
-        resolve(response)
+        try {
+          const result: Record<string, any> = await fn.call(
+            this,
+            interceptorsReq.reduce((prev, next) => next(prev), param)
+          )
+          // eslint-disable-next-line @typescript-eslint/return-await
+          const response = interceptorsRes.reduce(
+            (prev, next) => next(prev),
+            result
+          )
+          resolve(response)
+        } catch (error) {
+          const catchCallback = getCatchCallback(target, propertyKey)
+          catchCallback?.(error)
+          reject(error)
+        }
       }, sleepTimer)
     })
   } catch (error) {
