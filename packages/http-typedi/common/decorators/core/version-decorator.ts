@@ -8,8 +8,5 @@ import { MetadataKey } from '../../enums'
  * @auther kaichao.feng
  * @publicApi
  */
-export const Version = (version: string): MethodDecorator => {
-  return function (target, propertyKey, _descriptor) {
-    Reflect.defineMetadata(MetadataKey.VERSION, version, target, propertyKey)
-  }
-}
+export const Version = (version: string): MethodDecorator =>
+  createDecoratorBind(MetadataKey.VERSION, version)
