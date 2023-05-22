@@ -5,8 +5,8 @@ export const createDecoratorBind = (
   params: any
 ): MethodDecorator & ClassDecorator => {
   return function (...args: any) {
-    const [target, propertyKey = ''] = args as Parameters<MethodDecorator>
-    const metadataArgs: any = [key, params, target, propertyKey].filter(Boolean)
+    const _propertyKey = [propertyKey].filter(Boolean)
+    const metadataArgs: any = [key, params, target, ..._propertyKey]
     Reflect.defineMetadata.apply(null, metadataArgs)
   }
 }
