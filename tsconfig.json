@@ -42,7 +42,7 @@
   },
   "include": [
     "packages",
-    "example",
+    "examples",
     "typings",
     "test",
     "mock"

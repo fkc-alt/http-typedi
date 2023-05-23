@@ -17,6 +17,7 @@ export default defineConfig(({ command }) => {
       ViteMockServe({
         mockPath: 'mock',
         enable: command === 'serve',
+        watchFiles: false,
         logger: true
       })
     ],
