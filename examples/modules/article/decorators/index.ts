@@ -1,4 +1,3 @@
-import ContentTypeService from '../../../common/providers/contentType.service'
 import {
   Catch,
   Controller,
@@ -11,6 +10,7 @@ import {
   Version,
   Timeout
 } from 'http-typedi'
+import ContentTypeService from '../../../common/providers/contentType.service'
 import { Route, ArticleRouteChildren } from '../..'
 import { catchCallback } from '../catch/catch-callback'
 import { validationErrorMessage } from '../validation/validate'
