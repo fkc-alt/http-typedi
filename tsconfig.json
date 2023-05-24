@@ -45,7 +45,8 @@
     "examples",
     "typings",
     "test",
-    "mock"
+    "mock",
+    "docs"
   ],
   "exclude": [
     "node_modules",
