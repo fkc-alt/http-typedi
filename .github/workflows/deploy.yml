@@ -1,0 +1,44 @@
+
+name: http-typedi-docs
+ 
+on: 
+  pull_request: 
+    paths: 'docs/**'
+    branches: 
+    - main 
+  push: 
+    paths: 'docs/**'
+    branches: 
+    - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v3 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3 
+        with:
+          node-version: 16
+
+      - name: CD Docs
+        run: cd docs
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Package
+        run: npm run docs:build
+      - name: upload production artifacts
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: dist
+
+      # deploy
+      - name: Deploy Page To Release
+        id: deployment
+        uses: actions/deploy-pages@v1
