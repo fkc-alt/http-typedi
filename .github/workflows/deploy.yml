@@ -3,13 +3,13 @@ name: http-typedi-docs
  
 on: 
   pull_request: 
-    paths: 'docs/**'
     branches: 
     - main 
-  push: 
     paths: 'docs/**'
+  push: 
     branches: 
     - main
+    paths: 'docs/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest

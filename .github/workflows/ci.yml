@@ -6,15 +6,15 @@ name: http-typedi
  
 on: 
   pull_request: 
-    paths-ignore:
-      - 'docs/**'
     branches: 
     - main 
+    paths-ignore:
+      - 'docs/**'
   push: 
-    paths-ignore:
-      - 'docs/**'
     branches: 
     - main 
+    paths-ignore:
+     - 'docs/**'
 env:
   DIST_NAME: dist
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
