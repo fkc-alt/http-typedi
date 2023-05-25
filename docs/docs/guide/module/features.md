@@ -4,7 +4,7 @@
 
 > demo/demo.module.ts
 
-```ts
+```ts{5}
 import { Module } from 'http-typedi'
 import { DemoController } from './demo.controller'
 import { DemoService } from './demo.service'
@@ -20,7 +20,7 @@ export class DemoModule {}
 
 > app.module.ts
 
-```ts
+```ts{4}
 import { Module } from 'http-typedi'
 import { DemoModule } from './demo/demo.module'
 

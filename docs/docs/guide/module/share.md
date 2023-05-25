@@ -8,7 +8,7 @@
 
 > cats.module.ts
 
-```ts
+```ts{5}
 import { Module } from 'http-typedi'
 import { DemoController } from './demo.controller'
 import { DemoService } from './demo.service'

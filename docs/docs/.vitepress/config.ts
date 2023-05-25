@@ -4,7 +4,12 @@ import { Footer, Navbar, Sidebar } from './layout'
 export default defineConfig({
   title: 'Http-Typedi',
   description: '前端Spring框架',
+  head: [
+    ['link', { rel: 'icon', href: '/logo.svg' }],
+    ['link', { rel: 'stylesheet', href: '/styles/animation.css' }]
+  ],
   themeConfig: {
+    logo: '/logo.svg',
     search: {
       provider: 'algolia',
       options: {
@@ -16,5 +21,5 @@ export default defineConfig({
     nav: Navbar,
     sidebar: Sidebar,
     footer: Footer
-  }
+  },
 })

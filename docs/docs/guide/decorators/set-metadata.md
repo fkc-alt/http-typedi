@@ -4,7 +4,7 @@
 
 > demo.controller.ts
 
-```ts
+```ts{2}
 @Post()
 @SetMetadata('roles', ['admin'])
 async demoDetail(demoDto: DemoDto) {
@@ -28,7 +28,7 @@ export const Roles = (...roles: string[]) => SetMetadata('roles', roles)
 
 > demo.controller.ts
 
-```ts
+```ts{2}
 @Post()
 @Roles('admin')
 async demoDetail(demoDto: DemoDto) {

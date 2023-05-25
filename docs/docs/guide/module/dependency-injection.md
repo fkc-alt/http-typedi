@@ -4,7 +4,7 @@
 
 > demo.module.ts
 
-```ts
+```ts{10}
 import { Module } from 'http-typedi'
 import { DemoController } from './demo.controller';
 import { DemoService } from './demo.service';

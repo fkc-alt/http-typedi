@@ -43,13 +43,9 @@ export const Sidebar: DefaultTheme.Sidebar = {
       collapsed: false,
       items: [
         {
-          text: '全局配置',
-          link: '/guide/documentation/global-options'
-        },
-        {
           text: '控制器',
           link: '/guide/controller/',
-          collapsed: false,
+          collapsed: true,
           items: [
             {
               text: '路由',
@@ -83,7 +79,7 @@ export const Sidebar: DefaultTheme.Sidebar = {
         },
         {
           text: '提供者',
-          collapsed: false,
+          collapsed: true,
           link: '/guide/provider/',
           items: [
             {
@@ -110,7 +106,7 @@ export const Sidebar: DefaultTheme.Sidebar = {
         },
         {
           text: '模块',
-          collapsed: false,
+          collapsed: true,
           link: '/guide/module/',
           items: [
             {
@@ -133,7 +129,7 @@ export const Sidebar: DefaultTheme.Sidebar = {
         },
         {
           text: '管道',
-          collapsed: false,
+          collapsed: true,
           link: '/guide/pipe/',
           items: [
             {
@@ -152,8 +148,8 @@ export const Sidebar: DefaultTheme.Sidebar = {
         },
         {
           text: '内置装饰器',
-          collapsed: false,
-          link: '/guide/decorators/',
+          collapsed: true,
+          link: '/guide/decorators/apply-decorators',
           items: [
             {
               text: '聚合装饰器',
@@ -167,7 +163,7 @@ export const Sidebar: DefaultTheme.Sidebar = {
         },
         {
           text: '拦截器',
-          collapsed: false,
+          collapsed: true,
           link: '/guide/interceptor/',
           items: [
             {
@@ -179,8 +175,54 @@ export const Sidebar: DefaultTheme.Sidebar = {
               link: '/guide/interceptor/use-interceptors-res'
             }
           ]
+        },
+        {
+          text: '异常处理器',
+          link: '/guide/catch/'
+        },
+        {
+          text: 'DTO',
+          link: '/guide/support/what-is-dto',
+          collapsed: true,
+          items: [
+            {
+              text: '什么是DTO',
+              link: '/guide/support/what-is-dto'
+            },
+            {
+              text: '如何使用DTO',
+              link: '/guide/support/dto'
+            }
+          ]
+        },
+        {
+          text: '全局配置',
+          link: '/guide/global-config/',
+          collapsed: true,
+          items: [
+            {
+              text: '路由前缀',
+              link: '/guide/global-config/prefix'
+            },
+            {
+              text: '异常处理器',
+              link: '/guide/global-config/catch'
+            },
+            {
+              text: '请求拦截器',
+              link: '/guide/global-config/use-interceptors'
+            },
+            {
+              text: '请求延时器',
+              link: '/guide/global-config/sleep'
+            }
+          ]
         }
       ]
+    },
+    {
+      text: '关于我',
+      link: '/about'
     }
-  ]
+  ],
 }

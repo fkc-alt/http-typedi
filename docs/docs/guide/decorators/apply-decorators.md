@@ -15,7 +15,7 @@ export function ControllerApplydecorators(...roles: Role[]) {
 
 然后，你可以参照以下方式使用 `@ControllerApplydecorators()` 自定义装饰器：
 
-```ts
+```ts{1}
 @ControllerApplydecorators('admin')
 class DemoController() {}
 ```

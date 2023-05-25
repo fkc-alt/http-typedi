@@ -5,6 +5,9 @@ hero:
   name: Http-Typedi
   text: 前端版Spring请求框架
   tagline: 下一代模块化，可维护，可扩展的前端请求框架
+  image:
+    src: /logo.svg
+    alt: Http-Typedi
   actions:
     - theme: brand
       text: Get Started
@@ -17,10 +20,10 @@ hero:
 features:
   - icon: 🚀
     title: Aspect Oriented Programming
-    details: 面向AOP编程
+    details: 面向AOP编程，支持DTO验证API参数
   - icon: 🛠️
     title: Dependency Injection
-    details: 使用依赖注入(Dependency Injection)核心编写
+    details: 使用依赖注入(Dependency Injection)设计模式
   - icon: 📠
     title: Type Strong
     details: 完全使用 Typescript 编写，完美支持Typescript
