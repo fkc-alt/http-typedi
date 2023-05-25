@@ -6,9 +6,13 @@ name: http-typedi
  
 on: 
   pull_request: 
+    paths-ignore:
+      - 'docs/**'
     branches: 
     - main 
   push: 
+    paths-ignore:
+      - 'docs/**'
     branches: 
     - main 
 env:
