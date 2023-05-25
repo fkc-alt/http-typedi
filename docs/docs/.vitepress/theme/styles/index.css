@@ -36,6 +36,11 @@ body,
   gap: 10px;
   margin-bottom: 30px;
 }
+.github-users_flex img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
 .github-users_flex a:hover span {
   color: var(--vp-c-brand) !important;
 }
