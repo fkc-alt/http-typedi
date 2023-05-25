@@ -1,4 +1,4 @@
-<div style="display:flex;gap: 10px;margin-bottom: 30px">
+<div class='package-flex'>
   <a href='https://www.npmjs.com/package/http-typedi' target='_blank'>
     <img src="https://img.shields.io/bundlephobia/minzip/http-typedi/latest" alt="Size" />
   </a>

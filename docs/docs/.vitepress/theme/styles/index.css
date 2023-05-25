@@ -1,0 +1,84 @@
+html.dark {
+  --c-border: #3e4c5a !important;
+  --c-bg: #22272e !important;
+}
+html {
+  --c-border: #d9d9d9;
+  --c-bg: #fff;
+}
+.VPSidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.VPSidebar::-webkit-scrollbar-track {
+  background-color: var(--c-border);
+}
+.VPSidebar::-webkit-scrollbar-thumb {
+  background-color: var(--vp-c-brand);
+  border-radius: 10px;
+}
+body,
+.VPSidebar,
+.curtain,
+.content-body,
+.VPFooter {
+  background-color: var(--c-bg) !important;
+}
+.github-users_flex {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.package-flex {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+.github-users_flex a:hover span {
+  color: var(--vp-c-brand) !important;
+}
+.github-users_flex a {
+  text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: var(--vp-c-text-1);
+}
+.github-users_flex a span {
+  transition: all 0.3s;
+  color: var(--vp-c-text-1);
+}
+.aside {
+  display: none !important;
+}
+
+.title {
+  margin-bottom: 30px;
+}
+
+.text-size-24 {
+  font-size: 24px;
+}
+
+.text-size-20 {
+  font-size: 20px;
+}
+
+.text-size-18 {
+  font-size: 18px;
+}
+
+.description {
+  text-align: center;
+  color: var(--vp-c-text-1);
+  line-height: 32px;
+  font-weight: 600;
+  outline: none;
+  margin-bottom: 20px;
+}
+
+.my {
+  margin: 80px 0 40px;
+}

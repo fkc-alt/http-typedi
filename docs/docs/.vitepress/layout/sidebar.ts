@@ -222,7 +222,7 @@ export const Sidebar: DefaultTheme.Sidebar = {
     },
     {
       text: '关于我',
-      link: '/about'
+      link: '/about.html'
     }
   ],
 }

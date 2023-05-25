@@ -6,7 +6,6 @@ export default defineConfig({
   description: '前端Spring框架',
   head: [
     ['link', { rel: 'icon', href: '/logo.svg' }],
-    ['link', { rel: 'stylesheet', href: '/styles/animation.css' }]
   ],
   themeConfig: {
     logo: '/logo.svg',
