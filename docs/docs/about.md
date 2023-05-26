@@ -45,12 +45,15 @@
         <img src='https://avatars.githubusercontent.com/taylorqqq' alt='taylorqqq' />
         <span>taylorqqq</span>
     </a>
+    <a href='https://github.com/xutian111' target='_blank'>
+        <img src='https://avatars.githubusercontent.com/xutian111' alt='xutian111' />
+        <span>xutian111</span>
+    </a>
 </div>
 
 <div class='text-size-24 title' style='margin-top: 50px'>如果你想了解更多可以提高生产力的工具，那么这个可能会帮到你</div>
 <div class='github-users_flex'>
 <a href='https://www.shengchanli.online/' target='_blank'>
-        <img src='https://static01.shengchanli.online/frontend_asset/logo.png' alt='数字升产力' />
-        <span>数字升产力</span>
+        <img style='width: 173px; height: 32px; border-radius: 0;' src='https://static01.shengchanli.online/frontend_asset/logo.png' referrerpolicy="no-referrer" alt='数字升产力' />
     </a>
 </div>
