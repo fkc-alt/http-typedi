@@ -9,6 +9,7 @@ export default defineConfig({
   ],
   themeConfig: {
     logo: '/logo.svg',
+    base: '/http-typedi/',
     search: {
       provider: 'algolia',
       options: {
