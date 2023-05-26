@@ -30,6 +30,8 @@ body,
   align-items: center;
   flex-wrap: wrap;
   flex: 1;
+  padding-bottom: 30px;
+  border-bottom: 1px solid var(--vp-c-text-1);
 }
 .package-flex {
   display: flex;
