@@ -45,6 +45,11 @@ export default defineConfig(() => {
   }
 })
 ```
+
+:::tip
+如果您的`package.json`中的`"type": "module"`为的话，需要去掉`"type": "module"`, 重新运行即可。详情可见[`issue`](https://github.com/fkc-alt/http-typedi/issues/2)
+:::
+
 ::: warning
 基于`Webpack`构建程序目前暂无在文档标注使用方法，后续会在文档更新。
 :::
