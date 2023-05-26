@@ -38,10 +38,12 @@ class DemoControler {
 ```ts
 @Controller('demo')
 class DemoControler {
+  constructor(private demoService: DemoService) {}
+
   @Get('detail')
   @Header('version', '1')
   getDemoDetail(demo: DemoReq) {
-    return 'This action returns all demos';
+    return this.demoService.getDemoDetail(demo);
   }
 }
 ```
@@ -53,9 +55,11 @@ class DemoControler {
 ```ts
 @Controller('demo', { version: '1' })
 class DemoControler {
+  constructor(private demoService: DemoService) {}
+
   @Get('detail')
   geDemoDetail(demo: DemoReq) {
-    return 'This action returns all demo';
+    return this.demoService.getDemoDetail(demo);
   }
 }
 ```
