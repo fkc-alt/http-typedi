@@ -7,9 +7,9 @@ export default defineConfig({
   head: [
     ['link', { rel: 'icon', href: '/logo.svg' }],
   ],
+  base: '/http-typedi/',
   themeConfig: {
     logo: '/logo.svg',
-    base: '/http-typedi/',
     search: {
       provider: 'algolia',
       options: {
