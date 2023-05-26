@@ -33,4 +33,24 @@
         <img src='https://avatars.githubusercontent.com/admin-yzy' alt='admin-yzy' />
         <span>admin-yzy</span>
     </a>
+    <a href='https://gitee.com/fanzhengxu' target='_blank'>
+        <img src='https://avatars.githubusercontent.com/fanzhengxu' alt='fanzhengxu' />
+        <span>fanzhengxu</span>
+    </a>
+    <a href='https://github.com/lizhihao159' target='_blank'>
+        <img src='https://avatars.githubusercontent.com/lizhihao159' alt='lizhihao159' />
+        <span>lizhihao159</span>
+    </a>
+    <a href='https://github.com/taylorqqq' target='_blank'>
+        <img src='https://avatars.githubusercontent.com/taylorqqq' alt='taylorqqq' />
+        <span>taylorqqq</span>
+    </a>
+</div>
+
+<div class='text-size-24 title' style='margin-top: 50px'>如果你想了解更多可以提高生产力的工具，那么这个可能会帮到你</div>
+<div class='github-users_flex'>
+<a href='https://www.shengchanli.online/' target='_blank'>
+        <img src='https://static01.shengchanli.online/frontend_asset/logo.png' alt='数字升产力' />
+        <span>数字升产力</span>
+    </a>
 </div>
