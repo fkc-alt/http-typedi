@@ -201,6 +201,10 @@ export const Sidebar: DefaultTheme.Sidebar = {
           collapsed: true,
           items: [
             {
+              text: '全局路由映射',
+              link: '/guide/global-config/route-reflect'
+            },
+            {
               text: '路由前缀',
               link: '/guide/global-config/prefix'
             },
