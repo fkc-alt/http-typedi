@@ -5,7 +5,7 @@ export default defineConfig({
   title: 'Http-Typedi',
   description: '前端Spring框架',
   head: [
-    ['link', { rel: 'icon', href: '/logo.svg' }],
+    ['link', { rel: 'icon', href: '/http-typedi/logo.svg' }],
   ],
   base: '/http-typedi/',
   themeConfig: {
