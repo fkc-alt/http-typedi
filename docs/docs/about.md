@@ -53,6 +53,10 @@
         <img src='https://avatars.githubusercontent.com/CnJingx' alt='CnJingx' />
         <span>CnJingx</span>
     </a>
+    <a href='https://github.com/MrLiu123141' target='_blank'>
+        <img src='https://avatars.githubusercontent.com/MrLiu123141' alt='MrLiu123141' />
+        <span>MrLiu123141</span>
+    </a>
 </div>
 
 <div class='text-size-24 title' style='margin-top: 50px'>如果你想了解更多可以提高生产力的工具，那么这个可能会帮到你</div>
