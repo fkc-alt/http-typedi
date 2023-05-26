@@ -6,6 +6,9 @@ html {
   --c-border: #d9d9d9;
   --c-bg: #fff;
 }
+#nprogress .bar{
+  background: var(--vp-c-brand) !important;
+}
 .VPSidebar::-webkit-scrollbar {
   width: 5px;
 }

@@ -20,5 +20,8 @@
   "license": "ISC",
   "devDependencies": {
     "vitepress": "^1.0.0-beta.1"
+  },
+  "dependencies": {
+    "nprogress": "^0.2.0"
   }
 }
