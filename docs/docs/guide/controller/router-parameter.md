@@ -8,9 +8,11 @@ import { DemoDetailReq } from './interfaces/demo.interface';
 
 @Controller('demo')
 export class DemoController {
+  constructor(private demoService: DemoService) {}
+
   @Get('detail/:id')
   getDemoDetail(configure: DemoDetailReq) {
-    return 'this is get demo detail method'
+    return this.demoService.getDemoDetail(demo);
   }
 }
 ```
