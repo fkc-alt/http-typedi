@@ -2,4 +2,6 @@
 node_modules
 dist
 lib
+docs/docs/.vitepress/dist
+docs/docs/.vitepress/cache
 package-lock.json
