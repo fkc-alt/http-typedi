@@ -5,5 +5,13 @@ export default defineConfig({
     alias: {
       '@': './.vitepress'
     }
+  },
+  build: {
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    }
   }
 })
