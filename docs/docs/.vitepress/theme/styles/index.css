@@ -24,7 +24,9 @@ body,
 .VPSidebar,
 .curtain,
 .content-body,
-.VPFooter {
+.VPFooter,
+.VPNavBar
+ {
   background-color: var(--c-bg) !important;
 }
 .github-users_flex {
