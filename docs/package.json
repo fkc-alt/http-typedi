@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "http-typedi docs",
   "scripts": {
-    "docs:dev": "vitepress dev docs --port 8080",
+    "docs:dev": "vitepress dev docs --port 8080 --open",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
