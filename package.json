@@ -29,7 +29,7 @@
   "types": "dist/types/index.d.ts",
   "typings": "dist/types/index.d.ts",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky install && touch index.html",
     "test": "vitest",
     "dev": "vite --mode=dev",
     "build": "tsc && vite build",
