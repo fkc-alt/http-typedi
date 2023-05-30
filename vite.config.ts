@@ -1,11 +1,37 @@
 import { resolve } from 'path'
-import { defineConfig } from 'vite'
+import { PluginOption, defineConfig, loadEnv } from 'vite'
 import Dts from 'vite-plugin-dts'
 import { terser as Terser } from 'rollup-plugin-terser'
 import Swc from 'unplugin-swc'
 import { viteMockServe as ViteMockServe } from 'vite-plugin-mock'
+import { createHtmlPlugin as CreateHtmlPlugin } from 'vite-plugin-html'
+import { generateTags } from './plugins/injectHTML'
 
-export default defineConfig(({ command }) => {
+const developPlugins: PluginOption[] = []
+
+export default defineConfig(({ command, mode }) => {
+  const { VITE_APP_PROJECT_ICON, VITE_APP_PROJECT_TITLE } = loadEnv(
+    mode,
+    process.cwd()
+  )
+  if (command === 'serve') {
+    developPlugins.push(
+      CreateHtmlPlugin({
+        minify: true,
+        entry: '/examples/main.ts',
+        template: 'index.html',
+        inject: {
+          tags: generateTags({
+            icon: VITE_APP_PROJECT_ICON,
+            title: VITE_APP_PROJECT_TITLE
+          }),
+          data: {
+            doctype: '<!DOCTYPE html>'
+          }
+        }
+      })
+    )
+  }
   return {
     plugins: [
       Swc.vite(),
@@ -19,7 +45,8 @@ export default defineConfig(({ command }) => {
         enable: command === 'serve',
         watchFiles: false,
         logger: true
-      })
+      }),
+      ...developPlugins
     ],
     resolve: {
       alias: {
@@ -29,6 +56,9 @@ export default defineConfig(({ command }) => {
       extensions: ['.ts', '.js', '.json', '.d.ts']
     },
     build: {
+      // rollupOptions: {
+      //   exclude: ['docs/**']
+      // },
       lib: {
         entry: resolve(__dirname, './packages/index.ts'),
         name: 'http-typedi',
