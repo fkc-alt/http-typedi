@@ -3,9 +3,18 @@ import { HtmlTagDescriptor } from 'vite'
 type Props = {
   icon: string
   title: string
+  doctype: string
 }
 
-export const generateTags = ({ icon, title }: Props): HtmlTagDescriptor[] => [
+export const generateTags = ({
+  icon,
+  title,
+  doctype
+}: Props): HtmlTagDescriptor[] => [
+  {
+    tag: '',
+    children: doctype
+  },
   {
     tag: 'html',
     attrs: { lang: 'en' },
