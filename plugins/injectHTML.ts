@@ -12,7 +12,7 @@ export const generateTags = ({
   doctype
 }: Props): HtmlTagDescriptor[] => [
   {
-    tag: '',
+    tag: <string>(<unknown>null),
     children: doctype
   },
   {
