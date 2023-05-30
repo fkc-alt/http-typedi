@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { PluginOption, defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import Dts from 'vite-plugin-dts'
 import { terser as Terser } from 'rollup-plugin-terser'
 import Swc from 'unplugin-swc'
