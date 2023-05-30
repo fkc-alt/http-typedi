@@ -7,29 +7,11 @@ import { viteMockServe as ViteMockServe } from 'vite-plugin-mock'
 import { createHtmlPlugin as CreateHtmlPlugin } from 'vite-plugin-html'
 import { generateTags } from './plugins/injectHTML'
 
-const developPlugins: PluginOption[] = []
-
 export default defineConfig(({ command, mode }) => {
   const { VITE_APP_PROJECT_ICON, VITE_APP_PROJECT_TITLE } = loadEnv(
     mode,
     process.cwd()
   )
-  if (command === 'serve') {
-    developPlugins.push(
-      CreateHtmlPlugin({
-        minify: true,
-        entry: '/examples/main.ts',
-        template: 'index.html',
-        inject: {
-          tags: generateTags({
-            icon: VITE_APP_PROJECT_ICON,
-            title: VITE_APP_PROJECT_TITLE,
-            doctype: '<!DOCTYPE html>'
-          })
-        }
-      })
-    )
-  }
   return {
     plugins: [
       Swc.vite(),
@@ -44,7 +26,20 @@ export default defineConfig(({ command, mode }) => {
         watchFiles: false,
         logger: true
       }),
-      ...developPlugins
+      command === 'serve'
+        ? CreateHtmlPlugin({
+            minify: true,
+            entry: '/examples/main.ts',
+            template: 'index.html',
+            inject: {
+              tags: generateTags({
+                icon: VITE_APP_PROJECT_ICON,
+                title: VITE_APP_PROJECT_TITLE,
+                doctype: '<!DOCTYPE html>'
+              })
+            }
+          })
+        : null
     ],
     resolve: {
       alias: {

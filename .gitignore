@@ -26,3 +26,4 @@ package-lock.json
 *.sw?
 docs/docs/.vitepress/cache
 docs/docs/.vitepress/dist
+index.html
