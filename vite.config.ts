@@ -1,6 +1,5 @@
-// @ts-nocheck 
 import { resolve } from 'path'
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv, PluginOption } from 'vite'
 import Dts from 'vite-plugin-dts'
 import { terser as Terser } from 'rollup-plugin-terser'
 import Swc from 'unplugin-swc'
@@ -27,7 +26,7 @@ export default defineConfig(({ command, mode }) => {
         watchFiles: false,
         logger: true
       }),
-      command === 'serve'
+      (command === 'serve'
         ? CreateHtmlPlugin({
             minify: true,
             entry: '/examples/main.ts',
@@ -40,7 +39,7 @@ export default defineConfig(({ command, mode }) => {
               })
             }
           })
-        : null
+        : null) as PluginOption
     ],
     resolve: {
       alias: {
@@ -50,9 +49,6 @@ export default defineConfig(({ command, mode }) => {
       extensions: ['.ts', '.js', '.json', '.d.ts']
     },
     build: {
-      // rollupOptions: {
-      //   exclude: ['docs/**']
-      // },
       lib: {
         entry: resolve(__dirname, './packages/index.ts'),
         name: 'http-typedi',
