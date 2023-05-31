@@ -7,7 +7,7 @@ import { viteMockServe as ViteMockServe } from 'vite-plugin-mock'
 import { createHtmlPlugin as CreateHtmlPlugin } from 'vite-plugin-html'
 import { generateTags } from './plugins/injectHTML'
 
-export default defineConfig(({ command, mode }): UserConfig => {
+export default defineConfig(({ command }): UserConfig => {
   //const { VITE_APP_PROJECT_ICON, VITE_APP_PROJECT_TITLE } = loadEnv(
   //  mode,
   //  process.cwd()
