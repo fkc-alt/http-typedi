@@ -33,9 +33,11 @@ export default defineConfig(({ command, mode }) => {
         inject: {
           tags: generateTags({
             icon: VITE_APP_PROJECT_ICON,
-            title: VITE_APP_PROJECT_TITLE,
+            title: VITE_APP_PROJECT_TITLE
+          }),
+          data: {
             doctype: '<!DOCTYPE html>'
-          })
+          }
         }
       })
     ] as PluginOption[],
