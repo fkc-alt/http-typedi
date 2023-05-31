@@ -32,8 +32,8 @@ export default defineConfig(({ command, mode }): UserConfig => {
         template: 'index.html',
         inject: {
           tags: generateTags({
-            icon: VITE_APP_PROJECT_ICON,
-            title: VITE_APP_PROJECT_TITLE,
+            icon: 'VITE_APP_PROJECT_ICON',
+            title: 'VITE_APP_PROJECT_TITLE',
             doctype: '<!DOCTYPE html>'
           })
         }
