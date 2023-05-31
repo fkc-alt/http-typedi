@@ -8,10 +8,10 @@ import { createHtmlPlugin as CreateHtmlPlugin } from 'vite-plugin-html'
 import { generateTags } from './plugins/injectHTML'
 
 export default defineConfig(({ command, mode }): UserConfig => {
-  const { VITE_APP_PROJECT_ICON, VITE_APP_PROJECT_TITLE } = loadEnv(
-    mode,
-    process.cwd()
-  )
+  //const { VITE_APP_PROJECT_ICON, VITE_APP_PROJECT_TITLE } = loadEnv(
+  //  mode,
+  //  process.cwd()
+  //)
   return {
     plugins: [
       Swc.vite(),
