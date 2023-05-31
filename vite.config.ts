@@ -26,7 +26,7 @@ export default defineConfig(({ command, mode }) => {
         watchFiles: false,
         logger: true
       }),
-      CreateHtmlPlugin({
+      ...CreateHtmlPlugin({
         minify: true,
         entry: '/examples/main.ts',
         template: 'index.html',
