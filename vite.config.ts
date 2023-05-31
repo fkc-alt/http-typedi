@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv, UserConfig } from 'vite'
 import Dts from 'vite-plugin-dts'
 import { terser as Terser } from 'rollup-plugin-terser'
 import Swc from 'unplugin-swc'
@@ -7,7 +7,7 @@ import { viteMockServe as ViteMockServe } from 'vite-plugin-mock'
 import { createHtmlPlugin as CreateHtmlPlugin } from 'vite-plugin-html'
 import { generateTags } from './plugins/injectHTML'
 
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ command, mode }): UserConfig => {
   const { VITE_APP_PROJECT_ICON, VITE_APP_PROJECT_TITLE } = loadEnv(
     mode,
     process.cwd()
