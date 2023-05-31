@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { defineConfig, loadEnv, PluginOption } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import Dts from 'vite-plugin-dts'
 import { terser as Terser } from 'rollup-plugin-terser'
 import Swc from 'unplugin-swc'
@@ -26,20 +26,18 @@ export default defineConfig(({ command, mode }) => {
         watchFiles: false,
         logger: true
       }),
-      (command === 'serve'
-        ? CreateHtmlPlugin({
-            minify: true,
-            entry: '/examples/main.ts',
-            template: 'index.html',
-            inject: {
-              tags: generateTags({
-                icon: VITE_APP_PROJECT_ICON,
-                title: VITE_APP_PROJECT_TITLE,
-                doctype: '<!DOCTYPE html>'
-              })
-            }
+      CreateHtmlPlugin({
+        minify: true,
+        entry: '/examples/main.ts',
+        template: 'index.html',
+        inject: {
+          tags: generateTags({
+            icon: VITE_APP_PROJECT_ICON,
+            title: VITE_APP_PROJECT_TITLE,
+            doctype: '<!DOCTYPE html>'
           })
-        : null) as PluginOption
+        }
+      })
     ],
     resolve: {
       alias: {
