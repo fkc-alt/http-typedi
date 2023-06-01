@@ -1,4 +1,4 @@
-import { Core } from 'http-typedi'
+import { Core } from '@/index'
 import RequestService from '../../../common/providers/request.service'
 
 export default class HelplerService extends RequestService {

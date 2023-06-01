@@ -2,6 +2,74 @@
 import { MetadataKey, RouteParamtypes } from '../../enums'
 import { isArray, isFunction, isString } from '../../helper'
 import { Core } from '../../interface/core'
+
+export const getInjectValues = (
+  target: Object,
+  propertyName: string
+): Core.RouteParamMetadata[] => {
+  const data: Record<string, any> =
+    Reflect.getMetadata(
+      MetadataKey.ROUTE_ARGS_METADATA,
+      target.constructor,
+      propertyName
+    ) || {}
+  const values: Core.RouteParamMetadata[] = (Object.values(data) || []).sort(
+    (a, b) => a.index - b.index
+  )
+  return values
+}
+
+const OverrideEffect: MethodDecorator = (
+  target,
+  propertyName,
+  descriptor: PropertyDescriptor
+) => {
+  const originalMethod: (...params: any[]) => any = descriptor.value
+  const values = getInjectValues(target, <string>propertyName)
+  descriptor.value = function (...args: any[]) {
+    return originalMethod.apply(
+      this,
+      values.length ? OverrideReqEffect(values, args) : args
+    )
+  }
+}
+
+export const OverrideReqEffect = (
+  values: Core.RouteParamMetadata[],
+  args: any[]
+) => {
+  return args.map((param, index) => {
+    const item = values.find(_ => _.index === index)
+    if (item?.data) {
+      const registerClasses = item?.pipe?.map((target: any) =>
+        isFunction(target) ? new (target as Core.Constructor<any>)() : target
+      )
+      if (isArray(item.data)) {
+        return (<string[]>item.data).reduce((prev, next) => {
+          const paramObj = <Record<string, any>>{}
+          if (registerClasses?.length) {
+            registerClasses.forEach(target => {
+              paramObj[next] =
+                target?.transform?.(paramObj[next]) ??
+                (param[next] || target.defaultValue)
+            })
+          } else {
+            paramObj[next] = param[next]
+          }
+          return { ...prev, ...paramObj }
+        }, {})
+      }
+      registerClasses?.forEach(target => {
+        param[item.data as string] =
+          target?.transform?.(param[item.data as string]) ??
+          (param[item.data as string] || target.defaultValue)
+      })
+      return param[item.data as string]
+    }
+    return param
+  })
+}
+
 /**
  * @module Override
  * @auther kaichao.feng
@@ -10,56 +78,7 @@ import { Core } from '../../interface/core'
  */
 export const Override = (): MethodDecorator => {
   return function (target, propertyName, descriptor: PropertyDescriptor) {
-    const originalMethod: (...params: any[]) => any = descriptor.value
-    const data: Record<string, any> =
-      Reflect.getMetadata(
-        MetadataKey.ROUTE_ARGS_METADATA,
-        target.constructor,
-        propertyName
-      ) || {}
-    descriptor.value = function (...args: any[]) {
-      const values: Core.RouteParamMetadata[] = (
-        Object.values(data) || []
-      ).sort((a, b) => a.index - b.index)
-      if (values.length) {
-        return originalMethod.apply(
-          this,
-          args.map((param, index) => {
-            const item = values.find(_ => _.index === index)
-            if (item?.data) {
-              const registerClasses = item?.pipe?.map((target: any) =>
-                isFunction(target)
-                  ? new (target as Core.Constructor<any>)()
-                  : target
-              )
-              if (isArray(item.data)) {
-                return (<string[]>item.data).reduce((prev, next) => {
-                  const paramObj = <Record<string, any>>{}
-                  if (registerClasses?.length) {
-                    registerClasses.forEach(target => {
-                      paramObj[next] =
-                        target?.transform?.(paramObj[next]) ??
-                        (param[next] || target.defaultValue)
-                    })
-                  } else {
-                    paramObj[next] = param[next]
-                  }
-                  return { ...prev, ...paramObj }
-                }, {})
-              }
-              registerClasses?.forEach(target => {
-                param[item.data as string] =
-                  target?.transform?.(param[item.data as string]) ??
-                  (param[item.data as string] || target.defaultValue)
-              })
-              return param[item.data as string]
-            }
-            return param
-          })
-        )
-      }
-      return originalMethod.apply(this, args)
-    }
+    OverrideEffect(target, propertyName, descriptor)
   }
 }
 
@@ -120,3 +139,10 @@ export const Param = (
   property?: string | string[],
   ...pipe: Array<Core.Constructor<any> | Object>
 ) => createParamDecorator(RouteParamtypes.PARAM)(property, pipe)
+
+/**
+ * @method Param
+ * @auther kaichao.feng
+ * @description 搭配Get, Post...等路由使用
+ */
+export const Req = Param

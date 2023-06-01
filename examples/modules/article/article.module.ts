@@ -1,4 +1,4 @@
-import { Global, Module } from 'http-typedi'
+import { Global, Module } from '@/index'
 import OrderModule from '../order/order.module'
 import OrderController from '../order/order.controller'
 import ArticleController from './article.controller'

@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { HttpFactory } from 'http-typedi'
+import { HttpFactory } from '@/index'
 import AppModule from './app.module'
 import './style.css'
 

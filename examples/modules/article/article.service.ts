@@ -5,7 +5,7 @@ import {
   ParseIntPipe,
   DefaultValuePipe,
   Core
-} from 'http-typedi'
+} from '@/index'
 import { AxiosRequestConfig } from 'axios'
 import RequestService from '../../common/providers/request.service'
 import OrderService from '../order/order.service'

@@ -1,4 +1,4 @@
-import { Controller, Post, Core, Sleep } from 'http-typedi'
+import { Controller, Post, Core, Sleep } from '@/index'
 import HelplerService from './providers/helper.service'
 import TableDataDto from './dto/tableData.dto'
 

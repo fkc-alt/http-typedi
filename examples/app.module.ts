@@ -1,4 +1,4 @@
-import { Injection, Module } from 'http-typedi'
+import { Injection, Module } from '@/index'
 import CommonModule from './common/common.module'
 import RequestService from './common/providers/request.service'
 import ArticleController from './modules/article/article.controller'

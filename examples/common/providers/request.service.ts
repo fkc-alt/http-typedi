@@ -5,7 +5,7 @@ import type {
   // AxiosError
   // AxiosResponse
 } from 'axios'
-import { Injectable } from 'http-typedi'
+import { Injectable } from '@/index'
 
 /**
  * @author kaichao.Feng

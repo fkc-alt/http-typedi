@@ -3,6 +3,8 @@
 import { ValidationError } from 'class-validator'
 import { Method } from '../../enums'
 import { RequestMapping } from './core'
+import { applyDecorators } from '../core'
+import { Override } from './route-params.decorator'
 
 /**
  * @module Request
@@ -15,7 +17,8 @@ import { RequestMapping } from './core'
 export const Get = (
   path: string,
   message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.GET, message)
+): MethodDecorator =>
+  applyDecorators(RequestMapping(path, Method.GET, message), Override())
 
 /**
  * @module Request
@@ -28,7 +31,8 @@ export const Get = (
 export const Post = (
   path: string,
   message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.POST, message)
+): MethodDecorator =>
+  applyDecorators(RequestMapping(path, Method.POST, message), Override())
 
 /**
  * @module Request

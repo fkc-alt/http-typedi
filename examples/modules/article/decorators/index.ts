@@ -9,7 +9,7 @@ import {
   Sleep,
   Version,
   Timeout
-} from 'http-typedi'
+} from '@/index'
 import ContentTypeService from '../../../common/providers/contentType.service'
 import { Route, ArticleRouteChildren } from '../..'
 import { catchCallback } from '../catch/catch-callback'

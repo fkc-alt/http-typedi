@@ -1,4 +1,4 @@
-import { Global, Module } from 'http-typedi'
+import { Global, Module } from '@/index'
 import ExampleController from './example.controller'
 import ExampleService from './example.service'
 import ExamplesService from './examples.service'

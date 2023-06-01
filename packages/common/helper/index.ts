@@ -1,5 +1,4 @@
 export * from './dependencies'
 export * from './param-error'
 export * from './decorators-helper'
-export * from './request-mapping-helper'
 export * from './utils'

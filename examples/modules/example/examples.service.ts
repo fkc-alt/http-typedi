@@ -1,4 +1,4 @@
-import { Injectable } from 'http-typedi'
+import { Injectable } from '@/index'
 import RequestService from '../../common/providers/request.service'
 
 @Injectable()

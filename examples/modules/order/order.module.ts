@@ -1,4 +1,4 @@
-import { Module } from 'http-typedi'
+import { Module } from '@/index'
 import UploadService from '../../common/providers/upload.service'
 import UserModule from '../user/user.module'
 import UserController from '../user/user.controller'

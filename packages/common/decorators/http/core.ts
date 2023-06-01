@@ -6,6 +6,7 @@ import { MetadataKey, Method } from '../../enums'
 import { flattenErrorList } from '../../helper/param-error'
 import { isFunction } from '../../helper/utils'
 import { CONNECTSTRING } from '../../helper/constant'
+import { OverrideReqEffect, getInjectValues } from './route-params.decorator'
 
 export type CatchCallback = (err: any) => void
 
@@ -159,17 +160,15 @@ export async function handlerResult(
           let result: Record<string, any> = <Record<string, any>>(
             (<unknown>void 0)
           )
-          if (propertyKey === 'GetTableDataList') {
-            result = await fn.call(
-              this,
-              interceptorsReq.reduce((prev, next) => next(prev), param)
-            )
-          } else {
-            result = await fn.call(
-              this,
-              interceptorsReq.reduce((prev, next) => next(prev), param)
-            )
-          }
+          const values = getInjectValues(target, <string>propertyKey)
+          const _param = interceptorsReq.reduce(
+            (prev, next) => next(prev),
+            param
+          )
+          const injectValue: any = values.length
+            ? OverrideReqEffect(values, [_param])
+            : [_param]
+          result = await fn.apply(this, injectValue)
           // eslint-disable-next-line @typescript-eslint/return-await
           const response = interceptorsRes.reduce(
             (prev, next) => next(prev),

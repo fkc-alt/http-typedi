@@ -4,7 +4,7 @@ import {
   Param,
   ParseIntPipe,
   DefaultValuePipe
-} from 'http-typedi'
+} from '@/index'
 
 @Injectable()
 export default class DemoService {

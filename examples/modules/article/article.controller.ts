@@ -10,6 +10,7 @@ import {
   GetArticleListApplyDecorators,
   GetTableDataApplyDecorators
 } from './decorators'
+import { Req } from '@/index'
 
 @ArticleControllerApplydecorators()
 export default class ArticleController {
@@ -43,7 +44,8 @@ export default class ArticleController {
   public async GetTableDataList<
     T = Service.TableDataReq,
     U = Service.TableDataRes
-  >(configure: TableDataDto): ServerRes<U> {
+  >(@Req('url') configure: TableDataDto): ServerRes<U> {
+    console.log(configure, 'GetTableDataApplyDecorators')
     return await this.articleService.GetTableDataList<T, U>(
       <AxiosRequestConfig>configure
     )

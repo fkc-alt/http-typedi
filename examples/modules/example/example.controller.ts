@@ -1,4 +1,4 @@
-import { Controller } from 'http-typedi'
+import { Controller } from '@/index'
 
 @Controller('example')
 export default class ExampleController {

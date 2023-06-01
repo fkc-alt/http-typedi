@@ -1,4 +1,4 @@
-import { Injectable } from 'http-typedi'
+import { Injectable } from '@/index'
 
 export enum ContentType {
   FORM_URLENCODED,
