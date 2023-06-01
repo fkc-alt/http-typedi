@@ -45,7 +45,8 @@ export const Post = (
 export const Delete = (
   path: string,
   message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.DELETE, message)
+): MethodDecorator =>
+  applyDecorators(RequestMapping(path, Method.DELETE, message), Override())
 
 /**
  * @module Request
@@ -58,7 +59,8 @@ export const Delete = (
 export const Patch = (
   path: string,
   message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.PATCH, message)
+): MethodDecorator =>
+  applyDecorators(RequestMapping(path, Method.PATCH, message), Override())
 
 /**
  * @module Request
@@ -71,7 +73,8 @@ export const Patch = (
 export const Options = (
   path: string,
   message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.OPTIONS, message)
+): MethodDecorator =>
+  applyDecorators(RequestMapping(path, Method.OPTIONS, message), Override())
 
 /**
  * @module Request
@@ -84,7 +87,8 @@ export const Options = (
 export const Head = (
   path: string,
   message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.HEAD, message)
+): MethodDecorator =>
+  applyDecorators(RequestMapping(path, Method.HEAD, message), Override())
 
 /**
  * @module Request
@@ -97,4 +101,5 @@ export const Head = (
 export const Put = (
   path: string,
   message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.PUT, message)
+): MethodDecorator =>
+  applyDecorators(RequestMapping(path, Method.PUT, message), Override())
