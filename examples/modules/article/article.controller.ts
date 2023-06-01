@@ -10,7 +10,7 @@ import {
   GetArticleListApplyDecorators,
   GetTableDataApplyDecorators
 } from './decorators'
-import { Req } from '@/index'
+import { DefaultValuePipe, Req } from '@/index'
 
 @ArticleControllerApplydecorators()
 export default class ArticleController {
@@ -35,6 +35,11 @@ export default class ArticleController {
       currentPage: 0
     })
     console.log(data, 'helperController')
+    this.articleService.Log(
+      1,
+      { age: 20 },
+      { customElements: '<div>我是自定义Pipe</div>' }
+    )
     return await this.articleService.GetArticleList<T, U>(
       <AxiosRequestConfig>configure
     )
@@ -44,7 +49,9 @@ export default class ArticleController {
   public async GetTableDataList<
     T = Service.TableDataReq,
     U = Service.TableDataRes
-  >(@Req('url') configure: TableDataDto): ServerRes<U> {
+  >(
+    @Req('id', new DefaultValuePipe('aaaa')) configure: TableDataDto
+  ): ServerRes<U> {
     console.log(configure, 'GetTableDataApplyDecorators')
     return await this.articleService.GetTableDataList<T, U>(
       <AxiosRequestConfig>configure
