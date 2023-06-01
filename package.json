@@ -30,7 +30,7 @@
   "typings": "dist/types/index.d.ts",
   "scripts": {
     "prepare": "husky install && npm run generate:html",
-    "generate:html": "node -e \"require('fs').writeFileSync('index.html', '<!-- Generate HTML Success -->'+ require('os').EOL +'<%- doctype %>')\"",
+    "generate:html": "node -e \"require('fs').writeFileSync('index.html', '<!-- Generate HTML Success -->' + require('os').EOL + '<%- doctype %>')\"",
     "test": "vitest",
     "dev": "vite --mode=dev",
     "build": "tsc && vite build",
