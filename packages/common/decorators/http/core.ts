@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { plainToInstance } from 'class-transformer'
 import { ValidationError, validateSync } from 'class-validator'
-import { InterceptorReq, InterceptorRes, HttpFactory, Core } from '../core'
-import { MetadataKey, Method } from '../enums'
-import { flattenErrorList } from './param-error'
-import { isFunction } from './utils'
-import { CONNECTSTRING } from './constant'
+import { InterceptorReq, InterceptorRes, HttpFactory, Core } from '../../core'
+import { MetadataKey, Method } from '../../enums'
+import { flattenErrorList } from '../../helper/param-error'
+import { isFunction } from '../../helper/utils'
+import { CONNECTSTRING } from '../../helper/constant'
 
 export type CatchCallback = (err: any) => void
 

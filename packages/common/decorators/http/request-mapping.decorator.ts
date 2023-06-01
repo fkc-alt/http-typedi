@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { ValidationError } from 'class-validator'
 import { Method } from '../../enums'
-import { RequestMapping } from '../../helper'
+import { RequestMapping } from './core'
 
 /**
  * @module Request
