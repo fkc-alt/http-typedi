@@ -52,6 +52,10 @@ export const Sidebar: DefaultTheme.Sidebar = {
               link: '/guide/controller/router'
             },
             {
+              text: 'Request',
+              link: '/guide/controller/request'
+            },
+            {
               text: '资源',
               link: '/guide/controller/resources'
             },
