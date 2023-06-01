@@ -19,10 +19,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.2.5",
-    "@types/nprogress": "^0.2.0"
+    "@types/nprogress": "^0.2.0",
+    "vitepress": "^1.0.0-beta.1"
   },
   "dependencies": {
-    "nprogress": "^0.2.0",
-    "vitepress": "^1.0.0-beta.1"
+    "nprogress": "^0.2.0"
   }
 }
