@@ -2,17 +2,43 @@
 import { plainToInstance } from 'class-transformer'
 import { ValidationError, validateSync } from 'class-validator'
 import { InterceptorReq, InterceptorRes, HttpFactory, Core } from '../../core'
-import { MetadataKey, Method } from '../../enums'
+import { MetaDataTypes, MetadataKey, Method } from '../../enums'
 import { flattenErrorList } from '../../helper/param-error'
 import { isFunction } from '../../helper/utils'
 import { CONNECTSTRING } from '../../helper/constant'
-import { OverrideReqEffect, getInjectValues } from './route-params.decorator'
+import {
+  OverrideReqEffect,
+  getInjectValues,
+  getMetadataType
+} from './route-params.decorator'
 
 export type CatchCallback = (err: any) => void
 
 export const factoryPropertyKey: Record<string, string> = {
   [MetadataKey.INTERCEPTORSREQ_METADATA]: 'globalInterceptorsReq',
   [MetadataKey.INTERCEPTORSRES_METADATA]: 'globalInterceptorsRes'
+}
+
+const swtichMetadataTypeRelationValues = (
+  Req: Core.RequestConfig,
+  metadataType: MetaDataTypes
+) => {
+  switch (metadataType) {
+    case MetaDataTypes.REQUEST:
+      return Req
+      break
+    case MetaDataTypes.HEADERS:
+      return Req.headers
+      break
+    case MetaDataTypes.BODY:
+      return Req.data
+      break
+    case MetaDataTypes.PARAM:
+      return Req.params
+      break
+    default:
+      break
+  }
 }
 
 /**
@@ -161,10 +187,14 @@ export async function handlerResult(
             (<unknown>void 0)
           )
           const values = getInjectValues(target, <string>propertyKey)
-          const _param = interceptorsReq.reduce(
-            (prev, next) => next(prev),
-            param
+          const metaDataType =
+            getMetadataType(target, <string>propertyKey) ||
+            MetaDataTypes.REQUEST
+          const _param = swtichMetadataTypeRelationValues(
+            interceptorsReq.reduce((prev, next) => next(prev), param),
+            metaDataType
           )
+          console.log(_param, '_param')
           const injectValue: any = values.length
             ? OverrideReqEffect(values, [_param])
             : [_param]

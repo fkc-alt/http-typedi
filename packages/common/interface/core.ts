@@ -27,7 +27,7 @@ export declare namespace Core {
   interface RouteParamMetadata {
     index: number
     data?: ParamData
-    pipe?: Array<Constructor<any> | Record<string, any>>
+    pipes?: Array<Constructor<any> | Record<string, any>>
   }
   interface PipeTransform<T = any, R = any> {
     /**

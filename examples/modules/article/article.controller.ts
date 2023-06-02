@@ -10,7 +10,7 @@ import {
   GetArticleListApplyDecorators,
   GetTableDataApplyDecorators
 } from './decorators'
-import { DefaultValuePipe, Req } from '@/index'
+import { DefaultValuePipe, Request } from '@/index'
 
 @ArticleControllerApplydecorators()
 export default class ArticleController {
@@ -29,7 +29,7 @@ export default class ArticleController {
   public async GetArticleList<
     T = Service.ArticleListReq,
     U = Service.ArticleListRes
-  >(configure: ArticleListDto): ServerRes<U> {
+  >(@Request() configure: ArticleListDto): ServerRes<U> {
     const { data } = await this.helperController.getApidoc({
       pageSize: 0,
       currentPage: 0
@@ -50,7 +50,7 @@ export default class ArticleController {
     T = Service.TableDataReq,
     U = Service.TableDataRes
   >(
-    @Req('id', new DefaultValuePipe('aaaa')) configure: TableDataDto
+    @Request('id', new DefaultValuePipe('aaaa')) configure: TableDataDto
   ): ServerRes<U> {
     console.log(configure, 'GetTableDataApplyDecorators')
     return await this.articleService.GetTableDataList<T, U>(

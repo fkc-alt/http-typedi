@@ -20,6 +20,7 @@ export enum MetadataKey {
   TIMEOUT = '__timeout__',
   OPTIONAL = '__optional__',
   VERSION = '__version__',
+  METADATATYPE = '__metadataType__',
   CATCH_METADATA = 'design:catch',
   REQUEST_METADATA = 'design:request',
   INTERCEPTORSREQ_METADATA = 'design:interceptorsreq',
@@ -62,6 +63,13 @@ export enum RouteParamtypes {
   FILES,
   HOST,
   IP
+}
+
+export enum MetaDataTypes {
+  REQUEST = 'request',
+  BODY = 'data',
+  PARAM = 'param',
+  HEADERS = 'headers'
 }
 
 export enum HttpStatus {

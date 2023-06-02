@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { MetadataKey, RouteParamtypes } from '../../enums'
+import { MetaDataTypes, MetadataKey, RouteParamtypes } from '../../enums'
 import { isArray, isFunction, isString } from '../../helper'
 import { Core } from '../../interface/core'
 
+/**
+ * @param { Object } target
+ * @param { string } propertyName
+ * @returns { Core.RouteParamMetadata[] }
+ * @author kaichao.feng
+ */
 export const getInjectValues = (
   target: Object,
   propertyName: string
@@ -19,6 +25,24 @@ export const getInjectValues = (
   return values
 }
 
+export const getMetadataType = (
+  target: Object,
+  propertyName: string
+): MetaDataTypes => {
+  return Reflect.getMetadata(
+    MetadataKey.METADATATYPE,
+    target.constructor,
+    propertyName
+  )
+}
+
+/**
+ * @type { MethodDecorator }
+ * @param target
+ * @param propertyName
+ * @param descriptor
+ * @author kaichao.feng
+ */
 const OverrideEffect: MethodDecorator = (
   target,
   propertyName,
@@ -34,6 +58,13 @@ const OverrideEffect: MethodDecorator = (
   }
 }
 
+/**
+ *
+ * @param { Core.RouteParamMetadata[] } values
+ * @param { any[] } args
+ * @returns { any[] }
+ * @author kaichao.feng
+ */
 export const OverrideReqEffect = (
   values: Core.RouteParamMetadata[],
   args: any[]
@@ -41,7 +72,7 @@ export const OverrideReqEffect = (
   return args.map((param, index) => {
     const item = values.find(_ => _.index === index)
     if (item?.data) {
-      const registerClasses = item?.pipe?.map((target: any) =>
+      const registerClasses = item?.pipes?.map((target: any) =>
         isFunction(target) ? new (target as Core.Constructor<any>)() : target
       )
       if (isArray(item.data)) {
@@ -74,7 +105,8 @@ export const OverrideReqEffect = (
  * @module Override
  * @auther kaichao.feng
  * @description 搭配Param使用
- * @returns { MethodDecorator } MethodDecorator
+ * @returns { MethodDecorator }
+ * @author kaichao.feng
  */
 export const Override = (): MethodDecorator => {
   return function (target, propertyName, descriptor: PropertyDescriptor) {
@@ -85,14 +117,15 @@ export const Override = (): MethodDecorator => {
 /**
  * @module assignMetadata
  * @auther kaichao.feng
- * @returns { Record<string, any> } Record<string, any>
+ * @returns { Record<string, any> }
+ * @author kaichao.feng
  */
 const assignMetadata = <TParamtype = any, TArgs = any>(
   args: TArgs,
   paramtype: TParamtype,
   index: number,
   data?: any,
-  pipe?: Array<Core.Constructor<any> | Object>
+  pipes?: Array<Core.Constructor<any> | Object>
 ): Record<string, any> => {
   return {
     ...args,
@@ -100,7 +133,7 @@ const assignMetadata = <TParamtype = any, TArgs = any>(
     [`${paramtype}:${index}`]: {
       index,
       data,
-      pipe
+      pipes
     }
   }
 }
@@ -111,8 +144,8 @@ const assignMetadata = <TParamtype = any, TArgs = any>(
  * @description this is @Param Helper Function
  */
 const createParamDecorator =
-  (paramtype: RouteParamtypes) =>
-  (data?: any, pipe?: Array<Core.Constructor<any> | Object>) =>
+  (paramtype: RouteParamtypes, metaDataType: MetaDataTypes) =>
+  (data?: any, pipes?: Array<Core.Constructor<any> | Object>) =>
   (target: Object, propertyKey: string | symbol, index: number): void => {
     const args =
       Reflect.getMetadata(
@@ -123,8 +156,14 @@ const createParamDecorator =
     const hasParamData = isString(data) || isArray(data)
     const paramData = hasParamData ? data : void 0
     Reflect.defineMetadata(
+      MetadataKey.METADATATYPE,
+      metaDataType,
+      target.constructor,
+      propertyKey
+    )
+    Reflect.defineMetadata(
       MetadataKey.ROUTE_ARGS_METADATA,
-      assignMetadata(args, paramtype, index, paramData, pipe),
+      assignMetadata(args, paramtype, index, paramData, pipes),
       target.constructor,
       propertyKey
     )
@@ -137,12 +176,50 @@ const createParamDecorator =
  */
 export const Param = (
   property?: string | string[],
-  ...pipe: Array<Core.Constructor<any> | Object>
-) => createParamDecorator(RouteParamtypes.PARAM)(property, pipe)
+  ...pipes: Array<Core.Constructor<any> | Object>
+) =>
+  createParamDecorator(RouteParamtypes.PARAM, MetaDataTypes.PARAM)(
+    property,
+    pipes
+  )
 
 /**
- * @method Param
+ * @method Req
  * @auther kaichao.feng
- * @description 搭配Get, Post...等路由使用
  */
-export const Req = Param
+export const Req = (
+  property?: string | string[],
+  ...pipes: Array<Core.Constructor<any> | Object>
+) =>
+  createParamDecorator(RouteParamtypes.REQUEST, MetaDataTypes.REQUEST)(
+    property,
+    pipes
+  )
+
+export const Request = Req
+
+/**
+ * @method Body
+ * @auther kaichao.feng
+ */
+export const Body = (
+  property?: string | string[],
+  ...pipes: Array<Core.Constructor<any> | Object>
+) =>
+  createParamDecorator(RouteParamtypes.BODY, MetaDataTypes.BODY)(
+    property,
+    pipes
+  )
+
+/**
+ * @method Headers
+ * @auther kaichao.feng
+ */
+export const Headers = (
+  property?: string | string[],
+  ...pipes: Array<Core.Constructor<any> | Object>
+) =>
+  createParamDecorator(RouteParamtypes.BODY, MetaDataTypes.HEADERS)(
+    property,
+    pipes
+  )
