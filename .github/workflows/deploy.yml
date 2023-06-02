@@ -26,11 +26,11 @@ jobs:
         with:
           node-version: 16
 
-      - name: CD Docs And Install Dependencies
-        run: cd docs && npm install
+      - name: Install Dependencies
+        run: npm run setup:docs
 
       - name: Build Package
-        run: cd docs && npm run docs:build
+        run: npm run docs:build
       - name: upload production artifacts
         uses: actions/upload-pages-artifact@v1
         with:
