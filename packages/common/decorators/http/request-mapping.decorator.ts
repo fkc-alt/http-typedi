@@ -2,95 +2,52 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { ValidationError } from 'class-validator'
 import { Method } from '../../enums'
+import { capitalizeFirstLetter } from '../../helper'
 import { RequestMapping } from './core'
 
-/**
- * @module Request
- * @method Get
- * @param { string } path
- * @param { string | ((validationArguments: ValidationError[]) => void) } message
- * @auther kaichao.feng
- * @description Request Method
- */
-export const Get = (
-  path: string,
-  message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.GET, message)
+const HttpStaticMethod = (
+  [
+    Method.get,
+    Method.post,
+    Method.delete,
+    Method.put,
+    Method.head,
+    Method.options,
+    Method.patch
+  ] as const
+).map(capitalizeFirstLetter)
 
-/**
- * @module Request
- * @method Post
- * @param { string } path
- * @param { string | ((validationArguments: ValidationError[]) => void) } message
- * @auther kaichao.feng
- * @description Request Method
- */
-export const Post = (
+type HttpMethoMethodDecorator = (
   path: string,
+  method: Uppercase<(typeof HttpStaticMethod)[number]>,
   message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.POST, message)
+) => MethodDecorator
 
-/**
- * @module Request
- * @method Delete
- * @param { string } path
- * @param { string | ((validationArguments: ValidationError[]) => void) } message
- * @auther kaichao.feng
- * @description Request Method
- */
-export const Delete = (
-  path: string,
-  message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.DELETE, message)
+type RequestMappingStaticMethod = {
+  [K in (typeof HttpStaticMethod)[number]]: HttpMethoMethodDecorator
+}
 
-/**
- * @module Request
- * @method Patch
- * @param { string } path
- * @param { string | ((validationArguments: ValidationError[]) => void) } message
- * @auther kaichao.feng
- * @description Request Method
- */
-export const Patch = (
-  path: string,
-  message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.PATCH, message)
+class RequestMappingStatic implements RequestMappingStaticMethod {
+  static methods = HttpStaticMethod.map(capitalizeFirstLetter)
+  constructor() {
+    this.registerRequestMapping()
+  }
+  Get!: HttpMethoMethodDecorator
+  Post!: HttpMethoMethodDecorator
+  Delete!: HttpMethoMethodDecorator
+  Put!: HttpMethoMethodDecorator
+  Head!: HttpMethoMethodDecorator
+  Options!: HttpMethoMethodDecorator
+  Patch!: HttpMethoMethodDecorator
+  registerRequestMapping() {
+    RequestMappingStatic.methods.forEach(method => {
+      this[method] = (
+        path: string,
+        message?: string | ((validationArguments: ValidationError[]) => void)
+      ): MethodDecorator => RequestMapping(path, method as any, message)
+    })
+  }
+}
 
-/**
- * @module Request
- * @method Options
- * @param { string } path
- * @param { string | ((validationArguments: ValidationError[]) => void) } message
- * @auther kaichao.feng
- * @description Request Method
- */
-export const Options = (
-  path: string,
-  message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.OPTIONS, message)
-
-/**
- * @module Request
- * @method Head
- * @param { string } path
- * @param { string | ((validationArguments: ValidationError[]) => void) } message
- * @auther kaichao.feng
- * @description Request Method
- */
-export const Head = (
-  path: string,
-  message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.HEAD, message)
-
-/**
- * @module Request
- * @method Put
- * @param { string } path
- * @param { string | ((validationArguments: ValidationError[]) => void) } message
- * @auther kaichao.feng
- * @description Request Method
- */
-export const Put = (
-  path: string,
-  message?: string | ((validationArguments: ValidationError[]) => void)
-): MethodDecorator => RequestMapping(path, Method.PUT, message)
+export const { Get, Delete, Head, Options, Patch, Post, Put } =
+  new RequestMappingStatic()
