@@ -40,7 +40,9 @@ const swtichMetadataTypeRelationValues = (
 /**
  * @module RequestFactory
  * @method RequestMapping
- * @param { string }
+ * @param { string } path
+ * @param { Method } method
+ * @param { string | ((validationError: ValidationError[]) => any) } [message = void 0] message
  * @auther kaichao.feng
  * @returns { MethodDecorator } MethodDecorator
  * @description Request Factory

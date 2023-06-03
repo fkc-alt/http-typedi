@@ -16,6 +16,7 @@ export const Get = (
   path: string,
   message?: string | ((validationArguments: ValidationError[]) => void)
 ): MethodDecorator => RequestMapping(path, Method.GET, message)
+
 /**
  * @module Request
  * @method Post
@@ -28,6 +29,7 @@ export const Post = (
   path: string,
   message?: string | ((validationArguments: ValidationError[]) => void)
 ): MethodDecorator => RequestMapping(path, Method.POST, message)
+
 /**
  * @module Request
  * @method Delete
