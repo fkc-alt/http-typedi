@@ -26,18 +26,14 @@ const swtichMetadataTypeRelationValues = (
   switch (metadataType) {
     case MetaDataTypes.REQUEST:
       return Req
-      break
     case MetaDataTypes.HEADERS:
       return Req.headers
-      break
     case MetaDataTypes.BODY:
       return Req.data
-      break
     case MetaDataTypes.PARAM:
       return Req.params
-      break
     default:
-      break
+      return Req
   }
 }
 
