@@ -52,10 +52,6 @@ export const Sidebar: DefaultTheme.Sidebar = {
               link: '/guide/controller/router'
             },
             {
-              text: 'Request',
-              link: '/guide/controller/request'
-            },
-            {
               text: '资源',
               link: '/guide/controller/resources'
             },
@@ -155,6 +151,10 @@ export const Sidebar: DefaultTheme.Sidebar = {
           collapsed: true,
           link: '/guide/decorators/apply-decorators',
           items: [
+            {
+              text: '参数装饰器',
+              link: '/guide/decorators/param-decorators'
+            },
             {
               text: '聚合装饰器',
               link: '/guide/decorators/apply-decorators'
