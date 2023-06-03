@@ -67,7 +67,7 @@ async updateDemoDetail(@Param() demo: DemoReq): ServerRes<DemoRes> {
 ```
 
 
-上述使用方式是直接提取HTTP请求的一些细节参数，其实还可以通过传入的`token`再次提取指定参数，也可以绑定上管道进行过滤，下面我们来看一个例子：
+上述使用方式是直接提取HTTP请求的一些细节参数，其实还可以通过传入的`token`再次提取指定参数，也可以绑定上[`管道(自定义管道)`](../pipe/index.md)进行过滤，下面我们来看一个例子：
 
 ```ts{9}
 import { Controller, Post, Body } from 'http-typedi'
@@ -92,4 +92,4 @@ export class DemoController {
 
 我们先说`updateDemoDetail`这个路由使用`@Body`装饰器传递了一个id参数，那么`Http-Typedi`就会根据传入的这个参数当作token去通过`@Body`装饰器返回的data参数中去匹配参数名为`id`键。并返回对应的value。`@Req`、`@Request`、`@Param`、`@Headers`都支持此用法。
 
-`getDemoDetail`我们使用`@Param`装饰器传递了一个id参数，并且还传入了第二个参数，这里我们使用了`Http-typedi`的管道[`pipe`](../pipe/index.md)。上面通过传入的`id`这个参数当作token去通过`@Body`装饰器返回的data参数中去匹配参数名为`id`键，如果没找到。则使用[`DefaultValuePipe`](../pipe/index.md)传入的value当作value返回。类似于JavaScript函数形参默认值的写法。
+`getDemoDetail`我们使用`@Param`装饰器传递了一个id参数，并且还传入了第二个参数，默认第一个参数为token，剩余的参数为pipes，pipes会被http-typedi统一收集起来，这里我们使用了`Http-typedi`的管道[`pipe`](../pipe/index.md)。上面通过传入的`id`这个参数当作token去通过`@Body`装饰器返回的data参数中去匹配参数名为`id`键，如果没找到。则使用[`DefaultValuePipe`](../pipe/index.md)传入的value当作value返回。类似于JavaScript函数形参默认值的写法。

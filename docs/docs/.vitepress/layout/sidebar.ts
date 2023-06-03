@@ -149,7 +149,7 @@ export const Sidebar: DefaultTheme.Sidebar = {
         {
           text: '内置装饰器',
           collapsed: true,
-          link: '/guide/decorators/apply-decorators',
+          link: '/guide/decorators/param-decorators',
           items: [
             {
               text: '参数装饰器',

@@ -71,7 +71,7 @@ export const Navbar: DefaultTheme.NavItem[] = [
       {
         text: '内置装饰器',
         activeMatch: '^/guide/decorators',
-        link: '/guide/decorators/apply-decorators'
+        link: '/guide/decorators/param-decorators'
       },
       {
         text: '内置拦截器',
