@@ -10,7 +10,14 @@ import {
   GetArticleListApplyDecorators,
   GetTableDataApplyDecorators
 } from './decorators'
-import { DefaultValuePipe, Request } from '@/index'
+import { Core, DefaultValuePipe, Request } from '@/index'
+
+class CustomValidationPipe implements Core.PipeTransform {
+  transform(value: string): string {
+    console.log(`CustomValidationPipe=====${value}`)
+    return value
+  }
+}
 
 @ArticleControllerApplydecorators()
 export default class ArticleController {
@@ -35,11 +42,6 @@ export default class ArticleController {
       currentPage: 0
     })
     console.log(data, 'helperController')
-    this.articleService.Log(
-      1,
-      { age: 20 },
-      { customElements: '<div>我是自定义Pipe</div>' }
-    )
     return await this.articleService.GetArticleList<T, U>(
       <AxiosRequestConfig>configure
     )
@@ -50,7 +52,8 @@ export default class ArticleController {
     T = Service.TableDataReq,
     U = Service.TableDataRes
   >(
-    @Request('id', new DefaultValuePipe('aaaa')) configure: TableDataDto
+    @Request('id', new DefaultValuePipe('aaaa'), new CustomValidationPipe())
+    configure: TableDataDto
   ): ServerRes<U> {
     console.log(configure, 'GetTableDataApplyDecorators')
     return await this.articleService.GetTableDataList<T, U>(

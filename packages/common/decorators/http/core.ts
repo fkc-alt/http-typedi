@@ -194,7 +194,6 @@ export async function handlerResult(
             interceptorsReq.reduce((prev, next) => next(prev), param),
             metaDataType
           )
-          console.log(_param, '_param')
           const injectValue: any = values.length
             ? OverrideReqEffect(values, [_param])
             : [_param]
