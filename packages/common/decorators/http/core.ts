@@ -39,7 +39,7 @@ const swtichMetadataTypeRelationValues = (
 
 /**
  * @module RequestFactory
- * @method RequestMapping
+ * @method createRequestMapping
  * @param { string } path
  * @param { Method } method
  * @param { string | ((validationError: ValidationError[]) => any) } [message = void 0] message
@@ -47,7 +47,7 @@ const swtichMetadataTypeRelationValues = (
  * @returns { MethodDecorator } MethodDecorator
  * @description Request Factory
  */
-export const RequestMapping = (
+export const createRequestMapping = (
   path: string,
   method: Method,
   message?: string | ((validationError: ValidationError[]) => any)
