@@ -41,7 +41,7 @@ export const isPromise = (obj: any): obj is Promise<any> => {
 type InferCapitalize<T extends string> = T extends `${infer U}${infer R}`
   ? `${Uppercase<U>}${R}`
   : T
-  
+
 type InferCapitalizeUpperCaseLetter<T extends string> = T extends `${infer U}`
   ? `${Uppercase<U>}`
   : T
