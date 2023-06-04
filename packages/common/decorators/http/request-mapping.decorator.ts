@@ -2,36 +2,38 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { ValidationError } from 'class-validator'
 import { Method } from '../../enums'
-import { capitalizeFirstLetter } from '../../helper'
-import { RequestMapping } from './core'
-
-const HttpStaticMethod = (
-  [
-    Method.get,
-    Method.post,
-    Method.delete,
-    Method.put,
-    Method.head,
-    Method.options,
-    Method.patch
-  ] as const
-).map(capitalizeFirstLetter)
+import { capitalizeFirstLetter, capitalizeUpperCaseLetter } from '../../helper'
+import { createRequestMapping } from './core'
 
 type HttpMethoMethodDecorator = (
   path: string,
-  method: Uppercase<(typeof HttpStaticMethod)[number]>,
   message?: string | ((validationArguments: ValidationError[]) => void)
 ) => MethodDecorator
 
 type RequestMappingStaticMethod = {
-  [K in (typeof HttpStaticMethod)[number]]: HttpMethoMethodDecorator
+  [K in (typeof RequestMappingFactoryStatic.HttpStaticMethod)[number]]: HttpMethoMethodDecorator
 }
 
-class RequestMappingStatic implements RequestMappingStaticMethod {
-  static methods = HttpStaticMethod.map(capitalizeFirstLetter)
+class RequestMappingFactoryStatic implements RequestMappingStaticMethod {
+  static HttpStaticMethod = (
+    [
+      Method.get,
+      Method.post,
+      Method.delete,
+      Method.put,
+      Method.head,
+      Method.options,
+      Method.patch
+    ] as const
+  ).map(capitalizeFirstLetter)
+
+  static HttpStaticMethodUpperCase =
+    RequestMappingFactoryStatic.HttpStaticMethod.map(capitalizeUpperCaseLetter)
+
   constructor() {
     this.registerRequestMapping()
   }
+
   Get!: HttpMethoMethodDecorator
   Post!: HttpMethoMethodDecorator
   Delete!: HttpMethoMethodDecorator
@@ -39,15 +41,21 @@ class RequestMappingStatic implements RequestMappingStaticMethod {
   Head!: HttpMethoMethodDecorator
   Options!: HttpMethoMethodDecorator
   Patch!: HttpMethoMethodDecorator
+
   registerRequestMapping() {
-    RequestMappingStatic.methods.forEach(method => {
+    RequestMappingFactoryStatic.HttpStaticMethod.forEach((method, token) => {
       this[method] = (
         path: string,
         message?: string | ((validationArguments: ValidationError[]) => void)
-      ): MethodDecorator => RequestMapping(path, method as any, message)
+      ): MethodDecorator =>
+        createRequestMapping(
+          path,
+          Method[RequestMappingFactoryStatic.HttpStaticMethodUpperCase[token]],
+          message
+        )
     })
   }
 }
 
 export const { Get, Delete, Head, Options, Patch, Post, Put } =
-  new RequestMappingStatic()
+  new RequestMappingFactoryStatic()
