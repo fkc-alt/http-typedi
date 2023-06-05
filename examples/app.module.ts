@@ -5,6 +5,7 @@ import ArticleController from './modules/article/article.controller'
 import ArticleModule from './modules/article/article.module'
 import DemoModule from './modules/demo/demo.module'
 import ExampleModule from './modules/example/example.module'
+import DemoController from './modules/demo/demo.controller'
 
 @Module({
   imports: [CommonModule, ArticleModule, ExampleModule, DemoModule],
@@ -15,6 +16,7 @@ export default class AppModule {
   readonly customHttp!: RequestService
   constructor(
     readonly requestService: RequestService,
-    readonly articleController: ArticleController
+    readonly articleController: ArticleController,
+    readonly demoController: DemoController
   ) {}
 }

@@ -35,7 +35,23 @@ const HTTPClient = createHTTPClient()
 const {
   articleController: { GetTableDataList, GetArticleList }
 } = HTTPClient
-
+HTTPClient.demoController.GetArticleList({
+  currentPage: 1,
+  pageSize: 10,
+  channel: ['1', '2'],
+  checkDemoList: [
+    {
+      age: 1,
+      name: '11111'
+    }
+  ],
+  content: '123123',
+  param: {
+    status: 1,
+    text: '123121111111',
+    title: '11231223'
+  }
+})
 GetTableDataList({
   currentPage: 1,
   pageSize: 10

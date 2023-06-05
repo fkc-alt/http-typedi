@@ -32,7 +32,7 @@
     "prepare": "husky install && npm run generate:html",
     "generate:html": "node -e \"require('fs').writeFileSync('index.html', '<!-- Generate HTML Success -->' + require('os').EOL + '<%- doctype %>')\"",
     "test": "vitest",
-    "dev": "vite --mode=dev --port=6173",
+    "dev": "vite --mode=dev --port 6173 --open",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint packages --no-error-on-unmatched-pattern --fix",

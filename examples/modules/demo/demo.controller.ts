@@ -1,8 +1,19 @@
 import type { AxiosRequestConfig } from 'axios'
-import { Controller, Post } from '@/index'
+import {
+  Controller,
+  ExecutionContext,
+  Post,
+  createParamDecorator
+} from '@/index'
 import RequestService from '../../common/providers/request.service'
 import ArticleService from '../article/article.service'
 import { ArticleRouteChildren, Route } from '..'
+
+const Demo = createParamDecorator((_data: any, ctx: ExecutionContext) => {
+  const data = ctx
+  return data
+})
+
 @Controller(Route.ARTICLE)
 export default class DemoController {
   constructor(
@@ -14,7 +25,7 @@ export default class DemoController {
   public async GetArticleList<
     T = Service.ArticleListReq,
     U = Service.ArticleListRes
-  >(configure: T): ServerRes<U> {
+  >(@Demo('demo') configure: T): ServerRes<U> {
     this.articleService.Log(
       1,
       { age: 20 },
