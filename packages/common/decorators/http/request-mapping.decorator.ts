@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/ban-types */
 import { ValidationError } from 'class-validator'
 import { Method } from '../../enums'
 import { capitalizeFirstLetter, capitalizeUpperCaseLetter } from '../../helper'
@@ -44,10 +42,7 @@ class RequestMappingFactoryStatic implements RequestMappingStaticMethod {
 
   registerRequestMapping() {
     RequestMappingFactoryStatic.HttpStaticMethod.forEach((method, token) => {
-      this[method] = (
-        path: string,
-        message?: string | ((validationArguments: ValidationError[]) => void)
-      ): MethodDecorator =>
+      this[method] = (path, message) =>
         createRequestMapping(
           path,
           Method[RequestMappingFactoryStatic.HttpStaticMethodUpperCase[token]],
