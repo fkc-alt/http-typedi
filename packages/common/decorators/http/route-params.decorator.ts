@@ -219,7 +219,7 @@ export const Headers = (
   property?: string | string[],
   ...pipes: Array<Core.Constructor<any> | Object>
 ) =>
-  createParamDecorator(RouteParamtypes.BODY, MetaDataTypes.HEADERS)(
+  createParamDecorator(RouteParamtypes.HEADERS, MetaDataTypes.HEADERS)(
     property,
     pipes
   )
