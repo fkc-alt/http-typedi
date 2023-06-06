@@ -13,6 +13,7 @@ export enum MetadataKey {
   REQUEST_SERVICE = '__request__',
   GLOBAL = '__global__',
   ROUTE_ARGS_METADATA = '__routeArguments__',
+  CUSTOM_ROUTE_ARGS_METADATA = '__customRouteArguments__',
   PARSE_INT_PIPE = '__parseIntPipe__',
   DEFAULT_VALUE_PIPE = '__defaultValuePipe__',
   INJECTIONS = '__injections__',
@@ -62,14 +63,16 @@ export enum RouteParamtypes {
   FILE,
   FILES,
   HOST,
-  IP
+  IP,
+  CUSTOMPARAM
 }
 
 export enum MetaDataTypes {
   REQUEST = 'request',
   BODY = 'data',
   PARAM = 'param',
-  HEADERS = 'headers'
+  HEADERS = 'headers',
+  CUSTOMARGS = 'customArgs'
 }
 
 export enum HttpStatus {

@@ -76,7 +76,7 @@ export const OverrideReqEffect = (
         isFunction(target) ? new (target as Core.Constructor<any>)() : target
       )
       if (isArray(item.data)) {
-        return (<string[]>item.data).reduce((prev, next) => {
+        const _param = (<string[]>item.data).reduce((prev, next) => {
           const paramObj = <Record<string, any>>{}
           if (registerClasses?.length) {
             registerClasses.forEach(target => {
@@ -89,15 +89,20 @@ export const OverrideReqEffect = (
           }
           return { ...prev, ...paramObj }
         }, {})
+        return item?.factory?.(item.data, param) ?? _param
       }
       registerClasses?.forEach(target => {
         param[item.data as string] =
           target?.transform?.(param[item.data as string]) ??
           (param[item.data as string] || target.defaultValue)
       })
-      return param[item.data as string]
+      return (
+        item?.factory?.(item.data, param) ??
+        param?.[item.data as string] ??
+        void 0
+      )
     }
-    return param
+    return item?.factory?.(void 0, param) ?? param
   })
 }
 

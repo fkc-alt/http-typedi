@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-types */
 import { plainToInstance } from 'class-transformer'
 import { ValidationError, validateSync } from 'class-validator'
@@ -32,6 +33,8 @@ const swtichMetadataTypeRelationValues = (
       return Req.data
     case MetaDataTypes.PARAM:
       return Req.params
+    case MetaDataTypes.CUSTOMARGS:
+      return Req
     default:
       return Req
   }
@@ -188,14 +191,26 @@ export async function handlerResult(
           const metaDataType =
             getMetadataType(target, <string>propertyKey) ||
             MetaDataTypes.REQUEST
-          const _param = swtichMetadataTypeRelationValues(
-            interceptorsReq.reduce((prev, next) => next(prev), param),
+          const _interceptorsReqValue: Core.RequestConfig =
+            interceptorsReq.reduce((prev, next) => next(prev), param)
+          const _param: Core.RequestConfig = swtichMetadataTypeRelationValues(
+            _interceptorsReqValue,
             metaDataType
           )
-          const injectValue: any = values.length
+          const requestConfigs: Core.RequestConfig[] = values.length
             ? OverrideReqEffect(values, [_param])
             : [_param]
-          result = await fn.apply(this, injectValue)
+          // const requestConfigs: Core.RequestConfig[] = injectValue.filter(
+          //   Boolean
+          // ).length
+          //   ? injectValue
+          //   : [_interceptorsReqValue].map(({ data, params, ...conf }) => {
+          //       return conf
+          //     })
+          result = await fn.apply<any, Core.RequestConfig[], any>(
+            this,
+            requestConfigs
+          )
           // eslint-disable-next-line @typescript-eslint/return-await
           const response = interceptorsRes.reduce(
             (prev, next) => next(prev),

@@ -28,6 +28,7 @@ export declare namespace Core {
     index: number
     data?: ParamData
     pipes?: Array<Constructor<any> | Record<string, any>>
+    factory?: import('../decorators/core/interfaces/create-route-param-decorator.interface').CustomParamFactory
   }
   interface PipeTransform<T = any, R = any> {
     /**
