@@ -71,7 +71,8 @@ export enum MetaDataTypes {
   REQUEST = 'request',
   BODY = 'data',
   PARAM = 'param',
-  HEADERS = 'headers'
+  HEADERS = 'headers',
+  CUSTOMARGS = 'customArgs'
 }
 
 export enum HttpStatus {

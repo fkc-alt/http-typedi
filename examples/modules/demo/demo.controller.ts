@@ -9,7 +9,8 @@ import RequestService from '../../common/providers/request.service'
 import ArticleService from '../article/article.service'
 import { ArticleRouteChildren, Route } from '..'
 
-const Demo = createParamDecorator((_data: any, ctx: ExecutionContext) => {
+const Demo = createParamDecorator((token: any, ctx: ExecutionContext) => {
+  console.log(token, ctx, 'ExecutionContext')
   const data = ctx
   return data
 })
@@ -25,7 +26,8 @@ export default class DemoController {
   public async GetArticleList<
     T = Service.ArticleListReq,
     U = Service.ArticleListRes
-  >(@Demo('demo') configure: T): ServerRes<U> {
+  >(@Demo('headers') configure: T): ServerRes<U> {
+    console.log(configure, 'democontroller')
     this.articleService.Log(
       1,
       { age: 20 },

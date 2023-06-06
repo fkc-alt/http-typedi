@@ -26,6 +26,7 @@ export default class RequestService {
    * @return { ServerRes<U> } ServerRes<U>
    */
   public async request<T, U>(config: AxiosRequestConfig<T>): ServerRes<U> {
+    if (!config) return Promise.reject('config is required')
     return await this.instance.request<{}, ServerRes<U>, T>(config)
   }
 

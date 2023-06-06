@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { MetadataKey, RouteParamtypes } from '../../enums'
+import { MetaDataTypes, MetadataKey, RouteParamtypes } from '../../enums'
 import { isArray, isString } from '../../helper'
 import { Core } from '../../interface/core'
 import {
@@ -41,6 +41,12 @@ export const createParamDecorator = (factory: CustomParamFactory) => {
         ) || {}
       const hasParamData = isString(data) || isArray(data)
       const paramData = hasParamData ? data : void 0
+      Reflect.defineMetadata(
+        MetadataKey.METADATATYPE,
+        MetaDataTypes.CUSTOMARGS,
+        target.constructor,
+        propertyKey!
+      )
       Reflect.defineMetadata(
         MetadataKey.ROUTE_ARGS_METADATA,
         assignCustomParameterMetadata(
