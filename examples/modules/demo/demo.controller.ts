@@ -10,9 +10,9 @@ import ArticleService from '../article/article.service'
 import { ArticleRouteChildren, Route } from '..'
 
 const Demo = createParamDecorator((token: any, ctx: ExecutionContext) => {
+  const request = ctx.switchToHttp().getRequest()
   console.log(token, ctx, 'ExecutionContext')
-  const data = ctx
-  return data
+  return token ? request[token] : request
 })
 
 @Controller(Route.ARTICLE)
@@ -26,7 +26,7 @@ export default class DemoController {
   public async GetArticleList<
     T = Service.ArticleListReq,
     U = Service.ArticleListRes
-  >(@Demo('headers') configure: T): ServerRes<U> {
+  >(@Demo() configure: T): ServerRes<U> {
     console.log(configure, 'democontroller')
     this.articleService.Log(
       1,
