@@ -2,7 +2,7 @@ import type { AxiosRequestConfig } from 'axios'
 import {
   Controller,
   ExecutionContext,
-  Post,
+  PostMapping,
   createParamDecorator
 } from '@/index'
 import RequestService from '../../common/providers/request.service'
@@ -22,7 +22,7 @@ export default class DemoController {
     private readonly requestService: RequestService
   ) {}
 
-  @Post(ArticleRouteChildren.GETARTICLELIST)
+  @PostMapping(ArticleRouteChildren.GETARTICLELIST)
   public async GetArticleList<
     T = Service.ArticleListReq,
     U = Service.ArticleListRes
@@ -38,7 +38,7 @@ export default class DemoController {
     )
   }
 
-  @Post(ArticleRouteChildren.TABLEDATA)
+  @PostMapping(ArticleRouteChildren.TABLEDATA)
   public async GetTableDataList<
     T = Service.TableDataReq,
     U = Service.TableDataRes

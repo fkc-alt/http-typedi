@@ -1,56 +1,69 @@
 import { ValidationError } from 'class-validator'
-import { Method } from '../../enums'
-import { capitalizeFirstLetter, capitalizeUpperCaseLetter } from '../../helper'
+import { Method, MethodMapping } from '../../enums'
 import { createRequestMapping } from './core'
 
-type HttpMethoMethodDecorator = (
+type HttpMethodDecorator = (
   path: string,
   message?: string | ((validationArguments: ValidationError[]) => void)
 ) => MethodDecorator
 
 type RequestMappingStaticMethod = {
-  [K in (typeof RequestMappingFactoryStatic.HttpStaticMethod)[number]]: HttpMethoMethodDecorator
+  [K in (typeof RequestMappingFactoryStatic.HttpStaticMethodsMapping)[number]]: HttpMethodDecorator
 }
 
 class RequestMappingFactoryStatic implements RequestMappingStaticMethod {
-  static HttpStaticMethod = (
-    [
-      Method.get,
-      Method.post,
-      Method.delete,
-      Method.put,
-      Method.head,
-      Method.options,
-      Method.patch
-    ] as const
-  ).map(capitalizeFirstLetter)
+  static HttpStaticMethodsMapping = [
+    MethodMapping.GET,
+    MethodMapping.POST,
+    MethodMapping.DELETE,
+    MethodMapping.PUT,
+    MethodMapping.HEAD,
+    MethodMapping.OPTIONS,
+    MethodMapping.PATCH
+  ]
 
-  static HttpStaticMethodUpperCase =
-    RequestMappingFactoryStatic.HttpStaticMethod.map(capitalizeUpperCaseLetter)
+  static HttpStaticMethod = [
+    Method.GET,
+    Method.POST,
+    Method.DELETE,
+    Method.PUT,
+    Method.HEAD,
+    Method.OPTIONS,
+    Method.PATCH
+  ]
 
   constructor() {
     this.registerRequestMapping()
   }
 
-  Get!: HttpMethoMethodDecorator
-  Post!: HttpMethoMethodDecorator
-  Delete!: HttpMethoMethodDecorator
-  Put!: HttpMethoMethodDecorator
-  Head!: HttpMethoMethodDecorator
-  Options!: HttpMethoMethodDecorator
-  Patch!: HttpMethoMethodDecorator
+  GetMapping!: HttpMethodDecorator
+  PostMapping!: HttpMethodDecorator
+  DeleteMapping!: HttpMethodDecorator
+  HeadMapping!: HttpMethodDecorator
+  OptionsMapping!: HttpMethodDecorator
+  PutMapping!: HttpMethodDecorator
+  PatchMapping!: HttpMethodDecorator
 
   registerRequestMapping() {
-    RequestMappingFactoryStatic.HttpStaticMethod.forEach((method, token) => {
-      this[method] = (path, message) =>
-        createRequestMapping(
-          path,
-          Method[RequestMappingFactoryStatic.HttpStaticMethodUpperCase[token]],
-          message
-        )
-    })
+    RequestMappingFactoryStatic.HttpStaticMethodsMapping.forEach(
+      (methodMapping, token) => {
+        this[methodMapping] = (path, message) =>
+          createRequestMapping(
+            path,
+            Method[RequestMappingFactoryStatic.HttpStaticMethod[token]],
+            message
+          )
+      }
+    )
   }
 }
 
-export const { Get, Delete, Head, Options, Patch, Post, Put } =
-  new RequestMappingFactoryStatic()
+export const {
+  GetMapping,
+  PostMapping,
+  DeleteMapping,
+  HeadMapping,
+  OptionsMapping,
+  PatchMapping,
+  PutMapping
+} = new RequestMappingFactoryStatic()

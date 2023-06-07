@@ -14,7 +14,7 @@ function catchCallback(error: any) {
   alert(error.message)
 }
 
-@Get()
+@GetMapping()
 @Catch(catchCallback)
 async getDemoDetail() {
   throw new Error('This action throws an error')
@@ -28,7 +28,7 @@ async getDemoDetail() {
 ```ts{1}
 @Catch(catchCallback)
 class DemoController {
-  @Get()
+  @GetMapping()
   async getDemoDetail() {
     throw new Error('This action throws an error')
   }

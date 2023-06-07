@@ -44,11 +44,21 @@ export enum Method {
   OPTIONS = 'OPTIONS',
   POST = 'POST',
   PUT = 'PUT',
-  PATCH = 'patch',
+  PATCH = 'PATCH',
   PURGE = 'PURGE',
   LINK = 'LINK',
   UNLINK = 'UNLINK',
   HEAD = 'HEAD'
+}
+
+export enum MethodMapping {
+  GET = 'GetMapping',
+  DELETE = 'DeleteMapping',
+  OPTIONS = 'OptionsMapping',
+  POST = 'PostMapping',
+  PUT = 'PutMapping',
+  PATCH = 'PatchMapping',
+  HEAD = 'HeadMapping'
 }
 
 export enum RouteParamtypes {

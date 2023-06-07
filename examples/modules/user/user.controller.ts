@@ -1,5 +1,5 @@
 import type { AxiosRequestConfig } from 'axios'
-import { Controller, Get, Post } from '@/index'
+import { Controller, GetMapping, PostMapping } from '@/index'
 import RequestService from '../../common/providers/request.service'
 import { Route, UserRouteChildren } from '..'
 import UserService from './user.service'
@@ -13,7 +13,7 @@ export default class UserController {
     private readonly userService: UserService
   ) {}
 
-  @Post(UserRouteChildren.LOGIN)
+  @PostMapping(UserRouteChildren.LOGIN)
   public async Login<T extends Service.LoginReq, U extends Service.LoginRes>(
     configure: LoginDto
   ): ServerRes<U> {
@@ -23,7 +23,7 @@ export default class UserController {
     )
   }
 
-  @Get(UserRouteChildren.INFO)
+  @GetMapping(UserRouteChildren.INFO)
   public async UserInfo<
     T extends Service.UserInfoReq,
     U extends Service.UserInfoRes

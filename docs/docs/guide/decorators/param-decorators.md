@@ -7,7 +7,7 @@
 > demo.controller.ts
 
 ```ts{9}
-import { Controller, Post, Req } from 'http-typedi'
+import { Controller, PostMapping, Req } from 'http-typedi'
 import { DemoService } from './demo.service'
 import { DemoReq, DemoRes } from './interfaces/demo.interface'
 
@@ -15,7 +15,7 @@ import { DemoReq, DemoRes } from './interfaces/demo.interface'
 export class DemoController {
   constructor(private demoService: DemoService) {}
 
-  @Post('updateDetail')
+  @PostMapping('updateDetail')
   async updateDemoDetail(@Req() demo: DemoReq): ServerRes<DemoRes> {
     return this.demoService.updateDemoDetail(demo)
   }
@@ -41,7 +41,7 @@ interface RequestConfig<D = unknown> {
 使用`@Body()`装饰器之后，会返回`RequestConfig`这个接口的`data`属性提取出来，使用方式例如
 
 ```ts{2}
-@Post('updateDetail')
+@PostMapping('updateDetail')
 async updateDemoDetail(@Body() demo: DemoReq): ServerRes<DemoRes> {
   return this.demoService.updateDemoDetail(demo)
 }
@@ -51,7 +51,7 @@ async updateDemoDetail(@Body() demo: DemoReq): ServerRes<DemoRes> {
 
 使用`@Headers()`装饰器之后，会返回`RequestConfig`这个接口的`headers`属性提取出来
 ```ts{2}
-@Post('updateDetail')
+@PostMapping('updateDetail')
 async updateDemoDetail(@Headers() demo: DemoReq): ServerRes<DemoRes> {
   return this.demoService.updateDemoDetail(demo)
 }
@@ -60,7 +60,7 @@ async updateDemoDetail(@Headers() demo: DemoReq): ServerRes<DemoRes> {
 
 使用`@Param()`装饰器之后，会返回`RequestConfig`这个接口的`params`属性提取出来
 ```ts{2}
-@Get('updateDetail')
+@GetMapping('updateDetail')
 async updateDemoDetail(@Param() demo: DemoReq): ServerRes<DemoRes> {
   return this.demoService.updateDemoDetail(demo)
 }
@@ -70,7 +70,7 @@ async updateDemoDetail(@Param() demo: DemoReq): ServerRes<DemoRes> {
 上述使用方式是直接提取HTTP请求的一些细节参数，其实还可以通过传入的`token`再次提取指定参数，也可以绑定上[`管道(自定义管道)`](../pipe/index.md)进行过滤，下面我们来看一个例子：
 
 ```ts{9}
-import { Controller, Post, Body } from 'http-typedi'
+import { Controller, PostMapping, Body } from 'http-typedi'
 import { DemoService } from './demo.service'
 import { DemoReq, DemoRes } from './interfaces/demo.interface'
 
@@ -78,7 +78,7 @@ import { DemoReq, DemoRes } from './interfaces/demo.interface'
 export class DemoController {
   constructor(private demoService: DemoService) {}
 
-  @Post('updateDetail')
+  @PostMapping('updateDetail')
   async updateDemoDetail(@Body('id') demo: DemoReq): ServerRes<DemoRes> {
     return this.demoService.updateDemoDetail(demo)
   }

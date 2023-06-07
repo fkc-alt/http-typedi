@@ -3,7 +3,7 @@
 要指定自定义请求头，可以使用 `@header()` 装饰器
 
 ```ts
-import { Controller, Post, Header } from 'http-typedi';
+import { Controller, PostMapping, Header } from 'http-typedi';
 import { DemoService } from './demo.service';
 import { DemoReq, DemoRes } from './interfaces/demo.interface';
 
@@ -11,7 +11,7 @@ import { DemoReq, DemoRes } from './interfaces/demo.interface';
 export class DemoController {
   constructor(private demoService: DemoService) {}
 
-  @Post('detail')
+  @PostMapping('detail')
   @Header('Cache-Control', 'none')
   async getDemoDetail(demo: DemoReq): ServerRes<DemoRes> {
     return this.demoService.getDemoDetail(demo);
