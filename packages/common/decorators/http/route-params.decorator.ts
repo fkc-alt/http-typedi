@@ -2,6 +2,7 @@
 import { MetaDataTypes, MetadataKey, RouteParamtypes } from '../../enums'
 import { isArray, isFunction, isString } from '../../helper'
 import { Core } from '../../interface/core'
+import { ExecutionContext } from '../core/interfaces/create-route-param-decorator.interface'
 
 /**
  * @param { Object } target
@@ -69,6 +70,16 @@ export const OverrideReqEffect = (
   values: Core.RouteParamMetadata[],
   args: any[]
 ) => {
+  const executionContext: ExecutionContext = {
+    switchToHttp() {
+      return {
+        getRequest() {
+          return args[0]
+        }
+      }
+    }
+  }
+
   return args.map((param, index) => {
     const item = values.find(_ => _.index === index)
     if (item?.data) {
@@ -89,7 +100,7 @@ export const OverrideReqEffect = (
           }
           return { ...prev, ...paramObj }
         }, {})
-        return item?.factory?.(item.data, param) ?? _param
+        return item?.factory?.(item.data, executionContext) ?? _param
       }
       registerClasses?.forEach(target => {
         param[item.data as string] =
@@ -97,12 +108,12 @@ export const OverrideReqEffect = (
           (param[item.data as string] || target.defaultValue)
       })
       return (
-        item?.factory?.(item.data, param) ??
+        item?.factory?.(item.data, executionContext) ??
         param?.[item.data as string] ??
         void 0
       )
     }
-    return item?.factory?.(void 0, param) ?? param
+    return item?.factory?.(void 0, executionContext) ?? param
   })
 }
 
