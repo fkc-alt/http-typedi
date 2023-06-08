@@ -70,7 +70,7 @@ async updateDemoDetail(@Param() demo: DemoReq): ServerRes<DemoRes> {
 上述使用方式是直接提取HTTP请求的一些细节参数，其实还可以通过传入的`token`再次提取指定参数，也可以绑定上[`管道(自定义管道)`](../pipe/index.md)进行过滤，下面我们来看一个例子：
 
 ```ts{9}
-import { Controller, PostMapping, Body } from 'http-typedi'
+import { Controller, PostMapping, GetMapping, Body } from 'http-typedi'
 import { DemoService } from './demo.service'
 import { DemoReq, DemoRes } from './interfaces/demo.interface'
 
@@ -83,7 +83,7 @@ export class DemoController {
     return this.demoService.updateDemoDetail(demo)
   }
 
-  @Gwt('getdetail')
+  @GetMapping('getdetail')
   async getDemoDetail(@Param('id', new DefaultValuePipe(1)) demo: DemoReq): ServerRes<DemoRes> {
     return this.demoService.getDemoDetail(demo)
   }
