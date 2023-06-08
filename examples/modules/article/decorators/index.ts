@@ -2,7 +2,7 @@ import {
   Catch,
   Controller,
   Header,
-  Post,
+  PostMapping,
   UseInterceptorsReq,
   UseInterceptorsRes,
   applyDecorators,
@@ -43,7 +43,7 @@ export const GetArticleListApplyDecorators = () => {
     Catch(catchCallback),
     Header('RequestId', getRandomId),
     Header('Content-Type', ContentTypeService.JSON),
-    Post(ArticleRouteChildren.GETARTICLELIST, validationErrorMessage),
+    PostMapping(ArticleRouteChildren.GETARTICLELIST, validationErrorMessage),
     UseInterceptorsReq(
       configure => {
         configure.headers &&
@@ -63,7 +63,7 @@ export const GetTableDataApplyDecorators = () => {
     Header('RequestId', getRandomId),
     Header(ArticleRouteChildren.TABLEDATA, ArticleRouteChildren.TABLEDATA),
     Catch(catchCallback),
-    Post(ArticleRouteChildren.TABLEDATA, validationErrorMessage),
+    PostMapping(ArticleRouteChildren.TABLEDATA, validationErrorMessage),
     Sleep(3000),
     Version(''),
     Timeout(2000, () => {

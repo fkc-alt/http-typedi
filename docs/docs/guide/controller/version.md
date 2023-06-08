@@ -19,7 +19,7 @@ Header 版本管理	在自定义的 Header 中传递版本
 ```ts
 @Controller('demo')
 class DemoControler {
-  @Get('detail')
+  @GetMapping('detail')
   @Version('1')
   getDemoDetail(demo: DemoReq) {
     return 'This action returns all demos';
@@ -40,7 +40,7 @@ class DemoControler {
 class DemoControler {
   constructor(private demoService: DemoService) {}
 
-  @Get('detail')
+  @GetMapping('detail')
   @Header('version', '1')
   getDemoDetail(demo: DemoReq) {
     return this.demoService.getDemoDetail(demo);
@@ -57,7 +57,7 @@ class DemoControler {
 class DemoControler {
   constructor(private demoService: DemoService) {}
 
-  @Get('detail')
+  @GetMapping('detail')
   geDemoDetail(demo: DemoReq) {
     return this.demoService.getDemoDetail(demo);
   }

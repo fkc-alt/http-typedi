@@ -1,5 +1,5 @@
 import type { AxiosRequestConfig } from 'axios'
-import { Controller, Get, Post } from '@/index'
+import { Controller, GetMapping, PostMapping } from '@/index'
 import RequestService from '../../common/providers/request.service'
 import UploadService from '../../common/providers/upload.service'
 import { OrderRouteChildren, Route } from '..'
@@ -15,7 +15,7 @@ export default class OrderController {
     private readonly uploadService: UploadService
   ) {}
 
-  @Get(OrderRouteChildren.ORDERDETAIL, '🙅错误信息')
+  @GetMapping(OrderRouteChildren.ORDERDETAIL, '🙅错误信息')
   public async GetOrderDetail<
     T extends Service.OrderDetailReq,
     U extends Service.OrderDetailRes
@@ -26,7 +26,7 @@ export default class OrderController {
     )
   }
 
-  @Post(OrderRouteChildren.ORDERLIST)
+  @PostMapping(OrderRouteChildren.ORDERLIST)
   public async GetOrderList<
     T extends Service.OrderListReq,
     U extends Service.OrderListRes
@@ -36,7 +36,7 @@ export default class OrderController {
     )
   }
 
-  @Post(OrderRouteChildren.UPLOADFILE)
+  @PostMapping(OrderRouteChildren.UPLOADFILE)
   public async UploadFile<
     T extends Services.Common.UplaodReq,
     U extends Services.Common.UplaodRes
@@ -46,7 +46,7 @@ export default class OrderController {
     )
   }
 
-  @Post(OrderRouteChildren.UPLOADBASE64)
+  @PostMapping(OrderRouteChildren.UPLOADBASE64)
   public async UploadBase64<
     T extends Services.Common.UplaodReq,
     U extends Services.Common.UplaodRes

@@ -43,7 +43,7 @@ export interface Demo {
 > demo.controller.ts
 
 ```ts
-import { Controller, Post } from 'http-typedi';
+import { Controller, PostMapping } from 'http-typedi';
 import { DemoService } from './demo.service';
 import { DemoReq, DemoRes } from './interfaces/demo.interface';
 
@@ -51,7 +51,7 @@ import { DemoReq, DemoRes } from './interfaces/demo.interface';
 export class DemoController {
   constructor(private demoService: DemoService) {}
 
-  @Post('list')
+  @PostMapping('list')
   async getDemoList(demo: DemoReq): ServerRes<DemoRes> {
     return this.demoService.getDemoList(demo);
   }

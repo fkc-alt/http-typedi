@@ -8,7 +8,7 @@ export class DemoController {
   @Injection()
   private readonly demoService!: DemoService;
 
-  @Post('detail')
+  @PostMapping('detail')
   async getDemoDetail(demo: DemoReq): ServerRes<DemoRes> {
     return this.demoService.getDemoDetail(demo);
   }
@@ -45,7 +45,7 @@ export class DemoModule {}
 > demo.controller.ts
 
 ```ts
-import { Controller, Post, Injection } from 'http-typedi';
+import { Controller, PostMapping, Injection } from 'http-typedi';
 import { DemoService } from './demo.service';
 import { DemoReq, DemoRes } from './interfaces/demo.interface';
 
@@ -54,7 +54,7 @@ export class DemoController {
   @Injection('config')
   private readonly config;
 
-  @Post('detail')
+  @PostMapping('detail')
   async getDemoDetail(demo: DemoReq): ServerRes<DemoRes> {
     return this.demoService.getDemoDetail(demo);
   }

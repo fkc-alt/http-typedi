@@ -12,7 +12,7 @@ npm i --save class-validator class-transformer
 
 现在我们可以在 `GetDemoDetailDto` 中添加一些验证规则。我们使用 `class-validator` 包提供的装饰器来实现这一点，[这里](https://github.com/typestack/class-validator#validation-decorators)有详细的描述。以这种方式，任何使用 `GetDemoDetailDto` 的路由都将自动执行这些验证规则。
 
-```ts
+```ts{4,7}
 import { IsEmail, IsNotEmpty } from 'class-validator'
 
 export class GetDemoDetailDto {
@@ -29,7 +29,7 @@ export class GetDemoDetailDto {
 ```ts{4}
 @Controller('/demo')
 export class DemoController {
-  @Get('detail')
+  @GetMapping('detail')
   async getDemoDetail(query: GetDemoDetailDto) {
     return query
   }

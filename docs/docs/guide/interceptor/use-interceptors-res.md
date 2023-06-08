@@ -9,7 +9,7 @@
 > demo.controller.ts
 
 ```ts{13}
-import { Controller, Post, UseInterceptorsRes } from 'http-typedi'
+import { Controller, PostMapping, UseInterceptorsRes } from 'http-typedi'
 import { DemoService } from './demo.service'
 import { DemoDetailReq } from './interfaces/demo.interface'
 
@@ -24,7 +24,7 @@ function InterceptorsRes(result) {
 @UseInterceptorsRes(InterceptorsRes)
 export class DemoController {
   constructor(private readonly demoService: DemoService) {}
-  @Get('demoDetail/:id')
+  @GetMapping('demoDetail/:id')
   getDemoDetail(confugre: DemoDetailReq) {
     return this.demoService.getDemoDetail(<AxiosRequestConfig>confugre)
   }
@@ -39,7 +39,7 @@ export class DemoController {
 @Controller('demo')
 export class DemoController {
   constructor(private readonly demoService: DemoService) {}
-  @Get('demoDetail/:id')
+  @GetMapping('demoDetail/:id')
   @UseInterceptorsRes(InterceptorsRes)
   getDemoDetail(confugre: DemoDetailReq) {
     return this.demoService.getDemoDetail(<AxiosRequestConfig>confugre)

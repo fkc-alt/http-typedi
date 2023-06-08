@@ -36,8 +36,7 @@ export default class ArticleController {
   public async GetArticleList<
     T = Service.ArticleListReq,
     U = Service.ArticleListRes
-  >(@Request('yy') configure: ArticleListDto): ServerRes<U> {
-    console.log(configure, 'yy')
+  >(@Request() configure: ArticleListDto): ServerRes<U> {
     const { data } = await this.helperController.getApidoc({
       pageSize: 0,
       currentPage: 0

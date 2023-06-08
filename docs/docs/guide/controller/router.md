@@ -14,19 +14,19 @@ export interface UpdateDemoReq {
 
 > demo.controller.ts
 ```ts
-import { Controller, Post, Header } from 'http-typedi'
+import { Controller, PostMapping, Header } from 'http-typedi'
 import { UpdateDemoReq } from './interfaces/demo.interface'
 
 @Controller('demo')
 export class DemoController {
-  @Post('update')
+  @PostMapping('update')
   updateDemo(configure: UpdateDemoReq) {
     return 'this is update demo method'
   }
 }
 ```
 
-本例中的updateDemo方法被Post装饰器修饰之后，它已经变成请求路径为demo/update的一个路由，由于方法被 **`@Post`** 修饰，方法的`形参(confugre)`也被重写。下面是被重写之后的形参类型：
+本例中的updateDemo方法被Post装饰器修饰之后，它已经变成请求路径为demo/update的一个路由，由于方法被 **`@PostMapping`** 修饰，方法的`形参(confugre)`也被重写。下面是被重写之后的形参类型：
 
 
 ```ts
@@ -145,7 +145,7 @@ export interface DemoRes {
 现在我们有一个控制器类来检索 `Demo` ，让我们在 `DemoController` 里使用它 ：
 
 ```typescript
-import { Controller, Post } from 'http-typedi';
+import { Controller, PostMapping } from 'http-typedi';
 import { DemoService } from './demo.service';
 import { DemoReq, DemoRes } from './interfaces/demo.interface';
 
@@ -153,7 +153,7 @@ import { DemoReq, DemoRes } from './interfaces/demo.interface';
 export class DemoController {
   constructor(private demoService: DemoService) {}
 
-  @Post('detail')
+  @PostMapping('detail')
   async getDemoDetail(demo: DemoReq): ServerRes<DemoRes> {
     return this.demoService.getDemoDetail(demo);
   }
@@ -162,7 +162,7 @@ export class DemoController {
 
 `DemoService` 是通过类构造函数注入的。注意这里使用了私有的只读语法。这意味着我们已经在同一位置创建并初始化了 `demoService`成员。
 
-在上面的示例中，用户通过调用`getDemoDetail`方法触发 `@Post('detail')` 装饰器告诉 `http-typedi` 当前方法为需要和服务端进行通信的方法和请求路径。 什么是路由路径 ？ 一个处理程序的路由路径是通过连接为控制器 （Controller） 声明的（可选）前缀和请求装饰器中指定的任何路径来确定的。由于我们已经为当前的 Controller 声明了一个前缀，并且在请求装饰器（@Post('detail')）中添加了`detail`后缀，因此 http-typedi 会通过 `@Post('detail')` 装饰器进行处理并返回请求路径为 `/demo/detail`，Route 路由并且携带请求参数调用 `demoService` 实例的 `getDemoDetail` 方法传入请求参数信息和服务端进行通信获取到数据之后从而返回给`控制器`，`控制器`再返回给`调用者`。
+在上面的示例中，用户通过调用`getDemoDetail`方法触发 `@PostMapping('detail')` 装饰器告诉 `http-typedi` 当前方法为需要和服务端进行通信的方法和请求路径。 什么是路由路径 ？ 一个处理程序的路由路径是通过连接为控制器 （Controller） 声明的（可选）前缀和请求装饰器中指定的任何路径来确定的。由于我们已经为当前的 Controller 声明了一个前缀，并且在请求装饰器（@PostMapping('detail')）中添加了`detail`后缀，因此 http-typedi 会通过 `@PostMapping('detail')` 装饰器进行处理并返回请求路径为 `/demo/detail`，Route 路由并且携带请求参数调用 `demoService` 实例的 `getDemoDetail` 方法传入请求参数信息和服务端进行通信获取到数据之后从而返回给`控制器`，`控制器`再返回给`调用者`。
 
 
 ::: tip
