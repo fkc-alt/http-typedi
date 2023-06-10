@@ -8,29 +8,22 @@ type HttpMethodDecorator = (
 ) => MethodDecorator
 
 type RequestMappingStaticMethod = {
-  [K in (typeof RequestMappingFactoryStatic.HttpStaticMethodsMapping)[number]]: HttpMethodDecorator
+  readonly [K in MethodMapping]-?: HttpMethodDecorator
 }
 
 class RequestMappingFactoryStatic implements RequestMappingStaticMethod {
-  static HttpStaticMethodsMapping = [
-    MethodMapping.GET,
-    MethodMapping.POST,
-    MethodMapping.DELETE,
-    MethodMapping.PUT,
-    MethodMapping.HEAD,
-    MethodMapping.OPTIONS,
-    MethodMapping.PATCH
-  ]
-
-  static HttpStaticMethod = [
-    Method.GET,
-    Method.POST,
-    Method.DELETE,
-    Method.PUT,
-    Method.HEAD,
-    Method.OPTIONS,
-    Method.PATCH
-  ]
+  private static readonly HttpStaticMethodsMappingMap = new Map<
+    MethodMapping,
+    Method
+  >([
+    [MethodMapping.GET, Method.GET],
+    [MethodMapping.POST, Method.POST],
+    [MethodMapping.DELETE, Method.DELETE],
+    [MethodMapping.PUT, Method.PUT],
+    [MethodMapping.HEAD, Method.HEAD],
+    [MethodMapping.OPTIONS, Method.OPTIONS],
+    [MethodMapping.PATCH, Method.PATCH]
+  ])
 
   constructor() {
     this.registerRequestMapping()
@@ -44,15 +37,11 @@ class RequestMappingFactoryStatic implements RequestMappingStaticMethod {
   PutMapping!: HttpMethodDecorator
   PatchMapping!: HttpMethodDecorator
 
-  registerRequestMapping() {
-    RequestMappingFactoryStatic.HttpStaticMethodsMapping.forEach(
-      (methodMapping, token) => {
+  private registerRequestMapping() {
+    RequestMappingFactoryStatic.HttpStaticMethodsMappingMap.forEach(
+      (method, methodMapping) => {
         this[methodMapping] = (path, message) =>
-          createRequestMapping(
-            path,
-            Method[RequestMappingFactoryStatic.HttpStaticMethod[token]],
-            message
-          )
+          createRequestMapping(path, method, message)
       }
     )
   }
