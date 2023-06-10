@@ -8,7 +8,7 @@ type HttpMethodDecorator = (
 ) => MethodDecorator
 
 type RequestMappingStaticMethod = {
-  [K in MethodMapping]: HttpMethodDecorator
+  readonly [K in MethodMapping]-?: HttpMethodDecorator
 }
 
 class RequestMappingFactoryStatic implements RequestMappingStaticMethod {
