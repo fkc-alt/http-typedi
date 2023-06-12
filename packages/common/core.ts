@@ -199,8 +199,8 @@ export class HttpFactoryStatic {
    * @memberof HttpFactoryStatic
    * @description set global error callback
    */
-  public setGlobalCatchCallback(cb: (error: any) => any) {
-    this.globalCatchCallback = cb
+  public setGlobalCatchCallback(catchCallback: (error: any) => any) {
+    this.globalCatchCallback = catchCallback
   }
 
   /**
@@ -210,8 +210,8 @@ export class HttpFactoryStatic {
    * @memberof HttpFactoryStatic
    * @description set global timeout callback
    */
-  public setGlobalTimeoutCallback(cb: () => any) {
-    this.globalTimeoutCallback = cb
+  public setGlobalTimeoutCallback(timeoutCallback: () => any) {
+    this.globalTimeoutCallback = timeoutCallback
   }
 }
 

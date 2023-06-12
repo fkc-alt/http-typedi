@@ -24,7 +24,22 @@ npm install reflect-metadata --save
 // main.ts
 import 'reflect-metadata'
 ```
+:::warning 
+TypeScript 中使用装饰器需要开启 emitDecoratorMetadata 和 emitDecoratorMetadata选项，否则 reflect-metadata 提供的方法将无法获取参数类型信息。
+:::
+> tsconfig.json
+```json{}
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+  }
+}
+```
 
+# vite
 :::tip
  如果使用Vite进行构建，还需要安装`@swc/core` `unplugin-swc`，如下所示：
 :::
@@ -46,10 +61,53 @@ export default defineConfig(() => {
 })
 ```
 
-:::tip
+:::warning
 如果您的`package.json`中的`"type"`为`"module"`的话，需要去掉`"type": "module"`, 重新运行即可。详情可见[`issue`](https://github.com/fkc-alt/http-typedi/issues/2)
 :::
+那么现在就可以运行起来您的应用程序啦
 
-::: warning
-基于`Webpack`构建程序目前暂无在文档标注使用方法，后续会在文档更新。
+# webpack
+:::tip
+ 如果使用webpack进行构建，需要安装一下`ts-loader`、`babel-loader`、`@babel/preset-env`、`@babel/plugin-proposal-decorators`这些包。
 :::
+
+```sh
+$ npm install ts-loader babel-loader @babel/preset-env @babel/plugin-proposal-decorators --save-dev
+```
+
+还修改一下`webpack.config.js`中的`rules`，具体配置如下所示：
+
+```javascript
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.tsx',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react'],
+              plugins: [['@babel/plugin-proposal-decorators', { "legacy": true }]],
+            },
+          },
+          'ts-loader',
+        ],
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+  },
+};
+```
+那么现在就可以运行起来您的应用程序啦
+
