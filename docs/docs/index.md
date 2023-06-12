@@ -22,8 +22,8 @@ features:
     title: Aspect Oriented Programming
     details: 面向AOP编程，支持DTO验证API参数
   - icon: 🛠️
-    title: Dependency Injection
-    details: 使用依赖注入(Dependency Injection)设计模式
+    title: DI And IoC
+    details: 使用DI(Dependency Injection)和IoC(Inversion of Control)设计模式
   - icon: 📠
     title: Type Strong
     details: 完全使用 Typescript 编写，完美支持Typescript
