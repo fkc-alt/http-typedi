@@ -65,3 +65,11 @@
         <img style='width: 173px; height: 32px; border-radius: 0;' src='https://static01.shengchanli.online/frontend_asset/logo.png' referrerpolicy="no-referrer" alt='数字升产力' />
     </a>
 </div>
+
+<div class='text-size-24 title' style='margin-top: 50px'>贡献者</div>
+<div class='github-users_flex'>
+    <a href='https://github.com/fkc-alt' target='_blank'>
+        <img src='https://avatars.githubusercontent.com/fkc-alt' alt='fkc-alt' />
+        <span>fkc-alt</span>
+    </a>
+</div>
