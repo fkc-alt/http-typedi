@@ -1,4 +1,4 @@
-import { Global, Module } from '@/index'
+import { Global, Module, RequestService } from '@/index'
 import OrderModule from '../order/order.module'
 import OrderController from '../order/order.controller'
 import ArticleController from './article.controller'
@@ -10,6 +10,6 @@ import HelplerService from './providers/helper.service'
 @Module({
   imports: [OrderModule],
   controllers: [ArticleController, OrderController, HelperController],
-  providers: [ArticleService, HelplerService]
+  providers: [ArticleService, HelplerService, RequestService]
 })
 export default class ArticleModule {}

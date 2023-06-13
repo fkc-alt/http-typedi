@@ -31,6 +31,4 @@ declare namespace Services {
 
 declare type Application = import('@/service/app.module').default
 
-declare type ServerRes<T, U = Promise> = U extends Promise
-  ? Promise<Services.Common.Response<T>>
-  : Services.Common.Response<T>
+declare type ServerRes<T> = Promise<Services.Common.Response<T>>

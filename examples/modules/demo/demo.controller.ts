@@ -1,17 +1,17 @@
-import type { AxiosRequestConfig } from 'axios'
 import {
   Controller,
   ExecutionContext,
   PostMapping,
-  createParamDecorator
+  createParamDecorator,
+  RequestService,
+  RequestConfig
 } from '@/index'
-import RequestService from '../../common/providers/request.service'
 import ArticleService from '../article/article.service'
 import { ArticleRouteChildren, Route } from '..'
 
 const Demo = createParamDecorator((token: any, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest()
-  console.log(token, ctx, 'ExecutionContext')
+  console.log(token, request, 'ExecutionContext')
   return token ? request[token] : request
 })
 
@@ -33,9 +33,7 @@ export default class DemoController {
       { age: 20 },
       { customElements: '<div>我是自定义Pipe</div>' }
     )
-    return await this.requestService.request<T, U>(
-      <AxiosRequestConfig>configure
-    )
+    return await this.requestService.request<T, U>(<RequestConfig<T>>configure)
   }
 
   @PostMapping(ArticleRouteChildren.TABLEDATA)
@@ -43,8 +41,6 @@ export default class DemoController {
     T = Service.TableDataReq,
     U = Service.TableDataRes
   >(configure: T): ServerRes<U> {
-    return await this.requestService.request<T, U>(
-      <AxiosRequestConfig>configure
-    )
+    return await this.requestService.request<T, U>(<RequestConfig<T>>configure)
   }
 }

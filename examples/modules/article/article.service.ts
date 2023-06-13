@@ -4,10 +4,10 @@ import {
   Param,
   ParseIntPipe,
   DefaultValuePipe,
-  Core
+  Core,
+  RequestService,
+  RequestConfig
 } from '@/index'
-import { AxiosRequestConfig } from 'axios'
-import RequestService from '../../common/providers/request.service'
 import OrderService from '../order/order.service'
 
 class CustomValidationPipe implements Core.PipeTransform {
@@ -25,17 +25,17 @@ export default class ArticleService {
   ) {}
 
   public GetArticleList<T = Service.ArticleListReq, U = Service.ArticleListRes>(
-    configure: AxiosRequestConfig<T>
-  ): ServerRes<U> {
+    configure: RequestConfig<T>
+  ): Promise<U> {
     console.log(this.orderService)
     this.Log(1, { age: 20 }, { customElements: '<div>我是自定义Pipe</div>' })
-    return this.requestService.request(configure)
+    return this.requestService.request<T, U>(configure)
   }
 
   public async GetTableDataList<
     T = Service.TableDataReq,
     U = Service.TableDataRes
-  >(configure: AxiosRequestConfig<T>): ServerRes<U> {
+  >(configure: RequestConfig<T>): Promise<U> {
     return await this.requestService.request<T, U>(configure)
   }
 

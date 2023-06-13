@@ -23,8 +23,9 @@ function createHTTPClient(): AppModule {
   })
   HTTPClient.useInterceptorsRes(result => {
     console.log('global InterceptorsRes', result)
-    const callError = result?.status !== 200 || result?.data?.code !== 200
-    if (!callError) return result.data
+    const callError = result?.status !== 200 && result?.data?.code !== 200
+    console.log(callError, 'callError')
+    if (!callError) return result.data?.data
     return Promise.reject(result) // or throw result
   })
   return HTTPClient
@@ -35,26 +36,32 @@ const HTTPClient = createHTTPClient()
 const {
   articleController: { GetTableDataList, GetArticleList }
 } = HTTPClient
-HTTPClient.demoController.GetArticleList({
-  currentPage: 1,
-  pageSize: 10,
-  channel: ['1', '2'],
-  checkDemoList: [
-    {
-      age: 1,
-      name: '11111'
+HTTPClient.demoController
+  .GetArticleList({
+    currentPage: 1,
+    pageSize: 10,
+    channel: ['1', '2'],
+    checkDemoList: [
+      {
+        age: 1,
+        name: '11111'
+      }
+    ],
+    content: '123123',
+    param: {
+      status: 1,
+      text: '123121111111',
+      title: '11231223'
     }
-  ],
-  content: '123123',
-  param: {
-    status: 1,
-    text: '123121111111',
-    title: '11231223'
-  }
-})
+  })
+  .then(res => {
+    console.log(res, 'resss')
+  })
 GetTableDataList({
   currentPage: 1,
   pageSize: 10
+}).then(res => {
+  console.log(res, 'ressss')
 })
 GetArticleList({
   currentPage: 1,

@@ -1,7 +1,11 @@
-import type { AxiosRequestConfig } from 'axios'
-import { Controller, GetMapping, PostMapping } from '@/index'
-import RequestService from '../../common/providers/request.service'
-import UploadService from '../../common/providers/upload.service'
+import {
+  Controller,
+  GetMapping,
+  PostMapping,
+  RequestService,
+  RequestConfig,
+  UploadService
+} from '@/index'
 import { OrderRouteChildren, Route } from '..'
 import OrderService from './order.service'
 import GetOrderListDto from './dto/orderList.dto'
@@ -19,30 +23,26 @@ export default class OrderController {
   public async GetOrderDetail<
     T extends Service.OrderDetailReq,
     U extends Service.OrderDetailRes
-  >(configure: GetOrderDetailDto): ServerRes<U> {
+  >(configure: GetOrderDetailDto): Promise<U> {
     this.orderService.Log()
-    return await this.requestService.request<T, U>(
-      <AxiosRequestConfig>configure
-    )
+    return await this.requestService.request<T, U>(<RequestConfig<T>>configure)
   }
 
   @PostMapping(OrderRouteChildren.ORDERLIST)
   public async GetOrderList<
     T extends Service.OrderListReq,
     U extends Service.OrderListRes
-  >(configure: GetOrderListDto): ServerRes<U> {
-    return await this.requestService.request<T, U>(
-      <AxiosRequestConfig>configure
-    )
+  >(configure: GetOrderListDto): Promise<U> {
+    return await this.requestService.request<T, U>(<RequestConfig<T>>configure)
   }
 
   @PostMapping(OrderRouteChildren.UPLOADFILE)
   public async UploadFile<
     T extends Services.Common.UplaodReq,
     U extends Services.Common.UplaodRes
-  >(configure: T): ServerRes<U> {
-    return await this.uploadService.uploadFile<AxiosRequestConfig<T>, U>(
-      <AxiosRequestConfig>configure
+  >(configure: T): Promise<U> {
+    return await this.uploadService.uploadFile<RequestConfig<T>, U>(
+      <RequestConfig<T>>configure
     )
   }
 
@@ -50,9 +50,9 @@ export default class OrderController {
   public async UploadBase64<
     T extends Services.Common.UplaodReq,
     U extends Services.Common.UplaodRes
-  >(configure: T): ServerRes<U> {
-    return await this.uploadService.uploadBase64<AxiosRequestConfig<T>, U>(
-      <AxiosRequestConfig<T>>configure
+  >(configure: T): Promise<U> {
+    return await this.uploadService.uploadBase64<RequestConfig<T>, U>(
+      <RequestConfig<T>>configure
     )
   }
 }

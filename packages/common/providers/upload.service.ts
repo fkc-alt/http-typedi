@@ -1,19 +1,19 @@
-import { AxiosRequestConfig } from 'axios'
-import { Injectable } from '@/index'
-import RequestService from './request.service'
-import ContentTypeService, { ContentType } from './contentType.service'
+import { Injectable } from '../core'
+import { ContentType, ContentTypeService } from './content-type.service'
+import { RequestService } from './request.service'
+import { RequestConfig } from './interfaces/request.service.interface'
 
 @Injectable()
-export default class UploadService {
+export class UploadService {
   constructor(
     private readonly requestService: RequestService,
     private readonly contenTypeService: ContentTypeService
   ) {}
 
   public async uploadFile<
-    T extends AxiosRequestConfig<Services.Common.UplaodReq>,
+    T extends RequestConfig<Services.Common.UplaodReq>,
     U = Services.Common.UplaodRes
-  >(configure: T): ServerRes<U> {
+  >(configure: T): Promise<U> {
     const {
       data: { file, ...params } = {},
       headers = {},
@@ -36,9 +36,9 @@ export default class UploadService {
   }
 
   public async uploadBase64<
-    T extends AxiosRequestConfig<Services.Common.UplaodReq>,
+    T extends RequestConfig<Services.Common.UplaodReq>,
     U = Services.Common.UplaodRes
-  >(configure: T): ServerRes<U> {
+  >(configure: T): Promise<U> {
     type UploadFile = Services.Common.UplaodReq extends { file: infer U }
       ? U
       : never

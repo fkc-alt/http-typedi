@@ -1,6 +1,10 @@
-import type { AxiosRequestConfig } from 'axios'
-import { Controller, GetMapping, PostMapping } from '@/index'
-import RequestService from '../../common/providers/request.service'
+import {
+  Controller,
+  GetMapping,
+  PostMapping,
+  RequestService,
+  RequestConfig
+} from '@/index'
 import { Route, UserRouteChildren } from '..'
 import UserService from './user.service'
 import LoginDto from './dto/login.dto'
@@ -18,9 +22,7 @@ export default class UserController {
     configure: LoginDto
   ): ServerRes<U> {
     this.userService.Log()
-    return await this.requestService.request<T, U>(
-      <AxiosRequestConfig>configure
-    )
+    return await this.requestService.request<T, U>(<RequestConfig<T>>configure)
   }
 
   @GetMapping(UserRouteChildren.INFO)
@@ -28,8 +30,6 @@ export default class UserController {
     T extends Service.UserInfoReq,
     U extends Service.UserInfoRes
   >(configure: UserInfoDto): ServerRes<U> {
-    return await this.requestService.request<T, U>(
-      <AxiosRequestConfig>configure
-    )
+    return await this.requestService.request<T, U>(<RequestConfig<T>>configure)
   }
 }

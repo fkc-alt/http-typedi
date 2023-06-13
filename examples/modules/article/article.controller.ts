@@ -1,4 +1,3 @@
-import type { AxiosRequestConfig } from 'axios'
 import ArticleListDto from './dto/articleList.dto'
 import TableDataDto from './dto/tableData.dto'
 import ArticleService from './article.service'
@@ -10,7 +9,7 @@ import {
   GetArticleListApplyDecorators,
   GetTableDataApplyDecorators
 } from './decorators'
-import { Core, DefaultValuePipe, Request } from '@/index'
+import { Core, DefaultValuePipe, Request, RequestConfig } from '@/index'
 
 class CustomValidationPipe implements Core.PipeTransform {
   transform(value: string): string {
@@ -43,7 +42,7 @@ export default class ArticleController {
     })
     console.log(data, 'helperController')
     return await this.articleService.GetArticleList<T, U>(
-      <AxiosRequestConfig>configure
+      <RequestConfig<T>>configure
     )
   }
 
@@ -52,12 +51,13 @@ export default class ArticleController {
     T = Service.TableDataReq,
     U = Service.TableDataRes
   >(
-    @Request('id', new DefaultValuePipe('aaaa'), new CustomValidationPipe())
+    // @Request('id', new DefaultValuePipe('aaaa'), new CustomValidationPipe())
+    @Request()
     configure: TableDataDto
   ): ServerRes<U> {
     console.log(configure, 'GetTableDataApplyDecorators')
     return await this.articleService.GetTableDataList<T, U>(
-      <AxiosRequestConfig>configure
+      <RequestConfig<T>>configure
     )
   }
 }

@@ -8,9 +8,9 @@ import {
   applyDecorators,
   Sleep,
   Version,
-  Timeout
+  Timeout,
+  ContentTypeService
 } from '@/index'
-import ContentTypeService from '../../../common/providers/contentType.service'
 import { Route, ArticleRouteChildren } from '../..'
 import { catchCallback } from '../catch/catch-callback'
 import { validationErrorMessage } from '../validation/validate'
@@ -31,8 +31,8 @@ export const ArticleControllerApplydecorators = (): ClassDecorator => {
     }),
     UseInterceptorsRes(result => {
       console.log(result, 'Controller InterceptorsRes')
-      const callError = result?.status !== 200 || result?.data?.code !== 200
-      if (!callError) return result.data
+      const callError = result?.status !== 200 && result?.data?.code !== 200
+      if (!callError) return result.data?.data
       return Promise.reject(result) // or throw result
     })
   )

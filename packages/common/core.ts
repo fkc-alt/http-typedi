@@ -15,6 +15,7 @@ import {
   flattenErrorList
 } from './helper'
 import { Core } from './interface/core'
+import { Response, ResponseConfig } from './providers'
 export * from './decorators'
 export {
   ModuleMetadata,
@@ -56,12 +57,7 @@ export type InterceptorReq = (
   requestConfig: Core.RequestConfig
 ) => Core.RequestConfig
 
-export type InterceptorRes = (response: {
-  code?: number
-  data?: Record<string, any>
-  status?: number
-  statusText?: string
-}) => any
+export type InterceptorRes = (response: ResponseConfig<Response>) => any
 
 interface CreateOptions {
   /**
@@ -232,6 +228,7 @@ const registerDeepClass = (
     providers?.map((provider: any) => {
       const currentProvide: Core.Constructor<any> = container.inject(provider)
       if (!currentProvide) {
+        console.log(provider, currentProvide, 'currentProvide')
         throw new Error(`Please use exports Service ${provider.name as string}`)
       }
       const childrenProviders = Reflect.getMetadata(

@@ -1,5 +1,4 @@
-import { Core } from '@/index'
-import RequestService from '../../../common/providers/request.service'
+import { Core, RequestService } from '@/index'
 
 export default class HelplerService extends RequestService {
   public helper(configure: Core.RequestConfig) {

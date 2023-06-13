@@ -1,5 +1,4 @@
-import { Injectable } from '@/index'
-import RequestService from '../../common/providers/request.service'
+import { Injectable, RequestService } from '@/index'
 
 @Injectable()
 export default class ExamplesService {

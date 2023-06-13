@@ -1,6 +1,5 @@
-import { Injection, Module } from '@/index'
+import { Injection, Module, RequestService } from '@/index'
 import CommonModule from './common/common.module'
-import RequestService from './common/providers/request.service'
 import ArticleController from './modules/article/article.controller'
 import ArticleModule from './modules/article/article.module'
 import DemoModule from './modules/demo/demo.module'
