@@ -32,7 +32,7 @@ TypeScript 中使用装饰器需要开启 emitDecoratorMetadata 和 emitDecorato
 {
   "compilerOptions": {
     "target": "esnext", // [!code focus:4] // [!code ++:4]
-    "module": "esnext", // Vite构建必须设置为esnext,webpack则为CommonJs // [!code focus:4] // [!code ++:4]
+    "module": "esnext", // [!code focus:4] // [!code ++:4]
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
   }
@@ -87,7 +87,7 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  module: { // [!code focus:18] // [!code ++:18]
+  module: { // [!code focus:17] // [!code ++:17]
     rules: [
       {
         test: /\.(ts|tsx)$/,
@@ -96,7 +96,6 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'],
               plugins: [['@babel/plugin-proposal-decorators', { "legacy": true }]],
             },
           },
