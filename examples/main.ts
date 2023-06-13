@@ -25,7 +25,7 @@ function createHTTPClient(): AppModule {
     console.log('global InterceptorsRes', result)
     const callError = result?.status !== 200 && result?.data?.code !== 200
     console.log(callError, 'callError')
-    if (!callError) return result.data?.data
+    if (!callError) return result.data
     return Promise.reject(result) // or throw result
   })
   return HTTPClient

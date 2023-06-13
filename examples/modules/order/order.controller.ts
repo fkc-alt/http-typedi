@@ -40,8 +40,8 @@ export default class OrderController {
   public async UploadFile<
     T extends Services.Common.UplaodReq,
     U extends Services.Common.UplaodRes
-  >(configure: T): Promise<U> {
-    return await this.uploadService.uploadFile<RequestConfig<T>, U>(
+  >(configure: T): ServerRes<U> {
+    return await this.uploadService.uploadFile<RequestConfig<T>, ServerRes<U>>(
       <RequestConfig<T>>configure
     )
   }
@@ -50,9 +50,10 @@ export default class OrderController {
   public async UploadBase64<
     T extends Services.Common.UplaodReq,
     U extends Services.Common.UplaodRes
-  >(configure: T): Promise<U> {
-    return await this.uploadService.uploadBase64<RequestConfig<T>, U>(
-      <RequestConfig<T>>configure
-    )
+  >(configure: T): ServerRes<U> {
+    return await this.uploadService.uploadBase64<
+      RequestConfig<T>,
+      ServerRes<U>
+    >(<RequestConfig<T>>configure)
   }
 }

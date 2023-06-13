@@ -32,7 +32,7 @@ export const ArticleControllerApplydecorators = (): ClassDecorator => {
     UseInterceptorsRes(result => {
       console.log(result, 'Controller InterceptorsRes')
       const callError = result?.status !== 200 && result?.data?.code !== 200
-      if (!callError) return result.data?.data
+      if (!callError) return result.data
       return Promise.reject(result) // or throw result
     })
   )

@@ -22,7 +22,9 @@ export default class UserController {
     configure: LoginDto
   ): ServerRes<U> {
     this.userService.Log()
-    return await this.requestService.request<T, U>(<RequestConfig<T>>configure)
+    return await this.requestService.request<T, ServerRes<U>>(
+      <RequestConfig<T>>configure
+    )
   }
 
   @GetMapping(UserRouteChildren.INFO)
@@ -30,6 +32,8 @@ export default class UserController {
     T extends Service.UserInfoReq,
     U extends Service.UserInfoRes
   >(configure: UserInfoDto): ServerRes<U> {
-    return await this.requestService.request<T, U>(<RequestConfig<T>>configure)
+    return await this.requestService.request<T, ServerRes<U>>(
+      <RequestConfig<T>>configure
+    )
   }
 }

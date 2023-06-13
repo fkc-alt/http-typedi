@@ -41,7 +41,7 @@ export default class ArticleController {
       currentPage: 0
     })
     console.log(data, 'helperController')
-    return await this.articleService.GetArticleList<T, U>(
+    return await this.articleService.GetArticleList<T, ServerRes<U>>(
       <RequestConfig<T>>configure
     )
   }
@@ -56,7 +56,7 @@ export default class ArticleController {
     configure: TableDataDto
   ): ServerRes<U> {
     console.log(configure, 'GetTableDataApplyDecorators')
-    return await this.articleService.GetTableDataList<T, U>(
+    return await this.articleService.GetTableDataList<T, ServerRes<U>>(
       <RequestConfig<T>>configure
     )
   }

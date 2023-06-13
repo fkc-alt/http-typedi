@@ -33,7 +33,9 @@ export default class DemoController {
       { age: 20 },
       { customElements: '<div>我是自定义Pipe</div>' }
     )
-    return await this.requestService.request<T, U>(<RequestConfig<T>>configure)
+    return await this.requestService.request<T, ServerRes<U>>(
+      <RequestConfig<T>>configure
+    )
   }
 
   @PostMapping(ArticleRouteChildren.TABLEDATA)
@@ -41,6 +43,8 @@ export default class DemoController {
     T = Service.TableDataReq,
     U = Service.TableDataRes
   >(configure: T): ServerRes<U> {
-    return await this.requestService.request<T, U>(<RequestConfig<T>>configure)
+    return await this.requestService.request<T, ServerRes<U>>(
+      <RequestConfig<T>>configure
+    )
   }
 }

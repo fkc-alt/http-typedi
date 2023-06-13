@@ -1,4 +1,4 @@
-import { Controller, PostMapping, Core, Sleep } from '@/index'
+import { Controller, PostMapping, Sleep, RequestConfig } from '@/index'
 import HelplerService from './providers/helper.service'
 import TableDataDto from './dto/tableData.dto'
 
@@ -8,7 +8,7 @@ export default class HelperController {
 
   @Sleep(1000)
   @PostMapping('apidoc')
-  public getApidoc(config: TableDataDto) {
-    return this.helperService.helper(<Core.RequestConfig>config)
+  public getApidoc<T = any, R = any>(config: TableDataDto) {
+    return this.helperService.helper<T, R>(<RequestConfig<T>>config)
   }
 }
