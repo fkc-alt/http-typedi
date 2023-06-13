@@ -14,24 +14,26 @@ html {
 }
 
 .VPSidebar::-webkit-scrollbar-track {
-  background-color: var(--c-border);
+  /* background-color: var(--c-border); */
+  background-color: transparent;
 }
 .VPSidebar::-webkit-scrollbar-thumb {
   background-color: var(--vp-c-brand);
   border-radius: 10px;
 }
 body::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
 }
 body::-webkit-scrollbar-track {
   background-color: transparent;
 }
 body::-webkit-scrollbar-thumb {
-  background-color: #0003;
+  /* background-color: #0003; */
+  background-color: var(--vp-c-brand);
   border-radius: 10px;
 }
 body::-webkit-scrollbar-thumb:hover {
-  background-color: #0000004d;
+  /* background-color: #0000004d; */
   cursor: pointer;
 }
 body,
