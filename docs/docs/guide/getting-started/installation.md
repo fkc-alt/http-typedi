@@ -5,11 +5,11 @@
 你可以通过[npm](https://github.com/fkc-alt/http-typedi/blob/main/LICENSE) 或 [yarn](https://github.com/fkc-alt/http-typedi) 引入并使用Http-Typedi
 
 ```sh
-npm install http-typedi@latest
+$ npm install http-typedi@latest
 # or
-yarn add http-typedi@latest
+$ yarn add http-typedi@latest
 # or
-pnpm install http-typedi@latest
+$ pnpm install http-typedi@latest
 ```
 
 :::tip 
@@ -17,7 +17,7 @@ pnpm install http-typedi@latest
 :::
 
 ```sh
-npm install reflect-metadata --save
+$ npm install reflect-metadata --save
 ```
 
 ```ts
@@ -28,11 +28,11 @@ import 'reflect-metadata'
 TypeScript 中使用装饰器需要开启 emitDecoratorMetadata 和 emitDecoratorMetadata选项，否则 reflect-metadata 提供的方法将无法获取参数类型信息。
 :::
 > tsconfig.json
-```json{}
+```json
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "esnext", // [!code focus:4] // [!code ++:4]
+    "module": "esnext", // Vite构建必须设置为esnext,webpack则为CommonJs // [!code focus:4] // [!code ++:4]
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
   }
@@ -45,18 +45,18 @@ TypeScript 中使用装饰器需要开启 emitDecoratorMetadata 和 emitDecorato
 :::
 
 ```sh
-npm install @swc/core unplugin-swc --save
+$ npm install @swc/core unplugin-swc --save
 ```
 
 > vite.config.ts
 ```ts
 // vite.config.ts
 import { defineConfig } from 'vite'
-import Swc from 'unplugin-swc'
+import Swc from 'unplugin-swc'  // [!code focus] // [!code ++]
 
 export default defineConfig(() => {
   return {
-    plugins: [Swc.vite()]
+    plugins: [Swc.vite()] // [!code focus] // [!code ++]
   }
 })
 ```
@@ -77,6 +77,7 @@ $ npm install ts-loader babel-loader @babel/preset-env @babel/plugin-proposal-de
 
 还修改一下`webpack.config.js`中的`rules`，具体配置如下所示：
 
+
 ```javascript
 const path = require('path');
 
@@ -86,7 +87,7 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  module: {
+  module: { // [!code focus:18] // [!code ++:18]
     rules: [
       {
         test: /\.(ts|tsx)$/,
@@ -107,6 +108,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
+  ...
 };
 ```
 那么现在就可以运行起来您的应用程序啦
