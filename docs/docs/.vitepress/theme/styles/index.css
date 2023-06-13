@@ -20,6 +20,20 @@ html {
   background-color: var(--vp-c-brand);
   border-radius: 10px;
 }
+body::-webkit-scrollbar {
+  width: 8px;
+}
+body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: #0003;
+  border-radius: 10px;
+}
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #0000004d;
+  cursor: pointer;
+}
 body,
 .VPSidebar,
 .curtain,
