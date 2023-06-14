@@ -10,12 +10,11 @@ export class UploadService {
     private readonly contenTypeService: ContentTypeService
   ) {}
 
-  public async uploadFile<
-    T extends RequestConfig<Services.Common.UplaodReq>,
-    U = Services.Common.UplaodRes
-  >(configure: T): Promise<U> {
+  public async uploadFile<T = any, U = unknown>(
+    configure: RequestConfig<T>
+  ): Promise<U> {
     const {
-      data: { file, ...params } = {},
+      data: { file, ...params } = <any>{},
       headers = {},
       ...requestConfig
     } = configure
@@ -35,16 +34,16 @@ export class UploadService {
     })
   }
 
-  public async uploadBase64<
-    T extends RequestConfig<Services.Common.UplaodReq>,
-    U = Services.Common.UplaodRes
-  >(configure: T): Promise<U> {
+  public async uploadBase64<T = any, U = unknown>(
+    configure: RequestConfig<T>
+  ): Promise<U> {
     type UploadFile = Services.Common.UplaodReq extends { file: infer U }
       ? U
       : never
     return await new Promise((resolve, reject) => {
       try {
-        const { data: { file, ...params } = {}, ...requestConfig } = configure
+        const { data: { file, ...params } = <any>{}, ...requestConfig } =
+          configure
         const render = new FileReader()
         render.onload = (e: ProgressEvent<FileReader>) => {
           const base64 = (<string>e.target?.result)?.split(',').pop() ?? ''

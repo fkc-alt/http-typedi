@@ -36,6 +36,9 @@ interface configure {
     method: string;
     data?: UpdateDemoReq 
     params?: UpdateDemoReq  // 只要被Get修饰过后的方法才会返回params
+    headers?: Record<string, any>
+    timeout?: number
+    timeoutCallback?(): void
 }
 ```
 
