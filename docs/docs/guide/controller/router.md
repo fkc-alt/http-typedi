@@ -26,7 +26,7 @@ export class DemoController {
 }
 ```
 
-本例中的updateDemo方法被Post装饰器修饰之后，它已经变成请求路径为demo/update的一个路由，由于方法被 **`@PostMapping`** 修饰，方法的`形参(confugre)`也被重写。下面是被重写之后的形参类型：
+本例中的updateDemo方法被 **`PostMapping`** 装饰器修饰之后，它已经变成请求路径为demo/update的一个路由，由于方法被 **`@PostMapping`** 修饰，方法的`形参(confugre)`也被重写。下面是被重写之后的形参类型：
 
 
 ```ts

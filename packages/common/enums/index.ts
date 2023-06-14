@@ -85,6 +85,12 @@ export enum MetaDataTypes {
   CUSTOMARGS = 'customArgs'
 }
 
+export enum ContentType {
+  FORM_URLENCODED = 'application/x-www-form-urlencoded',
+  FORM_DATA = 'multipart/form-data',
+  JSON = 'application/json'
+}
+
 export enum HttpStatus {
   CONTINUE = 100,
   SWITCHING_PROTOCOLS = 101,
