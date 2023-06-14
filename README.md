@@ -35,6 +35,5 @@
 + [DTO](https://fkc-alt.github.io/http-typedi/guide/support/what-is-dto)
 - [GlobalConfig](https://fkc-alt.github.io/http-typedi/guide/global-config/)
 
-
 ## Getting started
 - 要查看中文 指南, 请访问 [https://fkc-alt.github.io/http-typedi](https://fkc-alt.github.io/http-typedi)📚
