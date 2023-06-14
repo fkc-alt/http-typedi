@@ -9,7 +9,7 @@ export class RequestService {
     const XHR = new XMLHttpRequest()
     return new Promise<R>((resolve, reject) => {
       const isGet = [Method.GET, Method.get].includes(requestConfig.method!)
-      const URLParameter = ObjectToURLParameter(requestConfig.params)
+      const URLParameter = ObjectToURLParameter(requestConfig.params!)
       const URL = isGet
         ? `${requestConfig.url}${URLParameter ? `?${URLParameter}` : ''}}`
         : requestConfig.url

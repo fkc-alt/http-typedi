@@ -8,13 +8,10 @@ export interface RequestConfig<R = unknown> {
   timeoutCallback?(): void
 }
 
-export interface Response<R = unknown> {
-  readonly code?: number
-  readonly message?: string
+export interface ResponseConfig<R = unknown>
+  extends Pick<
+    XMLHttpRequest,
+    'status' | 'statusText' | 'responseText' | 'responseType' | 'timeout'
+  > {
   data: R
 }
-
-export type ResponseConfig<R = unknown> = Pick<
-  XMLHttpRequest & Response<R>,
-  'status' | 'statusText' | 'responseText' | 'responseType' | 'timeout' | 'data'
->
