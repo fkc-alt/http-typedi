@@ -30,8 +30,8 @@ export class GetDemoDetailDto {
 @Controller('/demo')
 export class DemoController {
   @GetMapping('detail')
-  async getDemoDetail(query: GetDemoDetailDto) {
-    return query
+  async getDemoDetail(demoDetailDto: GetDemoDetailDto) {
+    return demoDetailDto
   }
 }
 ```

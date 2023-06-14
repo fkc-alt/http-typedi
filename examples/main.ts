@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { HttpFactory } from '@/index'
+import { HttpFactory, ResponseConfig } from '@/index'
 import AppModule from './app.module'
 import './style.css'
 
@@ -21,13 +21,15 @@ function createHTTPClient(): AppModule {
       configure.headers.Authorization = `Bearer ${Authorization}`
     return configure
   })
-  HTTPClient.useInterceptorsRes(result => {
-    console.log('global InterceptorsRes', result)
-    const callError = result?.status !== 200 && result?.data?.code !== 200
-    console.log(callError, 'callError')
-    if (!callError) return result.data
-    return Promise.reject(result) // or throw result
-  })
+  HTTPClient.useInterceptorsRes(
+    (result: ResponseConfig<Services.Common.Response>) => {
+      console.log('global InterceptorsRes', result)
+      const callError = result?.status !== 200 && result?.data?.code !== 200
+      console.log(callError, 'callError')
+      if (!callError) return result.data
+      return Promise.reject(result) // or throw result
+    }
+  )
   return HTTPClient
 }
 

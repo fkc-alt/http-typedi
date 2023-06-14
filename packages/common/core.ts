@@ -7,7 +7,8 @@ import {
   MetadataKey,
   HttpStatus,
   Method,
-  RouteParamtypes
+  RouteParamtypes,
+  ContentType
 } from './enums'
 import {
   deepRegisterModulesAllProvider,
@@ -15,7 +16,7 @@ import {
   flattenErrorList
 } from './helper'
 import { Core } from './interface/core'
-import { Response, ResponseConfig } from './providers'
+import { ResponseConfig } from './providers'
 export * from './decorators'
 export {
   ModuleMetadata,
@@ -23,7 +24,8 @@ export {
   HttpStatus,
   Method,
   RouteParamtypes,
-  flattenErrorList
+  flattenErrorList,
+  ContentType
 }
 export type { Core }
 
@@ -57,7 +59,7 @@ export type InterceptorReq = (
   requestConfig: Core.RequestConfig
 ) => Core.RequestConfig
 
-export type InterceptorRes = (response: ResponseConfig<Response>) => any
+export type InterceptorRes = (response: ResponseConfig<any>) => any
 
 interface CreateOptions {
   /**
