@@ -1,6 +1,6 @@
 export interface RequestConfig<P = unknown> {
-  url: string
-  method: import('../../enums').Method
+  url?: string
+  method?: import('../../enums').Method
   headers?: Record<string, any>
   params?: any
   data?: P
