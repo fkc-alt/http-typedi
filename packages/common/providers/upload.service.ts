@@ -18,11 +18,11 @@ export class UploadService {
     const fileLoder = new FormData()
     Object.assign(headers, { 'Conent-Type': ContentType.FORM_DATA })
     fileLoder.append('file', <Blob>file?.raw)
-    return await this.requestService.request<Services.Common.UplaodFileReq, U>({
+    return await this.requestService.request<T, U>({
       ...requestConfig,
       headers,
-      data: {
-        file: <FormDataEntryValue>fileLoder.get('file'),
+      data: <T>{
+        file: fileLoder.get('file'),
         ...(params || {})
       }
     })
@@ -39,9 +39,9 @@ export class UploadService {
           const base64 = (<string>e.target?.result)?.split(',').pop() ?? ''
           const ext = `.${<string>(<any>file).name.split('.').pop()}`
           resolve(
-            this.requestService.request<Services.Common.UplaodBase64Req, U>({
+            this.requestService.request<T, U>({
               ...requestConfig,
-              data: { base64, ext, ...(params || {}) }
+              data: <T>(<unknown>{ base64, ext, ...(params || {}) })
             })
           )
         }
