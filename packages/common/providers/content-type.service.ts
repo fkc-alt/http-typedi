@@ -1,4 +1,4 @@
-import { Injectable } from '@/index'
+import { Injectable } from '../decorators'
 
 export enum ContentType {
   FORM_URLENCODED,
@@ -7,7 +7,7 @@ export enum ContentType {
 }
 
 @Injectable()
-export default class ContentTypeService {
+export class ContentTypeService {
   static readonly FORM_URLENCODED: string = 'application/x-www-form-urlencoded'
   static readonly FORM_DATA: string = 'multipart/form-data'
   static readonly JSON: string = 'application/json'

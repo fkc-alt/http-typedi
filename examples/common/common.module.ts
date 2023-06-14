@@ -1,12 +1,17 @@
-import { Global, Module } from '@/index'
-import ContentTypeService from './providers/contentType.service'
-import RequestService from './providers/request.service'
+import {
+  Global,
+  Module,
+  RequestService,
+  ContentTypeService,
+  UploadService
+} from '@/index'
 
 @Global()
 @Module({
   providers: [
     RequestService,
     ContentTypeService,
+    UploadService,
     {
       provide: 'CONFIG',
       useFactory: () => ({

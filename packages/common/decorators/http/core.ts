@@ -12,6 +12,7 @@ import {
   getInjectValues,
   getMetadataType
 } from './route-params.decorator'
+import { RequestConfig } from '@/common/providers'
 
 export type CatchCallback = (err: any) => void
 
@@ -184,30 +185,23 @@ export async function handlerResult(
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
         try {
-          let result: Record<string, any> = <Record<string, any>>(
-            (<unknown>void 0)
-          )
+          let result: any = <unknown>void 0
           const values = getInjectValues(target, <string>propertyKey)
           const metaDataType =
             getMetadataType(target, <string>propertyKey) ||
             MetaDataTypes.REQUEST
-          const _interceptorsReqValue: Core.RequestConfig =
-            interceptorsReq.reduce((prev, next) => next(prev), param)
-          const _param: Core.RequestConfig = swtichMetadataTypeRelationValues(
+          const _interceptorsReqValue: RequestConfig = interceptorsReq.reduce(
+            (prev: any, next) => next(prev),
+            param
+          )
+          const _param: RequestConfig = swtichMetadataTypeRelationValues(
             _interceptorsReqValue,
             metaDataType
           )
-          const requestConfigs: Core.RequestConfig[] = values.length
+          const requestConfigs: RequestConfig[] = values.length
             ? OverrideReqEffect(values, [_param])
             : [_param]
-          // const requestConfigs: Core.RequestConfig[] = injectValue.filter(
-          //   Boolean
-          // ).length
-          //   ? injectValue
-          //   : [_interceptorsReqValue].map(({ data, params, ...conf }) => {
-          //       return conf
-          //     })
-          result = await fn.apply<any, Core.RequestConfig[], any>(
+          result = await fn.apply<any, RequestConfig[], any>(
             this,
             requestConfigs
           )
@@ -216,21 +210,7 @@ export async function handlerResult(
             (prev, next) => next(prev),
             result
           )
-          const timeout = getTimeout(target, propertyKey)
-          if (timeout) {
-            setTimeout(() => {
-              if (!result) {
-                getTimeoutCallback(target, propertyKey)?.()
-                reject({
-                  code: 'ECONNABORTED',
-                  data: null,
-                  msg: 'timeout'
-                })
-              }
-            }, timeout)
-          } else {
-            resolve(response)
-          }
+          resolve(response)
         } catch (error) {
           const catchCallback = getCatchCallback(target, propertyKey)
           catchCallback?.(error)
@@ -252,7 +232,9 @@ export const handelParam = (
   key: string | symbol,
   params: Record<string, any>
 ): Record<string, any> => {
-  const hasGet = [Method.GET, Method.get].includes(method)
+  const timeout = getTimeout(target, key)
+  const timeoutCallback = getTimeoutCallback(target, key)
+  const isGet = [Method.GET, Method.get].includes(method)
   const globalPrefix: string = (HttpFactory as any).globalPrefix
   const controllerPrefix = (<any>target)[
     `${target.constructor.name}${CONNECTSTRING}`
@@ -279,20 +261,25 @@ export const handelParam = (
     }
   }, {})
   const data = {
-    [hasGet ? 'params' : 'data']: params
+    [isGet ? 'params' : 'data']: params
   }
-  const url = paramList
-    .reduce(
-      (prev, next) => prev.replace(new RegExp(next), params[next]),
-      requestURL
-    )
-    .replace(/:/g, '')
+  const url = [Method.GET, Method.DELETE, Method.get, Method.delete].includes(
+    method
+  )
+    ? paramList
+        .reduce(
+          (prev, next) => prev.replace(new RegExp(next), params[next]),
+          requestURL
+        )
+        .replace(/:/g, '')
+    : requestURL
   const reqJson: Record<string, any> = {
     url,
     method,
     ...(paramList.length ? {} : data),
     headers
   }
+  timeout && Object.assign(reqJson, { timeout, timeoutCallback })
   return reqJson
 }
 
