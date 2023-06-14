@@ -41,7 +41,7 @@ export default class OrderController {
     T extends Services.Common.UplaodReq,
     U extends Services.Common.UplaodRes
   >(configure: T): ServerRes<U> {
-    return await this.uploadService.uploadFile<RequestConfig<T>, ServerRes<U>>(
+    return await this.uploadService.uploadFile<T, ServerRes<U>>(
       <RequestConfig<T>>configure
     )
   }
@@ -51,9 +51,8 @@ export default class OrderController {
     T extends Services.Common.UplaodReq,
     U extends Services.Common.UplaodRes
   >(configure: T): ServerRes<U> {
-    return await this.uploadService.uploadBase64<
-      RequestConfig<T>,
-      ServerRes<U>
-    >(<RequestConfig<T>>configure)
+    return await this.uploadService.uploadBase64<T, ServerRes<U>>(
+      <RequestConfig<T>>configure
+    )
   }
 }
