@@ -36,6 +36,9 @@ const HTTPClient = createHTTPClient()
 const {
   articleController: { GetTableDataList, GetArticleList }
 } = HTTPClient
+HTTPClient.userController.UserInfo({ id: 1, phone: '157' }).then(res => {
+  console.log(res, 'UserInfo')
+})
 HTTPClient.demoController
   .GetArticleList({
     currentPage: 1,

@@ -45,6 +45,7 @@ const MockList: MockMethod[] = [
     url: '/rsapi/article/tableData',
     method: 'post',
     statusCode: 400,
+    timeout: 3000,
     response: (): Services.Common.Response<Service.TableDataRes> => {
       return {
         code: 200,
