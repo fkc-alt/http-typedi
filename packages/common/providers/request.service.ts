@@ -1,57 +1,59 @@
 import { Injectable } from '../decorators'
-import { HttpStatus, Method } from '../enums'
+import { ContentType, HttpStatus, Method } from '../enums'
 import { RequestConfig } from './interfaces/request.service.interface'
-import { ObjectToURLParameter } from './utils'
+import { ObjectToURLParameter, getResponse } from './utils'
 
 @Injectable()
 export class RequestService {
+  private static readonly timeoutResponse = {
+    code: XMLHttpRequest.UNSENT,
+    data: null,
+    message: 'ECONNABORTED'
+  }
+
   request<P, R>(requestConfig: RequestConfig<P>): Promise<R> {
     const XHR = new XMLHttpRequest()
+
     return new Promise<R>((resolve, reject) => {
       const isGet = [Method.GET, Method.get].includes(requestConfig.method!)
       const URLParameter = ObjectToURLParameter(requestConfig.params!)
       const URL = isGet
         ? `${requestConfig.url}${URLParameter ? `?${URLParameter}` : ''}}`
         : requestConfig.url
-      if (requestConfig.timeout) {
-        XHR.timeout = requestConfig.timeout
-        XHR.ontimeout = function () {
-          requestConfig.timeoutCallback?.()
-          XHR.abort()
+
+      XHR.timeout = requestConfig.timeout! || 0
+      XHR.ontimeout = function () {
+        requestConfig.timeoutCallback?.(
+          Object.assign(getResponse.call(this), {
+            data: RequestService.timeoutResponse
+          })
+        )
+        XHR.abort()
+      }
+      XHR.open(requestConfig.method!, URL!)
+
+      for (const key in requestConfig.headers) {
+        XHR.setRequestHeader(key, requestConfig.headers![key])
+      }
+      !Object.hasOwn(requestConfig.headers || {}, 'Content-Type') &&
+        XHR.setRequestHeader('Content-Type', ContentType.JSON)
+
+      XHR.onreadystatechange = function () {
+        if (XHR.readyState === XHR.DONE) {
+          const response = getResponse.call(this)
+          switch (XHR.status) {
+            case HttpStatus.OK:
+              resolve(<R>response)
+              break
+            case XHR.UNSENT:
+              reject(Object.assign(response, RequestService.timeoutResponse))
+              break
+            default:
+              reject(response)
+          }
         }
       }
 
-      XHR.open(requestConfig.method!, URL!)
-      if (requestConfig.headers) {
-        for (const key in requestConfig.headers || {}) {
-          XHR.setRequestHeader(key, requestConfig.headers[key])
-        }
-      }
-      XHR.onreadystatechange = function () {
-        if (XHR.readyState === XHR.DONE) {
-          const { status, statusText, responseText, responseType, timeout } =
-            XHR
-          const response = {
-            status,
-            statusText,
-            responseText,
-            responseType,
-            timeout,
-            data: XHR.response ? JSON.parse(XHR.response) : ''
-          }
-          if (XHR.status === HttpStatus.OK) {
-            resolve(<R>response)
-          } else if (XHR.status === XHR.UNSENT) {
-            reject({
-              code: 'ECONNABORTED',
-              data: null,
-              message: 'timeout'
-            })
-          } else {
-            reject(response)
-          }
-        }
-      }
       switch (requestConfig.method) {
         case Method.GET:
         case Method.get:

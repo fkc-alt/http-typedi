@@ -39,6 +39,13 @@ export default class ArticleService {
     return await this.requestService.request<T, U>(configure)
   }
 
+  public async DeleteArticle<
+    T = Service.TableDataReq,
+    U = Service.TableDataRes
+  >(configure: RequestConfig<T>): Promise<U> {
+    return await this.requestService.request<T, U>(configure)
+  }
+
   @Override()
   public Log(
     @Param(['id', 'price'], new DefaultValuePipe('1000.99'), new ParseIntPipe())

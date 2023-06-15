@@ -36,10 +36,13 @@ function createHTTPClient(): AppModule {
 const HTTPClient = createHTTPClient()
 
 const {
-  articleController: { GetTableDataList, GetArticleList }
+  articleController: { GetTableDataList, GetArticleList, DeleteArticle }
 } = HTTPClient
 HTTPClient.userController.UserInfo({ id: 1, phone: '157' }).then(res => {
   console.log(res, 'UserInfo')
+})
+DeleteArticle({ currentPage: 1, pageSize: 10 }).then(res => {
+  console.log(res, 'DeleteArticle')
 })
 HTTPClient.demoController
   .GetArticleList({
