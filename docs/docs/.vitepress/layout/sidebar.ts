@@ -149,7 +149,6 @@ export const Sidebar: DefaultTheme.Sidebar = {
         {
           text: '内置装饰器',
           collapsed: true,
-          link: '/guide/decorators/param-decorators',
           items: [
             {
               text: '参数装饰器',
@@ -186,7 +185,6 @@ export const Sidebar: DefaultTheme.Sidebar = {
         },
         {
           text: 'DTO',
-          link: '/guide/support/what-is-dto',
           collapsed: true,
           items: [
             {
