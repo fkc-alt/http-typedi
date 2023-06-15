@@ -13,19 +13,14 @@ export class RequestService {
       const URL = isGet
         ? `${requestConfig.url}${URLParameter ? `?${URLParameter}` : ''}}`
         : requestConfig.url
-      if (requestConfig.timeout) {
-        XHR.timeout = requestConfig.timeout
-        XHR.ontimeout = function () {
-          requestConfig.timeoutCallback?.()
-          XHR.abort()
-        }
+      XHR.timeout = requestConfig.timeout! || 0
+      XHR.ontimeout = function () {
+        requestConfig.timeoutCallback?.()
+        XHR.abort()
       }
-
       XHR.open(requestConfig.method!, URL!)
-      if (requestConfig.headers) {
-        for (const key in requestConfig.headers || {}) {
-          XHR.setRequestHeader(key, requestConfig.headers[key])
-        }
+      for (const key in requestConfig.headers || {}) {
+        XHR.setRequestHeader(key, requestConfig.headers![key])
       }
       XHR.onreadystatechange = function () {
         if (XHR.readyState === XHR.DONE) {
