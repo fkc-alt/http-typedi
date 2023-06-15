@@ -41,11 +41,11 @@ TypeScript 中使用装饰器需要开启 emitDecoratorMetadata 和 emitDecorato
 
 # vite
 :::tip
- 如果使用Vite进行构建，还需要安装`@swc/core` `unplugin-swc`，如下所示：
+ 如果使用Vite进行构建，还需要安装`unplugin-swc`，如下所示：
 :::
 
 ```sh
-$ npm install @swc/core unplugin-swc --save
+$ npm install unplugin-swc --save
 ```
 
 > vite.config.ts
