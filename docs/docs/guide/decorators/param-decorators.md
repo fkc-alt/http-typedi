@@ -22,15 +22,17 @@ export class DemoController {
 }
 ```
 
-`@Request()/@Req()`会返回这样`RequestConfig`这个接口的数据，就像下面这样
+`@Request() / @Req()`会返回这样`RequestConfig`这个接口的数据，就像下面这样
 
 ```ts
-interface RequestConfig<D = unknown> {
+interface RequestConfig<R = unknown> {
   url?: string
-  method?: Method
-  headers?: Record<string, string | number | boolean>
-  params?: any
-  data?: D
+  method?: 'GET' | 'HEAD' | 'POST' | 'DELETE' | 'OPTIONS' | 'PUT'
+  headers?: Record<string, any>
+  params?: R
+  data?: R
+  timeout?: number
+  timeoutCallback?(): void
 }
 ```
 

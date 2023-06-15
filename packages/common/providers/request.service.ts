@@ -39,16 +39,23 @@ export class RequestService {
             timeout,
             data: XHR.response ? JSON.parse(XHR.response) : ''
           }
-          if (XHR.status === HttpStatus.OK) {
-            resolve(<R>response)
-          } else if (XHR.status === XHR.UNSENT) {
-            reject({
-              code: 'ECONNABORTED',
-              data: null,
-              message: 'timeout'
-            })
-          } else {
-            reject(response)
+          switch (XHR.status) {
+            case HttpStatus.OK:
+              resolve(<R>response)
+              break
+            case XHR.UNSENT:
+              reject(
+                Object.assign(response, {
+                  data: {
+                    code: 'ECONNABORTED',
+                    data: null,
+                    message: 'timeout'
+                  }
+                })
+              )
+              break
+            default:
+              reject(response)
           }
         }
       }
