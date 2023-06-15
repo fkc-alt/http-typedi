@@ -91,7 +91,7 @@ export const Navbar: DefaultTheme.NavItem[] = [
       {
         text: '全局配置',
         activeMatch: '^/guide/global-config',
-        link: '/guide/global-config'
+        link: '/guide/global-config/'
       }
     ]
   },

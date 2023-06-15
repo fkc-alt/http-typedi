@@ -1,17 +1,11 @@
-export interface RequestConfig<P = unknown> {
+export interface RequestConfig<R = unknown> {
   url?: string
   method?: import('../../enums').Method
   headers?: Record<string, any>
-  params?: any
-  data?: P
+  params?: R
+  data?: R
   timeout?: number
-  timeoutCallback?: () => void
-}
-
-export interface Response<R = unknown> {
-  readonly code?: number
-  readonly message?: string
-  data: R
+  timeoutCallback?(): void
 }
 
 export interface ResponseConfig<R = unknown>
