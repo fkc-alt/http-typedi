@@ -1,5 +1,5 @@
 import { Injectable } from '../decorators'
-import { HttpStatus, Method } from '../enums'
+import { ContentType, HttpStatus, Method } from '../enums'
 import { RequestConfig } from './interfaces/request.service.interface'
 import { ObjectToURLParameter, getResponse } from './utils'
 
@@ -30,12 +30,13 @@ export class RequestService {
         )
         XHR.abort()
       }
-
       XHR.open(requestConfig.method!, URL!)
 
-      for (const key in requestConfig.headers || {}) {
+      for (const key in requestConfig.headers) {
         XHR.setRequestHeader(key, requestConfig.headers![key])
       }
+      !Object.hasOwn(requestConfig.headers || {}, 'Content-Type') &&
+        XHR.setRequestHeader('Content-Type', ContentType.JSON)
 
       XHR.onreadystatechange = function () {
         if (XHR.readyState === XHR.DONE) {

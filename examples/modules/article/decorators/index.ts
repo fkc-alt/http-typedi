@@ -9,7 +9,8 @@ import {
   Sleep,
   Version,
   Timeout,
-  ContentType
+  ContentType,
+  DeleteMapping
 } from '@/index'
 import { Route, ArticleRouteChildren } from '../..'
 import { catchCallback } from '../catch/catch-callback'
@@ -69,5 +70,12 @@ export const GetTableDataApplyDecorators = () => {
     Timeout(2000, error => {
       console.log('timeout callback', error)
     })
+  )
+}
+
+export const DeleteArticleApplyDecorators = () => {
+  return applyDecorators(
+    DeleteMapping('delete/:currentPage/:pageSize'),
+    Header('DeleteArticle', 'delete')
   )
 }

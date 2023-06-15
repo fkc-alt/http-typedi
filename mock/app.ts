@@ -65,6 +65,27 @@ const MockList: MockMethod[] = [
     }
   },
   {
+    url: '/rsapi/article/delete/{:currentPage}/{:pageSize}',
+    method: 'delete',
+    response: (): Services.Common.Response<Service.TableDataRes> => {
+      return {
+        code: 200,
+        message: '成功',
+        data: {
+          tableList: [
+            ...create<Service.TableDataRecord>(10, _item => {
+              return {
+                date: Mock.Random.date(),
+                name: Mock.Random.cname(),
+                address: Mock.Random.county()
+              }
+            })
+          ]
+        }
+      }
+    }
+  },
+  {
     url: '/rsapi/article/getArticleList',
     method: 'post',
     response: (): Services.Common.Response<Service.ArticleListRes> => {

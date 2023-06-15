@@ -6,6 +6,7 @@ import HelperController from './helper.controller'
 import DemoController from '../demo/demo.controller'
 import {
   ArticleControllerApplydecorators,
+  DeleteArticleApplyDecorators,
   GetArticleListApplyDecorators,
   GetTableDataApplyDecorators
 } from './decorators'
@@ -29,6 +30,7 @@ export default class ArticleController {
     // 解构使用方法的话需要在构造中绑定this
     this.GetArticleList = this.GetArticleList.bind(this)
     this.GetTableDataList = this.GetTableDataList.bind(this)
+    this.DeleteArticle = this.DeleteArticle.bind(this)
   }
 
   @GetArticleListApplyDecorators()
@@ -57,6 +59,16 @@ export default class ArticleController {
   ): ServerRes<U> {
     console.log(configure, 'GetTableDataApplyDecorators')
     return await this.articleService.GetTableDataList<T, ServerRes<U>>(
+      <RequestConfig<T>>configure
+    )
+  }
+
+  @DeleteArticleApplyDecorators()
+  public async DeleteArticle<
+    T = Service.TableDataReq,
+    U = Service.TableDataRes
+  >(configure: TableDataDto): ServerRes<U> {
+    return await this.articleService.DeleteArticle<T, ServerRes<U>>(
       <RequestConfig<T>>configure
     )
   }
