@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-dupe-class-members */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable new-cap */
-/* eslint-disable @typescript-eslint/ban-types */
 import {
   ModuleMetadata,
   MetadataKey,
@@ -127,6 +123,7 @@ export class HttpFactoryStatic {
     this.globalModule = Array.from(new Set(deepGlobalModule(imports)))
     const exposeProperties: this = options?.expose ? this : <this>{}
     return <HttpServicesApplication<T>>(<unknown>Object.assign(
+      // eslint-disable-next-line @typescript-eslint/ban-types
       <Object>Factory(target),
       {
         ...exposeProperties,
