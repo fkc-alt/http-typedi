@@ -3,7 +3,7 @@
 在开始使用之前，我们先安装依赖。
 
 ```sh
-npm i --save class-validator class-transformer
+$ npm install --save class-validator class-transformer
 ```
 
 ::: tip
