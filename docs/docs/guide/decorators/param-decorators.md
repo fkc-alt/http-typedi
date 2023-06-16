@@ -22,7 +22,7 @@ export class DemoController {
 }
 ```
 
-`@Request() / @Req()`会返回这样`RequestConfig`这个接口的数据，就像下面这样
+`@Request() / @Req()`会返回`RequestConfig`这个接口，就像下面这样
 
 ```ts
 interface RequestConfig<R = unknown> {
@@ -40,7 +40,7 @@ interface RequestConfig<R = unknown> {
 
 ## Body
 
-使用`@Body()`装饰器之后，会返回`RequestConfig`这个接口的`data`属性提取出来，使用方式例如
+使用`@Body()`装饰器之后，会将`RequestConfig`这个接口的`data`属性提取出来，就像下面这样
 
 ```ts{2}
 @PostMapping('updateDetail')
@@ -51,7 +51,7 @@ async updateDemoDetail(@Body() demo: DemoReq): ServerRes<DemoRes> {
 
 ## Headers
 
-使用`@Headers()`装饰器之后，会返回`RequestConfig`这个接口的`headers`属性提取出来
+使用`@Headers()`装饰器之后，会将`RequestConfig`这个接口的`headers`属性提取出来，就像下面这样
 ```ts{2}
 @PostMapping('updateDetail')
 async updateDemoDetail(@Headers() demo: DemoReq): ServerRes<DemoRes> {
@@ -60,7 +60,7 @@ async updateDemoDetail(@Headers() demo: DemoReq): ServerRes<DemoRes> {
 ```
 ## Param
 
-使用`@Param()`装饰器之后，会返回`RequestConfig`这个接口的`params`属性提取出来
+使用`@Param()`装饰器之后，会将`RequestConfig`这个接口的`params`属性提取出来，就像下面这样
 ```ts{2}
 @GetMapping('updateDetail')
 async updateDemoDetail(@Param() demo: DemoReq): ServerRes<DemoRes> {
@@ -94,4 +94,4 @@ export class DemoController {
 
 我们先说`updateDemoDetail`这个路由使用`@Body`装饰器传递了一个id参数，那么`Http-Typedi`就会根据传入的这个参数当作token去通过`@Body`装饰器返回的data参数中去匹配参数名为`id`键。并返回对应的value。`@Req`、`@Request`、`@Param`、`@Headers`都支持此用法。
 
-`getDemoDetail`我们使用`@Param`装饰器传递了一个id参数，并且还传入了第二个参数，默认第一个参数为token，剩余的参数为pipes，pipes会被http-typedi统一收集起来，这里我们使用了`Http-typedi`的管道[`pipe`](../pipe/index.md)。上面通过传入的`id`这个参数当作token去通过`@Body`装饰器返回的data参数中去匹配参数名为`id`键，如果没找到。则使用[`DefaultValuePipe`](../pipe/index.md)传入的value当作value返回。类似于JavaScript函数形参默认值的写法。
+`getDemoDetail`我们使用`@Param`装饰器传递了一个id参数，并且还传入了第二个参数，默认第一个参数为token，剩余的参数为[`pipes`](../pipe/index.md)，pipes会被http-typedi统一收集起来，这里我们使用了`Http-typedi`的管道[`pipes`](../pipe/index.md)。上面通过传入的`id`这个参数当作token去通过`@Body`装饰器返回的data参数中去匹配参数名为`id`键，如果没找到。则使用[`DefaultValuePipe`](../pipe/index.md)传入的value当作value返回。类似于JavaScript函数形参默认值的写法。

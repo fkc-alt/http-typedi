@@ -42,7 +42,7 @@ interface configure {
 }
 ```
 
-我们强烈建议在每个路由应该实现可以请求服务端的接口。所以下面我们先创建一个[依赖](../provider/index.md)请求类供[controller](./index.md)类使用
+我们强烈建议在每个路由应该实现可以请求服务端的接口。所以下面我们先创建一个[依赖](../provider/index.md)请求类供[Controller](./index.md)类使用
 
 Http-Typedi已经帮助我们写好了一个请求服务端的`provider`类(`RequestService`),我们只需要引入使用即可：
 

@@ -64,7 +64,8 @@ export default defineConfig(() => {
 :::warning
 如果您的`package.json`中的`"type"`为`"module"`的话，需要去掉`"type": "module"`, 重新运行即可。详情可见[`issue`](https://github.com/fkc-alt/http-typedi/issues/2)
 :::
-那么现在就可以运行起来您的应用程序啦
+
+那么现在就可以运行起来您的应用程序啦~
 
 # webpack
 :::tip
@@ -75,7 +76,7 @@ export default defineConfig(() => {
 $ npm install ts-loader babel-loader @babel/preset-env @babel/plugin-proposal-decorators --save-dev
 ```
 
-还修改一下`webpack.config.js`中的`rules`，具体配置如下所示：
+还需要修改一下`webpack.config.js`中的`rules`，具体配置如下所示：
 
 
 ```javascript
@@ -110,5 +111,5 @@ module.exports = {
   ...
 };
 ```
-那么现在就可以运行起来您的应用程序啦
+那么现在就可以运行起来您的应用程序啦~
 
