@@ -31,8 +31,8 @@ TypeScript 中使用装饰器需要开启 emitDecoratorMetadata 和 emitDecorato
 ```json
 {
   "compilerOptions": {
-    "target": "esnext", // [!code focus:4] // [!code ++:4]
-    "module": "esnext", // [!code focus:4] // [!code ++:4]
+    "target": "esnext", // [!code focus:3] // [!code ++:3]
+    "module": "esnext", // [!code focus:3] // [!code ++:3]
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
   }
