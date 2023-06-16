@@ -1,7 +1,7 @@
 import { Injectable } from '../decorators'
 import { ContentType, HttpStatus, Method } from '../enums'
 import { RequestConfig } from './interfaces/request.service.interface'
-import { ObjectToURLParameter, getResponse } from './utils'
+import { ObjectToURLParameter, GR } from './utils'
 
 @Injectable()
 export class RequestService {
@@ -11,50 +11,50 @@ export class RequestService {
     message: 'ECONNABORTED'
   }
 
-  request<P, R>(requestConfig: RequestConfig<P>): Promise<R> {
+  private dispatchRequest<P, R>(rc: RequestConfig<P>): Promise<R> {
     const XHR = new XMLHttpRequest()
 
-    return new Promise<R>((resolve, reject) => {
-      const isGet = [Method.GET, Method.get].includes(requestConfig.method!)
-      const URLParameter = ObjectToURLParameter(requestConfig.params!)
+    return new Promise<R>((r, j) => {
+      const isGet = [Method.GET, Method.get].includes(rc.method!)
+      const URLParameter = ObjectToURLParameter(rc.params!)
       const URL = isGet
-        ? `${requestConfig.url}${URLParameter ? `?${URLParameter}` : ''}}`
-        : requestConfig.url
+        ? `${rc.url}${URLParameter ? `?${URLParameter}` : ''}}`
+        : rc.url
 
-      XHR.timeout = requestConfig.timeout! || 0
+      XHR.timeout = rc.timeout! || 0
       XHR.ontimeout = function () {
-        requestConfig.timeoutCallback?.(
-          Object.assign(getResponse.call(this), {
+        rc.timeoutCallback?.(
+          Object.assign(GR.call(this), {
             data: RequestService.timeoutResponse
           })
         )
         XHR.abort()
       }
-      XHR.open(requestConfig.method!, URL!)
+      XHR.open(rc.method!, URL!)
 
-      for (const key in requestConfig.headers) {
-        XHR.setRequestHeader(key, requestConfig.headers![key])
+      for (const key in rc.headers) {
+        XHR.setRequestHeader(key, rc.headers![key])
       }
-      !Object.hasOwn(requestConfig.headers || {}, 'Content-Type') &&
+      !Object.hasOwn(rc.headers || {}, 'Content-Type') &&
         XHR.setRequestHeader('Content-Type', ContentType.JSON)
 
       XHR.onreadystatechange = function () {
         if (XHR.readyState === XHR.DONE) {
-          const response = getResponse.call(this)
+          const response = GR.call(this)
           switch (XHR.status) {
             case HttpStatus.OK:
-              resolve(<R>response)
+              r(<R>response)
               break
             case XHR.UNSENT:
-              reject(Object.assign(response, RequestService.timeoutResponse))
+              j(Object.assign(response, RequestService.timeoutResponse))
               break
             default:
-              reject(response)
+              j(response)
           }
         }
       }
 
-      switch (requestConfig.method) {
+      switch (rc.method) {
         case Method.GET:
         case Method.get:
         case Method.DELETE:
@@ -65,11 +65,15 @@ export class RequestService {
         case Method.post:
         case Method.PUT:
         case Method.put:
-          XHR.send(JSON.stringify(requestConfig.data))
+          XHR.send(JSON.stringify(rc.data))
           break
         default:
           XHR.send()
       }
     })
+  }
+
+  request<P, R>(config: RequestConfig<P>): Promise<R> {
+    return this.dispatchRequest(config)
   }
 }

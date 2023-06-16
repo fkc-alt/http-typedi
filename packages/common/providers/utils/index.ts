@@ -9,7 +9,7 @@ export const ObjectToURLParameter = (
   return queryString
 }
 
-export function getResponse(this: XMLHttpRequest) {
+export function GR(this: XMLHttpRequest) {
   const { status, statusText, responseText, responseType, timeout } = this
   const response = {
     status,

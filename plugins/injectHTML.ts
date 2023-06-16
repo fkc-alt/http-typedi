@@ -5,7 +5,7 @@ type Props = {
   title: string
 }
 
-export const generateTags = ({ icon, title }: Props): HtmlTagDescriptor[] => [
+export const GenerateTags = ({ icon, title }: Props): HtmlTagDescriptor[] => [
   {
     tag: 'html',
     attrs: { lang: 'en' },
