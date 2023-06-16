@@ -2,7 +2,12 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { plainToInstance } from 'class-transformer'
 import { ValidationError, validateSync } from 'class-validator'
-import { InterceptorReq, InterceptorRes, HttpFactory, Core } from '../../core'
+import {
+  InterceptorReq,
+  InterceptorRes,
+  HttpFactory,
+  Constructor
+} from '../../core'
 import { MetaDataTypes, MetadataKey, Method } from '../../enums'
 import { flattenErrorList } from '../../helper/param-error'
 import { isFunction } from '../../helper/utils'
@@ -22,7 +27,7 @@ export const factoryPropertyKey: Record<string, string> = {
 }
 
 const swtichMetadataTypeRelationValues = (
-  Req: Core.RequestConfig,
+  Req: RequestConfig,
   metadataType: MetaDataTypes
 ) => {
   switch (metadataType) {
@@ -58,8 +63,10 @@ export const createRequestMapping = (
 ): MethodDecorator => {
   return function (target, key, descriptor: PropertyDescriptor) {
     const originalMethod: (params: any) => any = descriptor.value
-    const dataTransferObject: Array<Core.Constructor<any>> =
-      getDataTransferObject(target, key)
+    const dataTransferObject: Array<Constructor<any>> = getDataTransferObject(
+      target,
+      key
+    )
     descriptor.value = async function (params: Record<string, any>) {
       const boundMethod = originalMethod.bind(this)
       const result = await handlerResult.call(
@@ -116,7 +123,7 @@ export const getCatchCallback = (
 export const getDataTransferObject = (
   target: Object,
   propertyKey: string | symbol
-): Core.Constructor[] => {
+): Constructor[] => {
   return (
     Reflect.getMetadata(
       MetadataKey.PARAMTYPES_METADATA,
@@ -194,7 +201,7 @@ export async function handlerResult(
             (prev: any, next) => next(prev),
             param
           )
-          const _param: RequestConfig = swtichMetadataTypeRelationValues(
+          const _param = swtichMetadataTypeRelationValues(
             _interceptorsReqValue,
             metaDataType
           )
@@ -284,7 +291,7 @@ export const handelParam = (
 }
 
 export const getErrorMessage = (
-  daaataTransferObject: Array<Core.Constructor<any>>,
+  daaataTransferObject: Array<Constructor<any>>,
   target: Object,
   params: Record<string, any>
 ): ValidationError[] => {

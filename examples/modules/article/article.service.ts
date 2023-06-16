@@ -4,13 +4,13 @@ import {
   Param,
   ParseIntPipe,
   DefaultValuePipe,
-  Core,
   RequestService,
-  RequestConfig
+  RequestConfig,
+  PipeTransform
 } from '@/index'
 import OrderService from '../order/order.service'
 
-class CustomValidationPipe implements Core.PipeTransform {
+class CustomValidationPipe implements PipeTransform {
   transform(value: string): string {
     console.log(`CustomValidationPipe=====${value}`)
     return value

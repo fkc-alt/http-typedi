@@ -1,26 +1,26 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { MetaDataTypes, MetadataKey, RouteParamtypes } from '../../enums'
 import { isArray, isFunction, isString } from '../../helper'
-import { Core } from '../../interface/core'
+import { Constructor, RouteParamMetadata } from '../../interfaces/core'
 import { ExecutionContext } from '../core/interfaces/create-route-param-decorator.interface'
 
 /**
  * @param { Object } target
  * @param { string } propertyName
- * @returns { Core.RouteParamMetadata[] }
+ * @returns { RouteParamMetadata[] }
  * @author kaichao.feng
  */
 export const getInjectValues = (
   target: Object,
   propertyName: string
-): Core.RouteParamMetadata[] => {
+): RouteParamMetadata[] => {
   const data: Record<string, any> =
     Reflect.getMetadata(
       MetadataKey.ROUTE_ARGS_METADATA,
       target.constructor,
       propertyName
     ) || {}
-  const values: Core.RouteParamMetadata[] = (Object.values(data) || []).sort(
+  const values: RouteParamMetadata[] = (Object.values(data) || []).sort(
     (a, b) => a.index - b.index
   )
   return values
@@ -61,13 +61,13 @@ const OverrideEffect: MethodDecorator = (
 
 /**
  *
- * @param { Core.RouteParamMetadata[] } values
+ * @param { RouteParamMetadata[] } values
  * @param { any[] } args
  * @returns { any[] }
  * @author kaichao.feng
  */
 export const OverrideReqEffect = (
-  values: Core.RouteParamMetadata[],
+  values: RouteParamMetadata[],
   args: any[]
 ) => {
   const executionContext: ExecutionContext = {
@@ -84,7 +84,7 @@ export const OverrideReqEffect = (
     const item = values.find(_ => _.index === index)
     if (item?.data) {
       const registerClasses = item?.pipes?.map((target: any) =>
-        isFunction(target) ? new (target as Core.Constructor<any>)() : target
+        isFunction(target) ? new (target as Constructor<any>)() : target
       )
       if (isArray(item.data)) {
         const _param = (<string[]>item.data).reduce((prev, next) => {
@@ -141,7 +141,7 @@ const assignMetadata = <TParamtype = any, TArgs = any>(
   paramtype: TParamtype,
   index: number,
   data?: any,
-  pipes?: Array<Core.Constructor<any> | Object>
+  pipes?: Array<Constructor<any> | Object>
 ): Record<string, any> => {
   return {
     ...args,
@@ -161,7 +161,7 @@ const assignMetadata = <TParamtype = any, TArgs = any>(
  */
 const createParamDecorator =
   (paramtype: RouteParamtypes, metaDataType: MetaDataTypes) =>
-  (data?: any, pipes?: Array<Core.Constructor<any> | Object>) =>
+  (data?: any, pipes?: Array<Constructor<any> | Object>) =>
   (target: Object, propertyKey: string | symbol, index: number): void => {
     const args =
       Reflect.getMetadata(
@@ -192,7 +192,7 @@ const createParamDecorator =
  */
 export const Param = (
   property?: string | string[],
-  ...pipes: Array<Core.Constructor<any> | Object>
+  ...pipes: Array<Constructor<any> | Object>
 ) =>
   createParamDecorator(RouteParamtypes.PARAM, MetaDataTypes.PARAM)(
     property,
@@ -205,7 +205,7 @@ export const Param = (
  */
 export const Req = (
   property?: string | string[],
-  ...pipes: Array<Core.Constructor<any> | Object>
+  ...pipes: Array<Constructor<any> | Object>
 ) =>
   createParamDecorator(RouteParamtypes.REQUEST, MetaDataTypes.REQUEST)(
     property,
@@ -220,7 +220,7 @@ export const Request = Req
  */
 export const Body = (
   property?: string | string[],
-  ...pipes: Array<Core.Constructor<any> | Object>
+  ...pipes: Array<Constructor<any> | Object>
 ) =>
   createParamDecorator(RouteParamtypes.BODY, MetaDataTypes.BODY)(
     property,
@@ -233,7 +233,7 @@ export const Body = (
  */
 export const Headers = (
   property?: string | string[],
-  ...pipes: Array<Core.Constructor<any> | Object>
+  ...pipes: Array<Constructor<any> | Object>
 ) =>
   createParamDecorator(RouteParamtypes.HEADERS, MetaDataTypes.HEADERS)(
     property,

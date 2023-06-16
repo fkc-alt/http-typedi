@@ -1,4 +1,4 @@
-import { Core } from '../../interface/core'
+import { Constructor } from '../../interfaces/core'
 import { MetadataKey } from '../../enums'
 
 /**
@@ -7,7 +7,7 @@ import { MetadataKey } from '../../enums'
  * @description 全局模块
  */
 export const Global = () => {
-  return (target: Core.Constructor<any>) => {
+  return (target: Constructor<any>) => {
     Reflect.defineMetadata(MetadataKey.GLOBAL, true, target)
   }
 }

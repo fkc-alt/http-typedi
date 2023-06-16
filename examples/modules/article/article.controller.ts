@@ -10,9 +10,14 @@ import {
   GetArticleListApplyDecorators,
   GetTableDataApplyDecorators
 } from './decorators'
-import { Core, DefaultValuePipe, Request, RequestConfig } from '@/index'
+import {
+  PipeTransform,
+  DefaultValuePipe,
+  Request,
+  RequestConfig
+} from '@/index'
 
-class CustomValidationPipe implements Core.PipeTransform {
+class CustomValidationPipe implements PipeTransform {
   transform(value: string): string {
     console.log(`CustomValidationPipe=====${value}`)
     return value

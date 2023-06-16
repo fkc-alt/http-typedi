@@ -1,4 +1,4 @@
-import { Core } from '../../interface/core'
+import { ModuleMetadataType } from '../../interfaces/core'
 
 /**
  * @module Module
@@ -6,14 +6,14 @@ import { Core } from '../../interface/core'
  * @auther kaichao.feng
  * @description 模块管理函数
  */
-export const Module = (metadata: Core.ModuleMetadata): ClassDecorator => {
+export const Module = (metadata: ModuleMetadataType): ClassDecorator => {
   //   const propsKeys = Object.keys(metadata)
   return (target: any) => {
     for (const property in metadata) {
-      if (metadata[property as keyof Core.ModuleMetadata]) {
+      if (metadata[property as keyof ModuleMetadataType]) {
         Reflect.defineMetadata(
           property,
-          metadata[property as keyof Core.ModuleMetadata],
+          metadata[property as keyof ModuleMetadataType],
           target
         )
       }

@@ -1,11 +1,11 @@
 /* eslint-disable new-cap */
 import { MetadataKey, ModuleMetadata } from '../../enums'
 import { isString } from '../../helper'
-import { Core } from '../../interface/core'
+import { Constructor } from '../../interfaces/core'
 
 const registerDeepClass = (
-  providers: Array<Core.Constructor<any>>
-): Array<Core.Constructor<any>> => {
+  providers: Array<Constructor<any>>
+): Array<Constructor<any>> => {
   try {
     return (
       providers?.map((provider: any) => {
@@ -39,7 +39,7 @@ export const Injection = (token?: string) => {
     )
     const injections: Array<{
       propertyName: string
-      provide: Core.Constructor<any>
+      provide: Constructor<any>
     }> = Reflect.getMetadata(MetadataKey.INJECTIONS, target.constructor) || []
     if (isString(token)) {
       setTimeout(() => {

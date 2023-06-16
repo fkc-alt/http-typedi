@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { MetaDataTypes, MetadataKey, RouteParamtypes } from '../../enums'
 import { isArray, isString } from '../../helper'
-import { Core } from '../../interface/core'
+import { Constructor } from '../../interfaces/core'
 import {
   CustomParamFactory,
   ExecutionContext
@@ -14,7 +14,7 @@ const assignCustomParameterMetadata = <TParamtype = any, TArgs = any>(
   index: number,
   factory: CustomParamFactory,
   data?: any,
-  ...pipes: Array<Core.Constructor<any> | Object>
+  ...pipes: Array<Constructor<any> | Object>
 ) => {
   return {
     ...args,
@@ -30,7 +30,7 @@ const assignCustomParameterMetadata = <TParamtype = any, TArgs = any>(
 export const createParamDecorator = (factory: CustomParamFactory) => {
   return (
     data?: any,
-    ...pipes: Array<Core.Constructor<any> | Object>
+    ...pipes: Array<Constructor<any> | Object>
   ): ParameterDecorator => {
     return (target, propertyKey, index) => {
       const args =
