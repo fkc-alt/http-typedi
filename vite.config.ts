@@ -5,7 +5,7 @@ import { terser as Terser } from 'rollup-plugin-terser'
 import Swc from 'unplugin-swc'
 import { viteMockServe as ViteMockServe } from 'vite-plugin-mock'
 import { createHtmlPlugin as CreateHtmlPlugin } from 'vite-plugin-html'
-import { generateTags } from './plugins/injectHTML'
+import { GenerateTags } from './plugins/injectHTML'
 
 export default defineConfig(({ command, mode }) => {
   const { VITE_APP_PROJECT_ICON, VITE_APP_PROJECT_TITLE } = loadEnv(
@@ -31,7 +31,7 @@ export default defineConfig(({ command, mode }) => {
         entry: '/examples/main.ts',
         template: 'index.html',
         inject: {
-          tags: generateTags({
+          tags: GenerateTags({
             icon: VITE_APP_PROJECT_ICON,
             title: VITE_APP_PROJECT_TITLE
           }),
