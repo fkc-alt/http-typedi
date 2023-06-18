@@ -213,6 +213,11 @@ export async function handlerResult(
             this,
             requestConfigs
           )
+          const token = Reflect.getMetadata(
+            MetadataKey.TOKEN,
+            target.constructor
+          )
+          HttpFactoryMap.get(token)?.logger?.log?.(requestConfigs[0])
           // eslint-disable-next-line @typescript-eslint/return-await
           const response = interceptorsRes.reduce(
             (prev, next) => next(prev),

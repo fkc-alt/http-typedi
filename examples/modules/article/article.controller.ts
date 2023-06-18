@@ -49,11 +49,11 @@ export default class ArticleController {
       pageSize: 0,
       currentPage: 0
     })
-    this.logger.log('{/user/register, POST}')
-    this.logger.error('{/user/register, POST}')
-    this.logger.warn('{/user/register, POST}')
-    this.logger.debug?.('{/user/register, POST}')
-    this.logger.verbose?.('{/user/register, POST}')
+    // this.logger.log('{/user/register, POST}')
+    // this.logger.error('{/user/register, POST}')
+    // this.logger.warn('{/user/register, POST}')
+    // this.logger.debug?.('{/user/register, POST}')
+    // this.logger.verbose?.('{/user/register, POST}')
     return await this.articleService.GetArticleList<T, ServerRes<U>>(
       <RequestConfig<T>>configure
     )

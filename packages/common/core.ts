@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { v4 as uuidv4 } from 'uuid'
 import { RequestConfig } from '..'
 import {
@@ -14,7 +15,7 @@ import {
   flattenErrorList
 } from './helper'
 import { HttpFactoryMap } from './http-factory-map'
-import {
+import type {
   ClassProvider,
   Constructor,
   ModuleMetadataType,
@@ -23,7 +24,7 @@ import {
   Providers,
   RouteParamMetadata
 } from './interfaces/core'
-import { ResponseConfig } from './providers'
+import type { ResponseConfig, LoggerService } from './providers'
 export * from './decorators'
 export {
   MetadataKey,
@@ -85,6 +86,8 @@ interface CreateOptions {
  * @publicApi
  */
 export class HttpFactory {
+  private logger!: Constructor<any>
+
   private globalPrefix = ''
 
   private globalTimeout = 0
@@ -100,6 +103,20 @@ export class HttpFactory {
   private globalCatchCallback!: (cb: (error: any) => any) => any
 
   private globalTimeoutCallback!: (cb: () => any) => any
+
+  private static UseLoggerAutomaticInstantiation: MethodDecorator = (
+    target: Object,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<any>
+  ) => {
+    const originalFn = descriptor.value
+    descriptor.value = function (logger: any) {
+      return originalFn.call(
+        this,
+        logger instanceof Function ? new logger() : logger
+      )
+    }
+  }
 
   create<T>(
     target: Constructor<T>
@@ -146,7 +163,8 @@ export class HttpFactory {
       setGlobalTimeout: this.setGlobalTimeout.bind(this),
       setGlobalSleepTimer: this.setGlobalSleepTimer.bind(this),
       useInterceptorsReq: this.useInterceptorsReq.bind(this),
-      useInterceptorsRes: this.useInterceptorsRes.bind(this)
+      useInterceptorsRes: this.useInterceptorsRes.bind(this),
+      useLogger: this.useLogger.bind(this)
     }
     const token = uuidv4()
     HttpFactoryMap.set(token, this)
@@ -223,6 +241,18 @@ export class HttpFactory {
    */
   public setGlobalTimeoutCallback(timeoutCallback: () => any) {
     this.globalTimeoutCallback = timeoutCallback
+  }
+
+  /**
+   *
+   *
+   * @param {() => any} timeoutCallback
+   * @memberof HttpFactory
+   * @description use Logger
+   */
+  @HttpFactory.UseLoggerAutomaticInstantiation
+  public useLogger(Logger: Constructor<any>) {
+    this.logger = Logger
   }
 }
 

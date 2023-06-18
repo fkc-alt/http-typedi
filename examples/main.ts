@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { HttpFactory, ResponseConfig } from '@/index'
+import { HttpFactory, Logger, ResponseConfig } from '@/index'
 import AppModule from './app.module'
 import { HTTPClient2 } from './test/app.module'
 import './style.css'
@@ -31,6 +31,7 @@ function createHTTPClient(): AppModule {
       return Promise.reject(result) // or throw result
     }
   )
+  HTTPClient.useLogger(Logger)
   return HTTPClient
 }
 
