@@ -1,50 +1,95 @@
+/* eslint-disable @typescript-eslint/ban-types */
+import { name as PACKAGE_NAME } from '../../../package.json'
 import { Injectable } from '../decorators'
 import chalk from 'chalk'
 
+const LOGGERTYPE: Record<string, any> = {
+  log: chalk.green,
+  error: chalk.red,
+  warn: chalk.yellow,
+  debug: chalk.cyan,
+  verbose: chalk.magenta
+}
 export declare type LogLevel = 'log' | 'error' | 'warn' | 'debug' | 'verbose'
 export interface LoggerService {
   /**
    * Write a 'log' level log.
    */
-  log(message: any, ...optionalParams: any[]): any
+  log(message: any, ...optionalParams: any[]): void
   /**
    * Write an 'error' level log.
    */
-  error(message: any, trace: string): any
+  error(message: any, ...optionalParams: any[]): void
   /**
    * Write a 'warn' level log.
    */
-  warn(message: any): any
+  warn(message: any, ...optionalParams: any[]): void
   /**
    * Write a 'debug' level log.
    */
-  debug?(message: any): any
+  debug?(message: any, ...optionalParams: any[]): void
   /**
    * Write a 'verbose' level log.
    */
-  verbose?(message: any): any
+  verbose?(message: any, ...optionalParams: any[]): void
 }
+
 @Injectable()
 export class Logger implements LoggerService {
+  private static WrapBuffer: MethodDecorator = (
+    target: object,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<any>
+  ) => {
+    const originalFn = descriptor.value
+    descriptor.value = function (...args: any[]) {
+      const staticLogger = `${LOGGERTYPE[<string>propertyKey](
+        `[${PACKAGE_NAME}]`
+      )} ${chalk.white(new Date().toLocaleString())} ${LOGGERTYPE[
+        <string>propertyKey
+      ](`[${propertyKey.toString().toUpperCase()}]`)} ${chalk.yellow(
+        '[RouterExplorer]'
+      )} ${chalk.green('Mapped')}`
+      return originalFn.apply(this, [staticLogger, ...args])
+    }
+  }
+
+  log(message: any): void
+  log(message: any, ...optionalParams: any[]): void
+
+  @Logger.WrapBuffer
   log(message: any, ...optionalParams: any[]) {
-    console.log(
-      `${chalk.blue('[LOG]')} ${chalk.white(message)} ${chalk.yellow(
-        optionalParams.join(' ')
-      )}`
-    )
+    console.log(message, ...optionalParams)
   }
-  error(message: any, trace: string) {
-    console.log(
-      `${chalk.red('[ERROR]')} ${chalk.white(message)} ${chalk.red(trace)}`
-    )
+
+  error(message: any): void
+  error(message: any, ...optionalParams: any[]): void
+
+  @Logger.WrapBuffer
+  error(message: any, ...optionalParams: any[]) {
+    console.log(message, ...optionalParams)
   }
-  warn(message: any) {
-    console.log(`${chalk.yellow('[WARN]')} ${chalk.white(message)}`)
+
+  warn(message: any): void
+  warn(message: any, ...optionalParams: any[]): void
+
+  @Logger.WrapBuffer
+  warn(message: any, ...optionalParams: any[]) {
+    console.log(message, ...optionalParams)
   }
-  debug?(message: any) {
-    console.log(`${chalk.green('[DEBUG]')} ${chalk.white(message)}`)
+  debug?(message: any): void
+  debug?(message: any, ...optionalParams: any[]): void
+
+  @Logger.WrapBuffer
+  debug?(message: any, ...optionalParams: any[]) {
+    console.log(message, ...optionalParams)
   }
-  verbose?(message: any) {
-    console.log(`${chalk.magenta('[VERBOSE]')} ${chalk.white(message)}`)
+
+  verbose?(message: any): void
+  verbose?(message: any, ...optionalParams: any[]): void
+
+  @Logger.WrapBuffer
+  verbose?(message: any, ...optionalParams: any[]) {
+    console.log(message, ...optionalParams)
   }
 }
