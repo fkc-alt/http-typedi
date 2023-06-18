@@ -245,7 +245,6 @@ export const handelParam = (
   const timeoutCallback = getTimeoutCallback(target, key)
   const isGet = [Method.GET, Method.get].includes(method)
   const globalPrefix: string = HttpFactoryMap.get(token).globalPrefix
-  console.log(HttpFactoryMap.get(token), 'globalPrefix')
   const controllerPrefix = (<any>target)[
     `${target.constructor.name}${CONNECTSTRING}`
   ]

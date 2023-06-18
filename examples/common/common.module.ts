@@ -1,10 +1,11 @@
-import { Global, Module, RequestService, UploadService } from '@/index'
+import { Global, Logger, Module, RequestService, UploadService } from '@/index'
 
 @Global()
 @Module({
   providers: [
     RequestService,
     UploadService,
+    Logger,
     {
       provide: 'CONFIG',
       useFactory: () => ({

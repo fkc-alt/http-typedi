@@ -14,7 +14,8 @@ import {
   PipeTransform,
   DefaultValuePipe,
   Request,
-  RequestConfig
+  RequestConfig,
+  Logger
 } from '@/index'
 
 class CustomValidationPipe implements PipeTransform {
@@ -30,7 +31,8 @@ export default class ArticleController {
     private readonly articleService: ArticleService,
     private readonly examplesService: ExamplesService,
     private readonly helperController: HelperController,
-    private readonly demoController: DemoController
+    private readonly demoController: DemoController,
+    private readonly logger: Logger
   ) {
     // 解构使用方法的话需要在构造中绑定this
     this.GetArticleList = this.GetArticleList.bind(this)
@@ -47,7 +49,7 @@ export default class ArticleController {
       pageSize: 0,
       currentPage: 0
     })
-    console.log(data, 'helperController')
+    this.logger.log('helperController')
     return await this.articleService.GetArticleList<T, ServerRes<U>>(
       <RequestConfig<T>>configure
     )
