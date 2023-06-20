@@ -190,6 +190,7 @@ export async function handlerResult(
       MetadataKey.INTERCEPTORSRES_METADATA
     )
     const sleepTimer = getSleepTimer(target, propertyKey)
+    const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
         try {
@@ -213,10 +214,6 @@ export async function handlerResult(
             this,
             requestConfigs
           )
-          const token = Reflect.getMetadata(
-            MetadataKey.TOKEN,
-            target.constructor
-          )
           HttpFactoryMap.get(token)?.logger?.log?.(requestConfigs[0])
           // eslint-disable-next-line @typescript-eslint/return-await
           const response = interceptorsRes.reduce(
@@ -226,6 +223,7 @@ export async function handlerResult(
           resolve(response)
         } catch (error) {
           const catchCallback = getCatchCallback(target, propertyKey)
+          HttpFactoryMap.get(token)?.logger?.error?.(error)
           catchCallback?.(error)
           reject(error)
         }

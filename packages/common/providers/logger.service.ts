@@ -45,11 +45,11 @@ export class Logger implements LoggerService {
     descriptor.value = function (...args: any[]) {
       const staticLogger = `${LOGGERTYPE[<string>propertyKey](
         `[${PACKAGE_NAME}]`
-      )} ${chalk.white(new Date().toLocaleString())} ${LOGGERTYPE[
+      )} ${chalk.white.bold(new Date().toLocaleString())} ${LOGGERTYPE[
         <string>propertyKey
-      ](`[${propertyKey.toString().toUpperCase()}]`)} ${chalk.yellow(
+      ](`[${propertyKey.toString().toUpperCase()}]`)} ${chalk.yellow.bold(
         '[RouterExplorer]'
-      )} ${chalk.green('Mapped')}`
+      )} ${chalk.green.bold('Mapped')}`
       return originalFn.apply(this, [staticLogger, ...args])
     }
   }

@@ -3,7 +3,7 @@
 在下面的例子中，我们使用 **`@Controller()`** 装饰器定义一个基本的控制器。可选 路由路径前缀设置为 **`demo`**。
 在 **`@Controller()`** 装饰器中使用路径前缀可以使我们轻松地对一组相关的路由进行分组，并最大程度地减少重复代码。例如，我们可以选择将一组用于管理与 **/demo** 下的文章实体进行互动的路由进行分组。这样，我们可以在 **`@Controller()`** 装饰器中指定路径前缀 **`demo`**，这样就不必为文件中的每个路由重复路径的那部分。
 
-> interfaces/article.interface.ts
+> interfaces/demo.interface.ts
 
 ```ts
 export interface UpdateDemoReq {

@@ -24,7 +24,7 @@ import type {
   Providers,
   RouteParamMetadata
 } from './interfaces/core'
-import type { ResponseConfig, LoggerService } from './providers'
+import type { ResponseConfig } from './providers'
 export * from './decorators'
 export {
   MetadataKey,
