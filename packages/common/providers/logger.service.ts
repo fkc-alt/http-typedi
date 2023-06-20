@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
+import chalk from 'chalk'
 import { name as PACKAGE_NAME } from '../../../package.json'
 import { Injectable } from '../decorators'
-import chalk from 'chalk'
 
 const LOGGERTYPE: Record<string, any> = {
   log: chalk.green.bold,
