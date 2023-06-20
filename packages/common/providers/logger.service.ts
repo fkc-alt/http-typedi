@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-types */
+import chalk from 'chalk'
 import { name as PACKAGE_NAME } from '../../../package.json'
 import { Injectable } from '../decorators'
-import chalk from 'chalk'
 
 const LOGGERTYPE: Record<string, any> = {
-  log: chalk.green,
-  error: chalk.red,
-  warn: chalk.yellow,
-  debug: chalk.cyan,
-  verbose: chalk.magenta
+  log: chalk.green.bold,
+  error: chalk.red.bold,
+  warn: chalk.yellow.bold,
+  debug: chalk.cyan.bold,
+  verbose: chalk.magenta.bold
 }
 export declare type LogLevel = 'log' | 'error' | 'warn' | 'debug' | 'verbose'
 export interface LoggerService {
