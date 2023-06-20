@@ -2,12 +2,9 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { plainToInstance } from 'class-transformer'
 import { ValidationError, validateSync } from 'class-validator'
-import {
-  InterceptorReq,
-  InterceptorRes,
-  HttpFactory,
-  Constructor
-} from '../../core'
+import { InterceptorReq, InterceptorRes, Constructor } from '../../core'
+import { RequestConfig } from '../../providers'
+import { HttpFactoryMap } from '../../http-factory-map'
 import { MetaDataTypes, MetadataKey, Method } from '../../enums'
 import { flattenErrorList } from '../../helper/param-error'
 import { isFunction } from '../../helper/utils'
@@ -17,7 +14,6 @@ import {
   getInjectValues,
   getMetadataType
 } from './route-params.decorator'
-import { RequestConfig } from '@/common/providers'
 
 export type CatchCallback = (err: any) => void
 
@@ -101,10 +97,11 @@ export const getInterceptors = (
   propertyKey: string | symbol,
   metadataPropertyKey: MetadataKey
 ): Array<InterceptorReq | InterceptorRes> => {
+  const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
   return (
     Reflect.getMetadata(metadataPropertyKey, target, propertyKey) ??
     Reflect.getMetadata(metadataPropertyKey, target.constructor) ??
-    (HttpFactory as any)[factoryPropertyKey[metadataPropertyKey]] ??
+    HttpFactoryMap.get(token)[factoryPropertyKey[metadataPropertyKey]] ??
     []
   )
 }
@@ -113,10 +110,11 @@ export const getCatchCallback = (
   target: Object,
   propertyKey: string | symbol
 ): CatchCallback => {
+  const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
   return (
     Reflect.getMetadata(MetadataKey.CATCH_METADATA, target, propertyKey) ??
     Reflect.getMetadata(MetadataKey.CATCH_METADATA, target.constructor) ??
-    (HttpFactory as any).globalCatchCallback
+    HttpFactoryMap.get(token).globalCatchCallback
   )
 }
 
@@ -137,18 +135,20 @@ const getSleepTimer = (
   target: Object,
   propertyKey: string | symbol
 ): number => {
+  const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
   return (
     Reflect.getMetadata(MetadataKey.SLEEPTIMER, target, propertyKey) ??
     Reflect.getMetadata(MetadataKey.SLEEPTIMER, target.constructor) ??
-    (HttpFactory as any).globalSleepTimer
+    HttpFactoryMap.get(token).globalSleepTimer
   )
 }
 
 const getTimeout = (target: Object, propertyKey: string | symbol): number => {
+  const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
   return (
     Reflect.getMetadata(MetadataKey.TIMEOUT, target, propertyKey) ??
     Reflect.getMetadata(MetadataKey.TIMEOUT, target.constructor) ??
-    (HttpFactory as any).globalTimeout
+    HttpFactoryMap.get(token).globalTimeout
   )
 }
 
@@ -156,6 +156,7 @@ const getTimeoutCallback = (
   target: Object,
   propertyKey: string | symbol
 ): (() => any) => {
+  const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
   return (
     Reflect.getMetadata(
       MetadataKey.TIMEOUTCALLBACK_METADATA,
@@ -166,7 +167,7 @@ const getTimeoutCallback = (
       MetadataKey.TIMEOUTCALLBACK_METADATA,
       target.constructor
     ) ??
-    (HttpFactory as any).globalTimeoutCallback
+    HttpFactoryMap.get(token).globalTimeoutCallback
   )
 }
 
@@ -189,6 +190,7 @@ export async function handlerResult(
       MetadataKey.INTERCEPTORSRES_METADATA
     )
     const sleepTimer = getSleepTimer(target, propertyKey)
+    const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
         try {
@@ -212,6 +214,7 @@ export async function handlerResult(
             this,
             requestConfigs
           )
+          HttpFactoryMap.get(token)?.logger?.log?.(requestConfigs[0])
           // eslint-disable-next-line @typescript-eslint/return-await
           const response = interceptorsRes.reduce(
             (prev, next) => next(prev),
@@ -220,6 +223,7 @@ export async function handlerResult(
           resolve(response)
         } catch (error) {
           const catchCallback = getCatchCallback(target, propertyKey)
+          HttpFactoryMap.get(token)?.logger?.error?.(error)
           catchCallback?.(error)
           reject(error)
         }
@@ -239,10 +243,11 @@ export const handelParam = (
   key: string | symbol,
   params: Record<string, any>
 ): Record<string, any> => {
+  const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
   const timeout = getTimeout(target, key)
   const timeoutCallback = getTimeoutCallback(target, key)
   const isGet = [Method.GET, Method.get].includes(method)
-  const globalPrefix: string = (HttpFactory as any).globalPrefix
+  const globalPrefix: string = HttpFactoryMap.get(token).globalPrefix
   const controllerPrefix = (<any>target)[
     `${target.constructor.name}${CONNECTSTRING}`
   ]

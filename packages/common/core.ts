@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-types */
+import { v4 as uuidv4 } from 'uuid'
 import { RequestConfig } from '..'
 import {
   ModuleMetadata,
@@ -12,7 +14,8 @@ import {
   isFunction,
   flattenErrorList
 } from './helper'
-import {
+import { HttpFactoryMap } from './http-factory-map'
+import type {
   ClassProvider,
   Constructor,
   ModuleMetadataType,
@@ -21,7 +24,7 @@ import {
   Providers,
   RouteParamMetadata
 } from './interfaces/core'
-import { ResponseConfig } from './providers'
+import type { ResponseConfig } from './providers'
 export * from './decorators'
 export {
   MetadataKey,
@@ -66,7 +69,7 @@ class Container {
   }
 }
 
-type HttpServicesApplication<T = any> = HttpFactoryStatic & T
+type HttpServicesApplication<T = any> = HttpFactory & T
 
 export type InterceptorReq = (requestConfig: RequestConfig) => RequestConfig
 
@@ -82,7 +85,9 @@ interface CreateOptions {
 /**
  * @publicApi
  */
-export class HttpFactoryStatic {
+export class HttpFactory {
+  private logger!: Constructor<any>
+
   private globalPrefix = ''
 
   private globalTimeout = 0
@@ -99,9 +104,23 @@ export class HttpFactoryStatic {
 
   private globalTimeoutCallback!: (cb: () => any) => any
 
+  private static UseLoggerAutomaticInstantiation: MethodDecorator = (
+    target: Object,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<any>
+  ) => {
+    const originalFn = descriptor.value
+    descriptor.value = function (logger: any) {
+      return originalFn.call(
+        this,
+        logger instanceof Function ? new logger() : logger
+      )
+    }
+  }
+
   create<T>(
-    target: Constructor<T>,
-    options?: CreateOptions
+    target: Constructor<T>
+    // options?: CreateOptions
   ): HttpServicesApplication<T> {
     const imports: Array<Constructor<any>> =
       Reflect.getMetadata(ModuleMetadata.IMPORTS, target) ?? []
@@ -136,26 +155,26 @@ export class HttpFactoryStatic {
       return [...globalModules, ...deepModules]
     }
     this.globalModule = Array.from(new Set(deepGlobalModule(imports)))
-    const exposeProperties: this = options?.expose ? this : <this>{}
-    return <HttpServicesApplication<T>>(<unknown>Object.assign(
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      <Object>Factory(target),
-      {
-        ...exposeProperties,
-        setGlobalCatchCallback: this.setGlobalCatchCallback.bind(this),
-        setGlobalPrefix: this.setGlobalPrefix.bind(this),
-        setGlobalTimeout: this.setGlobalTimeout.bind(this),
-        setGlobalSleepTimer: this.setGlobalSleepTimer.bind(this),
-        useInterceptorsReq: this.useInterceptorsReq.bind(this),
-        useInterceptorsRes: this.useInterceptorsRes.bind(this)
-      }
-    ))
+    const exposeProperties: this = <this>{} //options?.expose ? this : <this>{}
+    const HTTPClient = {
+      ...exposeProperties,
+      setGlobalCatchCallback: this.setGlobalCatchCallback.bind(this),
+      setGlobalPrefix: this.setGlobalPrefix.bind(this),
+      setGlobalTimeout: this.setGlobalTimeout.bind(this),
+      setGlobalSleepTimer: this.setGlobalSleepTimer.bind(this),
+      useInterceptorsReq: this.useInterceptorsReq.bind(this),
+      useInterceptorsRes: this.useInterceptorsRes.bind(this),
+      useLogger: this.useLogger.bind(this)
+    }
+    const token = uuidv4()
+    HttpFactoryMap.set(token, this)
+    return Object.assign(HTTPClient, Factory(target, token))
   }
 
   /**
    *
    * @param { string } prefix
-   * @memberof HttpFactoryStatic
+   * @memberof HttpFactory
    * @description set global request prefix
    */
   public setGlobalPrefix(prefix: string) {
@@ -165,7 +184,7 @@ export class HttpFactoryStatic {
   /**
    *
    * @param { number } timer
-   * @memberof HttpFactoryStatic
+   * @memberof HttpFactory
    * @description set global timeout
    */
   public setGlobalTimeout(timer: number) {
@@ -175,7 +194,7 @@ export class HttpFactoryStatic {
   /**
    *
    * @param { number } timer
-   * @memberof HttpFactoryStatic
+   * @memberof HttpFactory
    * @description set global sleepTimer
    */
   public setGlobalSleepTimer(timer: number) {
@@ -185,7 +204,7 @@ export class HttpFactoryStatic {
   /**
    *
    * @param { Array<InterceptorReq> } interceptors
-   * @memberof HttpFactoryStatic
+   * @memberof HttpFactory
    * @description set global request interceptorsReq
    */
   public useInterceptorsReq(...interceptors: InterceptorReq[]) {
@@ -195,7 +214,7 @@ export class HttpFactoryStatic {
   /**
    *
    * @param { Array<InterceptorRes> } interceptors
-   * @memberof HttpFactoryStatic
+   * @memberof HttpFactory
    * @description set global request interceptorsRes
    */
   public useInterceptorsRes(...interceptors: InterceptorRes[]) {
@@ -206,7 +225,7 @@ export class HttpFactoryStatic {
    *
    *
    * @param {(error: any) => any} catchCallback
-   * @memberof HttpFactoryStatic
+   * @memberof HttpFactory
    * @description set global error callback
    */
   public setGlobalCatchCallback(catchCallback: (error: any) => any) {
@@ -217,11 +236,23 @@ export class HttpFactoryStatic {
    *
    *
    * @param {() => any} timeoutCallback
-   * @memberof HttpFactoryStatic
+   * @memberof HttpFactory
    * @description set global timeout callback
    */
   public setGlobalTimeoutCallback(timeoutCallback: () => any) {
     this.globalTimeoutCallback = timeoutCallback
+  }
+
+  /**
+   *
+   *
+   * @param {() => any} timeoutCallback
+   * @memberof HttpFactory
+   * @description use Logger
+   */
+  @HttpFactory.UseLoggerAutomaticInstantiation
+  public useLogger(Logger: Constructor<any>) {
+    this.logger = Logger
   }
 }
 
@@ -232,7 +263,7 @@ export class HttpFactoryStatic {
  * @auther kaichao.feng
  * @description 依赖注入工厂函数
  * */
-export const HttpFactory = new HttpFactoryStatic()
+// const HttpFactory = new HttpFactory()
 
 const registerDeepClass = (
   container: Container,
@@ -343,7 +374,10 @@ const initFactory = <T>(
   return instance
 }
 
-type GetAllModuleAndProviders = <T>(target: Constructor<T>) => {
+type GetAllModuleAndProviders = <T>(
+  target: Constructor<T>,
+  token: string
+) => {
   providers: Set<Constructor<any>>
   constructorProviders: Array<Constructor<any>>
   deepAllProvider: Array<Constructor<any>>
@@ -352,14 +386,15 @@ type GetAllModuleAndProviders = <T>(target: Constructor<T>) => {
 /**
  * @method getAllModuleAndProviders
  * @param { Constructor<T> } target
+ * @param { string } token
  * @author kaichao.feng
  * @returns { ReturnType<GetAllModuleAndProviders> } providers
  * @description getAllModuleAndProviders
  */
-const getAllModuleAndProviders: GetAllModuleAndProviders = target => {
+const getAllModuleAndProviders: GetAllModuleAndProviders = (target, token) => {
   const modules = new Set<Constructor<any>>([
     ...(Reflect.getMetadata(ModuleMetadata.IMPORTS, target) ?? []),
-    ...((<any>HttpFactory).globalModule || [])
+    ...(HttpFactoryMap.get(token).globalModule || [])
   ])
   const providers =
     new Set<Constructor<any>>(
@@ -376,14 +411,18 @@ const getAllModuleAndProviders: GetAllModuleAndProviders = target => {
 /**
  * @module Factory
  * @param { Constructor<T> } target
+ * @param { string } token
  * @returns { T } application
  * @auther kaichao.feng
  * @description 依赖注入工厂函数
  */
-const Factory = <T>(target: Constructor<T>): T => {
+const Factory = <T>(target: Constructor<T>, token: string): T => {
   const { providers, constructorProviders, deepAllProvider } =
-    getAllModuleAndProviders<T>(target)
-  deepAllProvider.forEach(target => providers.add(target))
+    getAllModuleAndProviders<T>(target, token)
+  deepAllProvider.forEach(target => {
+    Reflect.defineMetadata(MetadataKey.TOKEN, token, target)
+    providers.add(target)
+  })
   Reflect.defineMetadata(ModuleMetadata.PROVIDERS, deepAllProvider, target)
   const container = new Container()
   try {

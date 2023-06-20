@@ -25,7 +25,7 @@ $ npm install reflect-metadata --save
 import 'reflect-metadata'
 ```
 :::warning 
-TypeScript 中使用装饰器需要开启 emitDecoratorMetadata 和 emitDecoratorMetadata选项，否则 reflect-metadata 提供的方法将无法获取参数类型信息。
+TypeScript 中使用装饰器需要开启 experimentalDecorators 和 emitDecoratorMetadata选项，否则 reflect-metadata 提供的方法将无法获取参数类型信息。
 :::
 > tsconfig.json
 ```json

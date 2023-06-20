@@ -22,6 +22,7 @@ export enum MetadataKey {
   OPTIONAL = '__optional__',
   VERSION = '__version__',
   METADATATYPE = '__metadataType__',
+  TOKEN = '__token__',
   CATCH_METADATA = 'design:catch',
   REQUEST_METADATA = 'design:request',
   INTERCEPTORSREQ_METADATA = 'design:interceptorsreq',

@@ -1,6 +1,7 @@
 import 'reflect-metadata'
-import { HttpFactory, ResponseConfig } from '@/index'
+import { HttpFactory, Logger, ResponseConfig } from '@/index'
 import AppModule from './app.module'
+import { HTTPClient2 } from './test/app.module'
 import './style.css'
 
 /**
@@ -10,7 +11,7 @@ import './style.css'
  * @description service for entry file
  */
 function createHTTPClient(): AppModule {
-  const HTTPClient = HttpFactory.create(AppModule)
+  const HTTPClient = new HttpFactory().create(AppModule)
   HTTPClient.setGlobalCatchCallback((error: any) => {
     console.error(error, 'global catch callback')
   })
@@ -30,11 +31,18 @@ function createHTTPClient(): AppModule {
       return Promise.reject(result) // or throw result
     }
   )
+  HTTPClient.useLogger(Logger)
   return HTTPClient
 }
 
 const HTTPClient = createHTTPClient()
-
+console.log(HTTPClient, HTTPClient2, '222222')
+HTTPClient2.articleController
+  .GetArticleList({})
+  .then(res => {
+    console.log(res, 'HTTPClient2')
+  })
+  .catch(err => console.error(err, 'HTTPClient2 error'))
 const {
   articleController: { GetTableDataList, GetArticleList, DeleteArticle }
 } = HTTPClient
