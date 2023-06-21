@@ -44,7 +44,7 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       alias: {
         '@': resolve(__dirname, 'packages'),
-        '~@': resolve(__dirname, './')
+        '~@': resolve(__dirname, 'examples')
       },
       extensions: ['.ts', '.js', '.json', '.d.ts']
     },

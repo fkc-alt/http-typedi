@@ -30,7 +30,7 @@
         "packages/*"
       ],
       "~@/*": [
-        "./*"
+        "examples/*"
       ],
     },
     "types": [
