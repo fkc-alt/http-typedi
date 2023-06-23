@@ -3,7 +3,7 @@
 要为应用程序中的每个路由设置异常处理器, 让我们使用 `HttpServicesApplication` 对象的 `setGlobalCatchCallback()` 方法。
 
 ```ts{2}
-const HTTPClient = await HttpFactory.create(ApplicationModule)
+const HTTPClient = new HttpFactory().create(ApplicationModule)
 HTTPClient.setGlobalCatchCallback((error: any) => {
   console.error(error, 'global catch callback')
 })
