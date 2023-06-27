@@ -10,11 +10,11 @@ on:
     - main 
     paths-ignore:
       - 'docs/**'
-  push: 
-    branches: 
-    - main 
-    paths-ignore:
-     - 'docs/**'
+ # push: 
+ #   branches: 
+ #   - main 
+ #   paths-ignore:
+ #    - 'docs/**'
 env:
   DIST_NAME: dist
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
