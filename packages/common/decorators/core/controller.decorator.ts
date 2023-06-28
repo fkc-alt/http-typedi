@@ -5,13 +5,19 @@ const optionsDefault = {
   version: ''
 }
 
+interface ControllerOptions {
+  (prefix: string, options: typeof optionsDefault): ClassDecorator
+  (prefix: string): ClassDecorator
+}
+
 /**
  * @module Controller
- * @param { string } prefix
+ * @param { string } [prefix=''] - The prefix of the request, default is empty
+ * @param { typeof optionsDefault } [options] - Optional parameter
  * @auther kaichao.feng
  * @description Request Controller
  */
-export const Controller = (
+export const Controller: ControllerOptions = (
   prefix = '',
   options?: typeof optionsDefault
 ): ClassDecorator => {
