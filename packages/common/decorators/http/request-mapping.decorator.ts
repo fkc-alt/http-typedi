@@ -30,6 +30,7 @@ class RequestMappingFactoryStatic implements RequestMappingStaticMethod {
   constructor() {
     this.registerRequestMapping()
   }
+
   GetMapping!: HttpMethodDecorator
   DeleteMapping!: HttpMethodDecorator
   OptionsMapping!: HttpMethodDecorator
