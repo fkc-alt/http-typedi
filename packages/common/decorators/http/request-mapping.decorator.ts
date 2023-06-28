@@ -2,10 +2,12 @@ import { ValidationError } from 'class-validator'
 import { Method, MethodMapping } from '../../enums'
 import { createRequestMapping } from './core'
 
-type HttpMethodDecorator = (
-  path: string,
-  message?: string | ((validationArguments: ValidationError[]) => void)
-) => MethodDecorator
+interface HttpMethodDecorator {
+  (
+    path: string,
+    message?: string | ((validationArguments: ValidationError[]) => void)
+  ): MethodDecorator
+}
 
 type RequestMappingStaticMethod = {
   readonly [K in MethodMapping]-?: HttpMethodDecorator
@@ -28,22 +30,23 @@ class RequestMappingFactoryStatic implements RequestMappingStaticMethod {
   constructor() {
     this.registerRequestMapping()
   }
-
   GetMapping!: HttpMethodDecorator
-  PostMapping!: HttpMethodDecorator
   DeleteMapping!: HttpMethodDecorator
-  HeadMapping!: HttpMethodDecorator
   OptionsMapping!: HttpMethodDecorator
+  PostMapping!: HttpMethodDecorator
   PutMapping!: HttpMethodDecorator
   PatchMapping!: HttpMethodDecorator
+  HeadMapping!: HttpMethodDecorator
 
   private registerRequestMapping() {
     RequestMappingFactoryStatic.HttpStaticMethodsMappingMap.forEach(
-      (method, methodMapping) => {
-        this[methodMapping] = (path, message) =>
-          createRequestMapping(path, method, message)
-      }
+      this.setupMapped.bind(this)
     )
+  }
+
+  private setupMapped(method: Method, methodMapping: MethodMapping) {
+    this[methodMapping] = (path, message) =>
+      createRequestMapping(path, method, message)
   }
 }
 
