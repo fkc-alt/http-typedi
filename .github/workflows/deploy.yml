@@ -6,6 +6,10 @@ on:
     branches: 
     - main 
     paths: 'docs/**'
+ # push: 
+ #   branches: 
+ #   - main 
+ #   paths: 'docs/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest
