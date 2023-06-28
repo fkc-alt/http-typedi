@@ -5,7 +5,7 @@ const optionsDefault = {
   version: ''
 }
 
-interface ControllerOptions {
+interface Controller {
   (prefix: string, options: typeof optionsDefault): ClassDecorator
   (prefix: string): ClassDecorator
 }
@@ -17,7 +17,7 @@ interface ControllerOptions {
  * @auther kaichao.feng
  * @description Request Controller
  */
-export const Controller: ControllerOptions = (
+export const Controller: Controller = (
   prefix = '',
   options?: typeof optionsDefault
 ): ClassDecorator => {
