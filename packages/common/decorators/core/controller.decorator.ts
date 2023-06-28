@@ -7,7 +7,7 @@ const optionsDefault = {
 
 interface Controller {
   (prefix: string, options: typeof optionsDefault): ClassDecorator
-  (prefix: string): ClassDecorator
+  (prefix?: string): ClassDecorator
 }
 
 /**
