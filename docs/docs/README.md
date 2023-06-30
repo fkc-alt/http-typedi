@@ -64,6 +64,7 @@
   - [Global-Catch](https://fkc-alt.github.io/http-typedi/guide/global-config/catch)
   - [Global-UseInterceptors](https://fkc-alt.github.io/http-typedi/guide/global-config/use-interceptors)
   - [Global-Sleep](https://fkc-alt.github.io/http-typedi/guide/global-config/sleep)
+  
 
 ## Installation
 
