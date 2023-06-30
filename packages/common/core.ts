@@ -18,6 +18,7 @@ import { HttpFactoryMap } from './http-factory-map'
 import type {
   ClassProvider,
   Constructor,
+  HttpFactoryPropertieKeys,
   ModuleMetadataType,
   ParamData,
   PipeTransform,
@@ -88,6 +89,8 @@ interface CreateOptions {
 export class HttpFactory {
   private logger!: Constructor<any>
 
+  private uniqueCache = { token: '' }
+
   private globalPrefix = ''
 
   private globalTimeout = 0
@@ -118,9 +121,16 @@ export class HttpFactory {
     }
   }
 
-  create<T>(
-    target: Constructor<T>
-    // options?: CreateOptions
+  static create<T>(
+    target: Constructor<T>,
+    options?: CreateOptions
+  ): HttpServicesApplication<T> {
+    return new this().factory(target, options)
+  }
+
+  factory<T>(
+    target: Constructor<T>,
+    options?: CreateOptions
   ): HttpServicesApplication<T> {
     const imports: Array<Constructor<any>> =
       Reflect.getMetadata(ModuleMetadata.IMPORTS, target) ?? []
@@ -155,7 +165,7 @@ export class HttpFactory {
       return [...globalModules, ...deepModules]
     }
     this.globalModule = Array.from(new Set(deepGlobalModule(imports)))
-    const exposeProperties: this = <this>{} //options?.expose ? this : <this>{}
+    const exposeProperties: this = options?.expose ? this : <this>{}
     const HTTPClient = {
       ...exposeProperties,
       setGlobalCatchCallback: this.setGlobalCatchCallback.bind(this),
@@ -166,9 +176,23 @@ export class HttpFactory {
       useInterceptorsRes: this.useInterceptorsRes.bind(this),
       useLogger: this.useLogger.bind(this)
     }
-    const token = uuidv4()
-    HttpFactoryMap.set(token, this)
-    return Object.assign(HTTPClient, Factory(target, token))
+    this.uniqueCache.token = uuidv4()
+    HttpFactoryMap.set(this.uniqueCache.token, this)
+    return Object.assign(
+      HTTPClient,
+      Factory(target, this.uniqueCache.token),
+      exposeProperties
+    )
+  }
+
+  private SetHttpFactoryInstanceValue(
+    token: string,
+    key: HttpFactoryPropertieKeys,
+    value: any
+  ) {
+    const Instance = HttpFactoryMap.get(token)
+    Instance[key] = value
+    HttpFactoryMap.set(token, Instance)
   }
 
   /**
@@ -179,6 +203,11 @@ export class HttpFactory {
    */
   public setGlobalPrefix(prefix: string) {
     this.globalPrefix = prefix ? prefix.replace(/^\//g, '') + '/' : ''
+    this.SetHttpFactoryInstanceValue(
+      this.uniqueCache.token,
+      'globalPrefix',
+      this.globalPrefix
+    )
   }
 
   /**
@@ -189,6 +218,11 @@ export class HttpFactory {
    */
   public setGlobalTimeout(timer: number) {
     this.globalTimeout = timer
+    this.SetHttpFactoryInstanceValue(
+      this.uniqueCache.token,
+      'globalTimeout',
+      this.globalTimeout
+    )
   }
 
   /**
@@ -199,6 +233,11 @@ export class HttpFactory {
    */
   public setGlobalSleepTimer(timer: number) {
     this.globalSleepTimer = timer
+    this.SetHttpFactoryInstanceValue(
+      this.uniqueCache.token,
+      'globalSleepTimer',
+      this.globalSleepTimer
+    )
   }
 
   /**
@@ -209,6 +248,11 @@ export class HttpFactory {
    */
   public useInterceptorsReq(...interceptors: InterceptorReq[]) {
     this.globalInterceptorsReq = interceptors
+    this.SetHttpFactoryInstanceValue(
+      this.uniqueCache.token,
+      'globalInterceptorsReq',
+      this.globalInterceptorsReq
+    )
   }
 
   /**
@@ -219,6 +263,11 @@ export class HttpFactory {
    */
   public useInterceptorsRes(...interceptors: InterceptorRes[]) {
     this.globalInterceptorsRes = interceptors
+    this.SetHttpFactoryInstanceValue(
+      this.uniqueCache.token,
+      'globalInterceptorsRes',
+      this.globalInterceptorsRes
+    )
   }
 
   /**
@@ -230,6 +279,11 @@ export class HttpFactory {
    */
   public setGlobalCatchCallback(catchCallback: (error: any) => any) {
     this.globalCatchCallback = catchCallback
+    this.SetHttpFactoryInstanceValue(
+      this.uniqueCache.token,
+      'globalCatchCallback',
+      this.globalCatchCallback
+    )
   }
 
   /**
@@ -241,6 +295,11 @@ export class HttpFactory {
    */
   public setGlobalTimeoutCallback(timeoutCallback: () => any) {
     this.globalTimeoutCallback = timeoutCallback
+    this.SetHttpFactoryInstanceValue(
+      this.uniqueCache.token,
+      'globalTimeoutCallback',
+      this.globalTimeoutCallback
+    )
   }
 
   /**
@@ -253,6 +312,11 @@ export class HttpFactory {
   @HttpFactory.UseLoggerAutomaticInstantiation
   public useLogger(Logger: Constructor<any>) {
     this.logger = Logger
+    this.SetHttpFactoryInstanceValue(
+      this.uniqueCache.token,
+      'logger',
+      this.logger
+    )
   }
 }
 
@@ -273,7 +337,6 @@ const registerDeepClass = (
     providers?.map((provider: any) => {
       const currentProvide: Constructor<any> = container.inject(provider)
       if (!currentProvide) {
-        console.log(provider, currentProvide, 'currentProvide')
         throw new Error(`Please use exports Service ${provider.name as string}`)
       }
       const childrenProviders = Reflect.getMetadata(

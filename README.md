@@ -63,7 +63,7 @@
   - [Global-Prefix](https://fkc-alt.github.io/http-typedi/guide/global-config/prefix)
   - [Global-Catch](https://fkc-alt.github.io/http-typedi/guide/global-config/catch)
   - [Global-UseInterceptors](https://fkc-alt.github.io/http-typedi/guide/global-config/use-interceptors)
-  - [Sleep](https://fkc-alt.github.io/http-typedi/guide/global-config/sleep)
+  - [Global-Sleep](https://fkc-alt.github.io/http-typedi/guide/global-config/sleep)
 
 ## Installation
 
