@@ -5,7 +5,7 @@
 
 ::: info useInterceptorsReq
 ```ts{2}
-const HTTPClient = new HttpFactory().create(ApplicationModule)
+const HTTPClient = HttpFactory.create(ApplicationModule)
 HTTPClient.useInterceptorsReq(configure => {
   const Authorization = 'this is authorization'
   if (Authorization && configure.headers)
@@ -17,7 +17,7 @@ HTTPClient.useInterceptorsReq(configure => {
 
 ::: info useInterceptorsRes
 ```ts{2}
-const HTTPClient = new HttpFactory().create(ApplicationModule)
+const HTTPClient = HttpFactory.create(ApplicationModule)
 HTTPClient.useInterceptorsRes(result => {
   console.log('global InterceptorsRes', result)
   const callError = result?.status !== 200 || result?.data?.code !== 200

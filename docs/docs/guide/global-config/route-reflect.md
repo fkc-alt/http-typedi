@@ -28,7 +28,7 @@ import AppModule from './app.module'
  * @description service for entry file
  */
 function createHTTPClient(): AppModule {
-  const HTTPClient = new HttpFactory().create(AppModule)
+  const HTTPClient = HttpFactory.create(AppModule)
   return HTTPClient
 }
 export const HTTPClient = createHTTPClient()
