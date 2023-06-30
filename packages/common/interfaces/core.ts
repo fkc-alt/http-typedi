@@ -41,3 +41,17 @@ export interface PipeTransform<T = any, R = any> {
    */
   transform(value: T): R
 }
+
+export type HttpFactoryPropertieKeys =
+  | 'logger'
+  | 'timeout'
+  | 'sleepTimer'
+  | 'globalCatchCallback'
+  | 'globalTimeoutCallback'
+  | 'globalInterceptorsReq'
+  | 'globalInterceptorsRes'
+  | 'globalPrefix'
+  | 'globalTimeout'
+  | 'globalSleepTimer'
+  | 'module'
+  | 'prefix'

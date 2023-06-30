@@ -30,7 +30,7 @@ export class AppModule {
   constructor(readonly articleController: ArticleController) {}
 }
 
-export const HTTPClient2 = new HttpFactory().create(AppModule)
+export const HTTPClient2 = HttpFactory.create(AppModule)
 HTTPClient2.setGlobalPrefix(import.meta.env.VITE_APP_BASE_API + 'test')
 HTTPClient2.useInterceptorsReq(configure => {
   const Authorization = 'this is authorization'
