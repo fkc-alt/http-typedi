@@ -296,13 +296,17 @@ export const handelParam = (
 }
 
 export const getErrorMessage = (
-  daaataTransferObject: Array<Constructor<any>>,
+  dataTransferObject: Array<Constructor<any>>,
   target: Object,
   params: Record<string, any>
 ): ValidationError[] => {
-  return daaataTransferObject.reduce((prev: ValidationError[], target) => {
-    return [...prev, ...validateSync(plainToInstance(target, params))]
-  }, [])
+  return dataTransferObject.reduce(
+    (prev: ValidationError[], target) => [
+      ...prev,
+      ...validateSync(plainToInstance(target, params))
+    ],
+    []
+  )
 }
 
 export const callHander = (
@@ -311,7 +315,7 @@ export const callHander = (
 ) => {
   if (errors.length) {
     if (!message) {
-      const messages: string[] = flattenErrorList(errors)
+      const messages = flattenErrorList(errors)
       console.error(messages)
     } else if (typeof message === 'string') {
       console.error(message)
