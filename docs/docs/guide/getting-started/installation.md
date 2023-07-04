@@ -2,7 +2,7 @@
 
 ## NPM
 
-你可以通过[npm](https://github.com/fkc-alt/http-typedi/blob/main/LICENSE) 或 [yarn](https://github.com/fkc-alt/http-typedi) 引入并使用Http-Typedi
+你可以通过[npm](https://github.com/fkc-alt/http-typedi/blob/main/LICENSE) 或 [yarn](https://github.com/fkc-alt/http-typedi) 或 [pnpm](https://github.com/fkc-alt/http-typedi) 引入并使用Http-Typedi
 
 ```sh
 $ npm install http-typedi@latest
