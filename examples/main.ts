@@ -11,7 +11,7 @@ import './style.css'
  * @description service for entry file
  */
 function createHTTPClient(): AppModule {
-  const HTTPClient = HttpFactory.create(AppModule, { expose: true })
+  const HTTPClient = HttpFactory.create(AppModule)
   HTTPClient.setGlobalCatchCallback((error: any) => {
     console.error(error, 'global catch callback')
   })
