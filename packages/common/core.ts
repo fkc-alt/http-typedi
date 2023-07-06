@@ -122,10 +122,10 @@ export class HttpFactory {
   }
 
   static create<T>(
-    target: Constructor<T>,
-    options?: CreateOptions
+    target: Constructor<T>
+    // options?: CreateOptions
   ): HttpServicesApplication<T> {
-    return new this().factory(target, options)
+    return new this().factory(target)
   }
 
   factory<T>(
