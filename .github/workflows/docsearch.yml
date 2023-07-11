@@ -12,19 +12,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
+        
       - name: Get the content of docsearch.json as config
         id: algolia_config
         run: echo "::set-output name=config::$(cat docs/docsearch.json | jq -r tostring)"
-
+        shell: bash
       - name: Run algolia/docsearch-scraper image
         env:
-          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
-          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          APPLICATION_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          API_KEY : ${{ secrets.ALGOLIA_API_KEY }}
           CONFIG: ${{ steps.algolia_config.outputs.config }}
         run: |
-          docker run \
-            --env APPLICATION_ID=${ALGOLIA_APP_ID} \
-            --env API_KEY=${ALGOLIA_API_KEY} \
-            --env "CONFIG=${CONFIG}" \
-            algolia/docsearch-scraper
+          CONFIG="$(cat docsearch-config.json)"
+          docker run -i --rm \
+                  -e APPLICATION_ID=$APPLICATION_ID \
+                  -e API_KEY=$API_KEY \
+                  -e CONFIG="${CONFIG}" \
+                  algolia/docsearch-scraper
