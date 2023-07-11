@@ -13,9 +13,9 @@ export default defineConfig({
     search: {
       provider: 'algolia',
       options: {
-        appId: '8J64VVRP8K',
-        apiKey: 'a18e2f4cc5665f6602c5631fd868adfd',
-        indexName: 'vitepress'
+        appId: 'NJZLEWX5A7',
+        apiKey: '8993cc96e4174a28e3fb9b0c55ead670',
+        indexName: 'http_typedi'
       }
     },
     nav: Navbar,
