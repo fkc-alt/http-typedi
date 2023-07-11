@@ -1,5 +1,4 @@
 name: docsearch
-
 on:
   push:
     branches:
