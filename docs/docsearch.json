@@ -1,7 +1,6 @@
 {
   "index_name": "htto_typedi",
   "start_urls": ["https://fkc-alt.github.io/http-typedi/"],
-  "sitemap_urls": ["https://fkc-alt.github.io/http-typedi/sitemap.xml"], 
   "stop_urls": ["/search"],
   "selectors": {
     "lvl0": {
