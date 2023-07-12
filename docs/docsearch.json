@@ -1,5 +1,5 @@
 {
-  "index_name": "htto_typedi",
+  "index_name": "htto-typedi",
   "start_urls": ["https://fkc-alt.github.io/http-typedi/"],
   "stop_urls": ["/search"],
   "selectors": {
