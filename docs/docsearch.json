@@ -1,5 +1,5 @@
 {
-  "index_name": "http_typedi",
+  "index_name": "docsearch",
   "start_urls": ["https://fkc-alt.github.io/http-typedi/"],
   "rateLimit": 8,
   "maxDepth": 10,
