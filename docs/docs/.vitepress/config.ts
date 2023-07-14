@@ -15,7 +15,7 @@ export default defineConfig({
       options: {
         appId: 'NJZLEWX5A7',
         apiKey: '8993cc96e4174a28e3fb9b0c55ead670',
-        indexName: 'htto-typedi'
+        indexName: 'http-typedi'
       }
     },
     nav: Navbar,
