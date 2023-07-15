@@ -28,4 +28,3 @@ features:
     title: Type Strong
     details: 完全使用 Typescript 编写，完美支持Typescript
 ---
-
