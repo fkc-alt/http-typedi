@@ -1,8 +1,5 @@
 name: docsearch
 on:
-  push:
-    branches:
-      - main
   schedule:
   # 约每天早上8点触发（UTC时间0点）
     - cron: '0 0 * * *'
