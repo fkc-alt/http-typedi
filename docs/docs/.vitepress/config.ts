@@ -13,8 +13,8 @@ export default defineConfig({
     search: {
       provider: 'algolia',
       options: {
-        appId: 'NJZLEWX5A7',
-        apiKey: '8993cc96e4174a28e3fb9b0c55ead670',
+        appId: 'F4ACRBL2B4',
+        apiKey: '82cdda10225dc1e80053d5b65c56d3aa',
         indexName: 'http-typedi'
       }
     },
