@@ -1,5 +1,8 @@
 import { defineConfig } from 'vitepress'
+import VitePressConfig from '../vitepress.config.json'
 import { Footer, Navbar, Sidebar } from './layout'
+
+const { ALGOLIA_API_KEY, ALGOLIA_APP_ID, ALGOLIA_INDEX_NAME } = VitePressConfig
 
 export default defineConfig({
   title: 'Http-Typedi',
@@ -13,9 +16,9 @@ export default defineConfig({
     search: {
       provider: 'algolia',
       options: {
-        appId: 'F4ACRBL2B4',
-        apiKey: '82cdda10225dc1e80053d5b65c56d3aa',
-        indexName: 'http-typedi'
+        appId: ALGOLIA_APP_ID,
+        apiKey: ALGOLIA_API_KEY,
+        indexName: ALGOLIA_INDEX_NAME
       }
     },
     nav: Navbar,
