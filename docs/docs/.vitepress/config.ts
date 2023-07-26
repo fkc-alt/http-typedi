@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitepress'
-import VitePressConfig from '../vitepress.config.json'
+import AlgoliaConfig from '../algolia.config.json'
 import { Footer, Navbar, Sidebar } from './layout'
 
-const { ALGOLIA_API_KEY, ALGOLIA_APP_ID, ALGOLIA_INDEX_NAME } = VitePressConfig
+const { ALGOLIA_API_KEY, ALGOLIA_APP_ID, ALGOLIA_INDEX_NAME } = AlgoliaConfig
 
 export default defineConfig({
   title: 'Http-Typedi',
