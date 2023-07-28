@@ -49,7 +49,7 @@ export const Friends: DefaultTheme.TeamMember[] = [
     name: 'fanzhengxu',
     title: 'Friend',
     links: [
-      { icon: { svg: StaticSvgs.JueJin }, link: 'https://gitee.com/fanzhengxu' }
+      { icon: { svg: StaticSvgs.Gitee }, link: 'https://gitee.com/fanzhengxu' }
     ]
   },
   {
