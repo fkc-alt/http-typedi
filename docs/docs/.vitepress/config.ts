@@ -8,9 +8,7 @@ const { ALGOLIA_API_KEY, ALGOLIA_APP_ID, ALGOLIA_INDEX_NAME } = VitePressConfig
 export default defineConfig({
   title: 'Http-Typedi',
   description: '前端Spring框架',
-  head: [
-    ['link', { rel: 'icon', href: '/http-typedi/logo.svg' }],
-  ],
+  head: [['link', { rel: 'icon', href: '/http-typedi/logo.svg' }]],
   base: '/http-typedi/',
   themeConfig: {
     logo: '/logo.svg',

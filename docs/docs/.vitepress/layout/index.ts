@@ -1,3 +1,3 @@
 export * from './footer'
-export * from './nav-bar'
+export * from './navbar'
 export * from './sidebar'
