@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import { StaticSvgs } from './theme/config'
 import VitePressConfig from '../vitepress.config.json'
 import { Footer, Navbar, Sidebar } from './layout'
 
@@ -21,6 +22,18 @@ export default defineConfig({
         indexName: ALGOLIA_INDEX_NAME
       }
     },
+    editLink: {
+      pattern: 'https://github.com/fkc-alt/http-typedi/edit/develop/docs/docs/:path',
+      text: 'Edit this page on GitHub'
+    },
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/fkc-alt' },
+      { icon: 'twitter', link: 'https://twitter.com/kicho9931832774' },
+      {
+        icon: { svg: StaticSvgs.JueJin },
+        link: 'https://juejin.cn/user/3664052806516327'
+      }
+    ],
     nav: Navbar,
     sidebar: Sidebar,
     footer: Footer
