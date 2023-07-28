@@ -38,4 +38,5 @@ export default defineConfig({
     sidebar: Sidebar,
     footer: Footer
   },
+  lastUpdated: true
 })
