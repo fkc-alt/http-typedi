@@ -53,6 +53,7 @@ body,
   flex: 1;
   padding-bottom: 30px;
   border-bottom: 1px solid var(--vp-c-text-1);
+  justify-content: center;
 }
 .package-flex {
   display: flex;
@@ -109,4 +110,7 @@ body,
 
 .my {
   margin: 80px 0 40px;
+}
+svg:hover path {
+  fill: currentColor;
 }
