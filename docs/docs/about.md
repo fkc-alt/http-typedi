@@ -1,10 +1,12 @@
 ---
 layout: page
 ---
+
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
 import { Friends, Creators } from './vue/member.config'
 </script>
+
 <div class='description'>
     <div class='text-size-24 title'>关于我</div>
     <div class='text-size-20'>我叫Jack，目前工作是Front end developer。</div>

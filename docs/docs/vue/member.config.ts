@@ -84,7 +84,7 @@ export const Friends: DefaultTheme.TeamMember[] = [
   }
 ]
 
-export const Creators = [
+export const Creators: DefaultTheme.TeamMember[] = [
   {
     avatar: 'https://avatars.githubusercontent.com/fkc-alt',
     name: 'fkc-alt',
