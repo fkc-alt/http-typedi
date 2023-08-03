@@ -40,3 +40,21 @@ jobs:
       - name: Deploy Page To Release
         id: deployment
         uses: actions/deploy-pages@v1
+  docsearch:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get the content of docsearch.json as config
+        id: algolia_config
+        run: echo "::set-output name=config::$(cat docs/docsearch.json | jq -r tostring)"
+        shell: bash
+      - name: Run algolia/docsearch-scraper image
+        env:
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          CONFIG: ${{ steps.algolia_config.outputs.config }}
+        run: |
+          docker pull algolia/docsearch-scraper:latest
+          docker run --env APPLICATION_ID=${ALGOLIA_APP_ID} --env API_KEY=${ALGOLIA_API_KEY} --env "CONFIG=${CONFIG}" algolia/docsearch-scraper
