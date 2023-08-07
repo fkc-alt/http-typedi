@@ -23,5 +23,4 @@ import { Friends, Creators } from './vue/member.config'
     <a href='https://www.shengchanli.online/?contributor=1511580946661408' target='_blank'>
         <img style='width: 173px; height: 32px; border-radius: 0;' src='https://static01.shengchanli.online/frontend_asset/logo.png' referrerpolicy="no-referrer" alt='数字升产力' />
     </a>
-
 </div>
