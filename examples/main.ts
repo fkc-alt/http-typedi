@@ -37,6 +37,7 @@ function createHTTPClient(): AppModule {
 
 const HTTPClient = createHTTPClient()
 console.log(HTTPClient, HTTPClient2, '222222')
+HTTPClient.orderController.UploadFile({ file: 123, x: 1 })
 HTTPClient2.articleController
   .GetArticleList({})
   .then(res => {
