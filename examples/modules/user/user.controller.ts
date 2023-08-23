@@ -32,6 +32,9 @@ export default class UserController {
     T extends Service.UserInfoReq,
     U extends Service.UserInfoRes
   >(configure: UserInfoDto): ServerRes<U> {
+    const { ...Rest } = <RequestConfig<T>>configure
+    console.log(Rest)
+    console.log(this, 'this')
     return await this.requestService.request<T, ServerRes<U>>(
       <RequestConfig<T>>configure
     )

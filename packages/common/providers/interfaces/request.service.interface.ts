@@ -5,6 +5,7 @@ export interface RequestConfig<R = unknown> {
   params?: R
   data?: R
   timeout?: number
+  customActions?: boolean
   timeoutCallback?(response: ResponseConfig): void
 }
 

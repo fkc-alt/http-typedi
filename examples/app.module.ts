@@ -7,9 +7,18 @@ import ExampleModule from './modules/example/example.module'
 import DemoController from './modules/demo/demo.controller'
 import UserController from './modules/user/user.controller'
 import UserModule from './modules/user/user.module'
+import OrderModule from './modules/order/order.module'
+import OrderController from './modules/order/order.controller'
 
 @Module({
-  imports: [CommonModule, ArticleModule, ExampleModule, DemoModule, UserModule],
+  imports: [
+    CommonModule,
+    ArticleModule,
+    ExampleModule,
+    DemoModule,
+    UserModule,
+    OrderModule
+  ],
   providers: []
 })
 export default class AppModule {
@@ -19,6 +28,7 @@ export default class AppModule {
     readonly requestService: RequestService,
     readonly articleController: ArticleController,
     readonly demoController: DemoController,
-    readonly userController: UserController
+    readonly userController: UserController,
+    readonly orderController: OrderController
   ) {}
 }

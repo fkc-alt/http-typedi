@@ -41,9 +41,11 @@ export default class OrderController {
     T extends Services.Common.UplaodReq,
     U extends Services.Common.UplaodRes
   >(configure: T): ServerRes<U> {
-    return await this.uploadService.uploadFile<T, ServerRes<U>>(
-      <RequestConfig<T>>configure
-    )
+    const data = await this.uploadService.uploadFile<T, ServerRes<U>>({
+      ...(<RequestConfig<T>>configure),
+      customActions: true
+    })
+    return data
   }
 
   @PostMapping(OrderRouteChildren.UPLOADBASE64)

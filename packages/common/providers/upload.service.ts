@@ -12,20 +12,24 @@ export class UploadService {
   ): Promise<U> {
     const {
       data: { file, ...params } = {},
+      customActions,
       headers = {},
       ...requestConfig
     } = configure
     const fileLoder = new FormData()
     Object.assign(headers, { 'Conent-Type': ContentType.FORM_DATA })
     fileLoder.append('file', <Blob>file?.raw)
-    return await this.requestService.request<T, U>({
+    const _config = {
       ...requestConfig,
       headers,
       data: <T>{
         file: fileLoder.get('file'),
         ...(params || {})
       }
-    })
+    }
+    return customActions
+      ? <U>_config
+      : await this.requestService.request<T, U>(_config)
   }
 
   public async uploadBase64<T extends { file: any }, U = unknown>(
@@ -33,16 +37,23 @@ export class UploadService {
   ): Promise<U> {
     return await new Promise((resolve, reject) => {
       try {
-        const { data: { file, ...params } = {}, ...requestConfig } = configure
+        const {
+          data: { file, ...params } = {},
+          customActions,
+          ...requestConfig
+        } = configure
         const render = new FileReader()
         render.onload = (e: ProgressEvent<FileReader>) => {
           const base64 = (<string>e.target?.result)?.split(',').pop() ?? ''
           const ext = `.${<string>(<any>file).name.split('.').pop()}`
+          const _config = {
+            ...requestConfig,
+            data: <T>(<unknown>{ base64, ext, ...(params || {}) })
+          }
           resolve(
-            this.requestService.request<T, U>({
-              ...requestConfig,
-              data: <T>(<unknown>{ base64, ext, ...(params || {}) })
-            })
+            customActions
+              ? <U>_config
+              : this.requestService.request<T, U>(_config)
           )
         }
         render.readAsDataURL(<Blob>(<any>file).raw)
