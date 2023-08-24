@@ -155,6 +155,10 @@ export const Sidebar: DefaultTheme.Sidebar = {
               link: '/guide/decorators/param-decorators'
             },
             {
+              text: '自定义参数装饰器',
+              link: '/guide/decorators/custome-decorators'
+            },
+            {
               text: '聚合装饰器',
               link: '/guide/decorators/apply-decorators'
             },
