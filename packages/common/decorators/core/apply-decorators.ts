@@ -23,10 +23,10 @@ export const applyDecorators = (
   ) {
     for (const decorator of decorators) {
       if (target instanceof Function && !descriptor) {
-        ;(decorator as ClassDecorator)(target)
+        ;(<ClassDecorator>decorator)(target)
         continue
       }
-      ;(decorator as MethodDecorator | PropertyDecorator)(
+      ;(<MethodDecorator | PropertyDecorator>decorator)(
         target,
         propertyKey!,
         descriptor!

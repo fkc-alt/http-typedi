@@ -14,7 +14,7 @@ const registerDeepClass = (
           provider
         )
         if (!isInject)
-          throw new Error(`Please use @Injectable() ${provider.name as string}`)
+          throw new Error(`Please use @Injectable() ${<string>provider.name}`)
         const deepNeedProviders = Reflect.getMetadata(
           MetadataKey.PARAMTYPES_METADATA,
           provider
@@ -43,12 +43,9 @@ export const Injection = (token?: string) => {
     }> = Reflect.getMetadata(MetadataKey.INJECTIONS, target.constructor) || []
     if (isString(token)) {
       setTimeout(() => {
-        const propertyValue = (
-          Reflect.getMetadata(
-            ModuleMetadata.PROVIDERS,
-            target.constructor
-          ) as any[]
-        )?.filter(provider => provider.provide === token)[0]
+        const propertyValue = (<any[]>(
+          Reflect.getMetadata(ModuleMetadata.PROVIDERS, target.constructor)
+        ))?.filter(provider => provider.provide === token)[0]
         Reflect.defineMetadata(
           MetadataKey.INJECTIONS,
           [

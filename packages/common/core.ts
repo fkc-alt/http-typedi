@@ -66,7 +66,7 @@ class Container {
    * get
    */
   inject(token: Constructor<any>): Constructor<any> {
-    return this.providers.get(token)?.useClass as Constructor<any>
+    return <Constructor<any>>this.providers.get(token)?.useClass
   }
 }
 
@@ -337,7 +337,7 @@ const registerDeepClass = (
     providers?.map((provider: any) => {
       const currentProvide: Constructor<any> = container.inject(provider)
       if (!currentProvide) {
-        throw new Error(`Please use exports Service ${provider.name as string}`)
+        throw new Error(`Please use exports Service ${<string>provider.name}`)
       }
       const childrenProviders = Reflect.getMetadata(
         MetadataKey.PARAMTYPES_METADATA,
@@ -396,7 +396,7 @@ const initContainer = (
     )
     const isFactoryProvide = isFunction(provide)
     if (!isInject && isFactoryProvide)
-      throw new Error(`Please use @Injectable() ${provide.name as string}`)
+      throw new Error(`Please use @Injectable() ${<string>provide.name}`)
     container.addProvider({
       provide: isFactoryProvide ? provide : provide.provide,
       useClass: isFactoryProvide

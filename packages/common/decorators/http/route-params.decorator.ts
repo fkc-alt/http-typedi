@@ -84,7 +84,7 @@ export const OverrideReqEffect = (
     const item = values.find(_ => _.index === index)
     if (item?.data) {
       const registerClasses = item?.pipes?.map((target: any) =>
-        isFunction(target) ? new (target as Constructor<any>)() : target
+        isFunction(target) ? new (<Constructor<any>>target)() : target
       )
       if (isArray(item.data)) {
         const _param = (<string[]>item.data).reduce((prev, next) => {
@@ -103,13 +103,13 @@ export const OverrideReqEffect = (
         return item?.factory?.(item.data, executionContext) ?? _param
       }
       registerClasses?.forEach(target => {
-        param[item.data as string] =
-          target?.transform?.(param[item.data as string]) ??
-          (param[item.data as string] || target.defaultValue)
+        param[<string>item.data] =
+          target?.transform?.(param[<string>item.data]) ??
+          (param[<string>item.data] || target.defaultValue)
       })
       return (
         item?.factory?.(item.data, executionContext) ??
-        param?.[item.data as string] ??
+        param?.[<string>item.data] ??
         void 0
       )
     }

@@ -1,5 +1,7 @@
 import { ModuleMetadataType } from '../../interfaces/core'
 
+type ModuleMetadataTypeKeys = keyof ModuleMetadataType
+
 /**
  * @module Module
  * @param { ModuleMetadata }
@@ -10,10 +12,10 @@ export const Module = (metadata: ModuleMetadataType): ClassDecorator => {
   //   const propsKeys = Object.keys(metadata)
   return (target: any) => {
     for (const property in metadata) {
-      if (metadata[property as keyof ModuleMetadataType]) {
+      if (metadata[<ModuleMetadataTypeKeys>property]) {
         Reflect.defineMetadata(
           property,
-          metadata[property as keyof ModuleMetadataType],
+          metadata[<ModuleMetadataTypeKeys>property],
           target
         )
       }

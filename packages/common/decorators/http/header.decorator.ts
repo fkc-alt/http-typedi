@@ -18,7 +18,7 @@ export const Header = (
   value: string | Function
 ): MethodDecorator & ClassDecorator => {
   return function (...args: any[]) {
-    const [target, propertyKey] = args as Parameters<MethodDecorator>
+    const [target, propertyKey] = <Parameters<MethodDecorator>>args
     const metadataArgs: any = [
       MetadataKey.REQUEST_METADATA,
       target,

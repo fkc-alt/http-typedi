@@ -50,9 +50,9 @@ export class HttpException extends Error {
       this.message = <string>this.response
     } else if (
       isObject(this.response) &&
-      isString((this.response as Record<string, any>).message)
+      isString((<Record<string, any>>this.response).message)
     ) {
-      this.message = (this.response as Record<string, any>).message
+      this.message = (<Record<string, any>>this.response).message
     } else if (this.constructor) {
       this.message =
         <string>(
