@@ -24,7 +24,6 @@
     "vitepress": "^1.0.0-rc.4"
   },
   "dependencies": {
-    "crawler": "^1.4.0",
     "nprogress": "^0.2.0"
   }
 }
