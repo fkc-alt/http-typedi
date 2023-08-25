@@ -3,7 +3,8 @@
 要为应用程序中的每个路由设置请求拦截器, 让我们使用 `HttpServicesApplication` 对象的 `useInterceptorsReq()` 和 `useInterceptorsRes()` 方法。它们的参数是一个或多个拦截器函数。
 下面我们来看一下`useInterceptorsReq()` 和 `useInterceptorsRes()`例子：
 
-::: info useInterceptorsReq
+> useInterceptorsReq
+
 ```ts{2}
 const HTTPClient = HttpFactory.create(ApplicationModule)
 HTTPClient.useInterceptorsReq(configure => {
@@ -13,9 +14,9 @@ HTTPClient.useInterceptorsReq(configure => {
   return configure
 })
 ```
-:::
 
-::: info useInterceptorsRes
+> useInterceptorsRes
+
 ```ts{2}
 const HTTPClient = HttpFactory.create(ApplicationModule)
 HTTPClient.useInterceptorsRes(result => {
@@ -25,7 +26,6 @@ HTTPClient.useInterceptorsRes(result => {
   return Promise.reject(result) // or throw result
 })
 ```
-:::
 
 上述全局拦截器将应用于所有路由。
 
