@@ -1,4 +1,10 @@
-import { Injection, Module, RequestService } from '@/index'
+import {
+  Injection,
+  MiddlewareConsumer,
+  Module,
+  RequestService,
+  HttpTypeDIModule
+} from '@/index'
 import CommonModule from './common/common.module'
 import ArticleController from './modules/article/article.controller'
 import ArticleModule from './modules/article/article.module'
@@ -9,6 +15,7 @@ import UserController from './modules/user/user.controller'
 import UserModule from './modules/user/user.module'
 import OrderModule from './modules/order/order.module'
 import OrderController from './modules/order/order.controller'
+import { LoggerMiddleware } from './middleware/logger.middleware'
 
 @Module({
   imports: [
@@ -21,7 +28,7 @@ import OrderController from './modules/order/order.controller'
   ],
   providers: []
 })
-export default class AppModule {
+export default class AppModule implements HttpTypeDIModule {
   @Injection()
   readonly customHttp!: RequestService
   constructor(
@@ -31,4 +38,7 @@ export default class AppModule {
     readonly userController: UserController,
     readonly orderController: OrderController
   ) {}
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('cats')
+  }
 }

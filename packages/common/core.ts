@@ -25,6 +25,8 @@ import type {
   Providers,
   RouteParamMetadata
 } from './interfaces/core'
+export * from './interfaces/middleware'
+export * from './interfaces'
 import type { ResponseConfig } from './providers'
 export * from './decorators'
 export {
