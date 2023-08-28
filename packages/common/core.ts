@@ -6,7 +6,7 @@ import {
   ModuleMetadata,
   MetadataKey,
   HttpStatus,
-  Method,
+  RequestMethod,
   RouteParamtypes,
   ContentType
 } from './enums'
@@ -33,7 +33,7 @@ export * from './decorators'
 export {
   MetadataKey,
   HttpStatus,
-  Method,
+  RequestMethod,
   RouteParamtypes,
   flattenErrorList,
   ContentType
@@ -498,10 +498,7 @@ const Factory = <T>(target: Constructor<T>, token: string): T => {
   }
   try {
     const HTTPClient = initFactory<T>(target, container, constructorProviders)
-    console.log(
-      (<any>HTTPClient)?.configure?.(StaticMiddlewareConsumer.apply),
-      'initFactory'
-    )
+    ;(<any>HTTPClient)?.configure?.(StaticMiddlewareConsumer.apply)
     return HTTPClient
   } catch (error) {
     console.log('Factory Init Error: ', error)

@@ -32,7 +32,7 @@ export enum MetadataKey {
   MIDDLEWARECONFIGPROXYFORROUTES_METADATA = 'design:forRoutes'
 }
 
-export enum Method {
+export enum RequestMethod {
   get = 'get',
   post = 'post',
   delete = 'delete',
@@ -52,17 +52,6 @@ export enum Method {
   LINK = 'LINK',
   UNLINK = 'UNLINK',
   HEAD = 'HEAD'
-}
-
-export declare enum RequestMethod {
-  GET = 0,
-  POST = 1,
-  PUT = 2,
-  DELETE = 3,
-  PATCH = 4,
-  ALL = 5,
-  OPTIONS = 6,
-  HEAD = 7
 }
 
 export enum MethodMapping {

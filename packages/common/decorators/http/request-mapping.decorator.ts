@@ -1,5 +1,5 @@
 import { ValidationError } from 'class-validator'
-import { Method, MethodMapping } from '../../enums'
+import { RequestMethod, MethodMapping } from '../../enums'
 import { createRequestMapping } from './core'
 
 interface HttpMethodDecorator {
@@ -16,15 +16,15 @@ type RequestMappingStaticMethod = {
 class RequestMappingFactoryStatic implements RequestMappingStaticMethod {
   private static readonly HttpStaticMethodsMappingMap = new Map<
     MethodMapping,
-    Method
+    RequestMethod
   >([
-    [MethodMapping.GET, Method.GET],
-    [MethodMapping.POST, Method.POST],
-    [MethodMapping.DELETE, Method.DELETE],
-    [MethodMapping.PUT, Method.PUT],
-    [MethodMapping.HEAD, Method.HEAD],
-    [MethodMapping.OPTIONS, Method.OPTIONS],
-    [MethodMapping.PATCH, Method.PATCH]
+    [MethodMapping.GET, RequestMethod.GET],
+    [MethodMapping.POST, RequestMethod.POST],
+    [MethodMapping.DELETE, RequestMethod.DELETE],
+    [MethodMapping.PUT, RequestMethod.PUT],
+    [MethodMapping.HEAD, RequestMethod.HEAD],
+    [MethodMapping.OPTIONS, RequestMethod.OPTIONS],
+    [MethodMapping.PATCH, RequestMethod.PATCH]
   ])
 
   constructor() {
@@ -45,7 +45,7 @@ class RequestMappingFactoryStatic implements RequestMappingStaticMethod {
     )
   }
 
-  private setupMapped(method: Method, methodMapping: MethodMapping) {
+  private setupMapped(method: RequestMethod, methodMapping: MethodMapping) {
     this[methodMapping] = (path, message) =>
       createRequestMapping(path, method, message)
   }

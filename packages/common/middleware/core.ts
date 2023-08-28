@@ -1,42 +1,39 @@
 import { MetadataKey } from '../../common/enums'
-import {
-  MiddlewareConfigProxy,
-  RouteInfo
-} from '../../common/interfaces/middleware'
+import { RouteInfo } from '../../common/interfaces/middleware'
 import { Type } from '../../common/interfaces/type.interface'
 
-const middlewareConfigProxy: MiddlewareConfigProxy = {
+const middlewareConfigProxy = {
   exclude(...routes: (string | RouteInfo)[]) {
-    const excluderoutes: (string | RouteInfo)[] =
-      Reflect.getMetadata(
-        MetadataKey.MIDDLEWARECONFIGPROXYEXCLUDE_METADATA,
-        this.constructor
-      ) ?? []
+    middlewareConfigProxy.execution.apply(this, [
+      routes,
+      MetadataKey.MIDDLEWARECONFIGPROXYEXCLUDE_METADATA
+    ])
+    return this
+  },
+  forRoutes(...routes: (string | Type<any> | RouteInfo)[]) {
+    middlewareConfigProxy.execution.apply(this, [
+      routes,
+      MetadataKey.MIDDLEWARECONFIGPROXYFORROUTES_METADATA
+    ])
+    return StaticMiddlewareConsumer.apply
+  },
+  execution<T extends (string | Type<any> | RouteInfo)[]>(
+    routes: T,
+    metadataKey: MetadataKey
+  ) {
+    const originalRoutes =
+      Reflect.getMetadata(metadataKey, this.constructor) ?? []
     Reflect.defineMetadata(
-      MetadataKey.MIDDLEWARECONFIGPROXYEXCLUDE_METADATA,
-      [...excluderoutes, ...routes],
+      metadataKey,
+      [...originalRoutes, ...routes],
       this.constructor
     )
     console.log(
-      [...excluderoutes, ...routes],
+      [...originalRoutes, ...routes],
       'exclude',
       this,
       this.constructor
     )
-    return this
-  },
-  forRoutes(...routes: (string | Type<any> | RouteInfo)[]) {
-    const includeRoutes: (string | Type<any> | RouteInfo)[] =
-      Reflect.getMetadata(
-        MetadataKey.MIDDLEWARECONFIGPROXYFORROUTES_METADATA,
-        this.constructor
-      ) ?? []
-    Reflect.defineMetadata(
-      MetadataKey.MIDDLEWARECONFIGPROXYFORROUTES_METADATA,
-      [...includeRoutes, ...routes],
-      this.constructor
-    )
-    return StaticMiddlewareConsumer.apply
   }
 }
 

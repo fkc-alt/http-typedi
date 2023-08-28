@@ -1,5 +1,5 @@
 import { Injectable } from '../decorators'
-import { ContentType, HttpStatus, Method } from '../enums'
+import { ContentType, HttpStatus, RequestMethod } from '../enums'
 import { RequestConfig } from './interfaces/request.service.interface'
 import { ObjectToURLParameter, GR } from './utils'
 
@@ -15,7 +15,7 @@ export class RequestService {
     const XHR = new XMLHttpRequest()
 
     return new Promise<R>((r, j) => {
-      const isGet = [Method.GET, Method.get].includes(rc.method!)
+      const isGet = [RequestMethod.GET, RequestMethod.get].includes(rc.method!)
       const URLParameter = ObjectToURLParameter(rc.params!)
       const URL = isGet
         ? `${rc.url}${URLParameter ? `?${URLParameter}` : ''}}`
@@ -55,16 +55,16 @@ export class RequestService {
       }
 
       switch (rc.method) {
-        case Method.GET:
-        case Method.get:
-        case Method.DELETE:
-        case Method.delete:
+        case RequestMethod.GET:
+        case RequestMethod.get:
+        case RequestMethod.DELETE:
+        case RequestMethod.delete:
           XHR.send()
           break
-        case Method.POST:
-        case Method.post:
-        case Method.PUT:
-        case Method.put:
+        case RequestMethod.POST:
+        case RequestMethod.post:
+        case RequestMethod.PUT:
+        case RequestMethod.put:
           XHR.send(JSON.stringify(rc.data))
           break
         default:

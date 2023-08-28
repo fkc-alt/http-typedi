@@ -3,7 +3,8 @@ import {
   Module,
   RequestService,
   HttpTypeDIModule,
-  MiddlewareConsumer
+  MiddlewareConsumer,
+  RequestMethod
 } from '@/index'
 import CommonModule from './common/common.module'
 import ArticleController from './modules/article/article.controller'
@@ -49,5 +50,10 @@ export default class AppModule implements HttpTypeDIModule {
       .forRoutes('system')
       .apply(TestMiddleware)
       .exclude('TestMiddleware')
+      .exclude({
+        path: 'login',
+        method: RequestMethod.GET
+      })
+      .forRoutes('order')
   }
 }

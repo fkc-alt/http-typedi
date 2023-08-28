@@ -5,7 +5,7 @@ import { ValidationError, validateSync } from 'class-validator'
 import { InterceptorReq, InterceptorRes, Constructor } from '../../core'
 import { RequestConfig } from '../../providers'
 import { HttpFactoryMap } from '../../http-factory-map'
-import { MetaDataTypes, MetadataKey, Method } from '../../enums'
+import { MetaDataTypes, MetadataKey, RequestMethod } from '../../enums'
 import { flattenErrorList } from '../../helper/param-error'
 import { isFunction } from '../../helper/utils'
 import { CONNECTSTRING } from '../../helper/constant'
@@ -46,7 +46,7 @@ const swtichMetadataTypeRelationValues = (
  * @module RequestFactory
  * @method createRequestMapping
  * @param { string } path
- * @param { Method } method
+ * @param { RequestMethod } method
  * @param { string | ((validationError: ValidationError[]) => any) } [message = void 0] message
  * @auther kaichao.feng
  * @returns { MethodDecorator } MethodDecorator
@@ -54,7 +54,7 @@ const swtichMetadataTypeRelationValues = (
  */
 export const createRequestMapping = (
   path: string,
-  method: Method,
+  method: RequestMethod,
   message?: string | ((validationError: ValidationError[]) => any)
 ): MethodDecorator => {
   return function (target, key, descriptor: PropertyDescriptor) {
@@ -238,7 +238,7 @@ export async function handlerResult(
 
 export const handelParam = (
   path: string,
-  method: Method,
+  method: RequestMethod,
   target: Object,
   key: string | symbol,
   params: Record<string, any>
@@ -246,7 +246,7 @@ export const handelParam = (
   const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
   const timeout = getTimeout(target, key)
   const timeoutCallback = getTimeoutCallback(target, key)
-  const isGet = [Method.GET, Method.get].includes(method)
+  const isGet = [RequestMethod.GET, RequestMethod.get].includes(method)
   const globalPrefix: string = HttpFactoryMap.get(token).globalPrefix
   const controllerPrefix = (<any>target)[
     `${target.constructor.name}${CONNECTSTRING}`
@@ -275,9 +275,12 @@ export const handelParam = (
   const data = {
     [isGet ? 'params' : 'data']: params
   }
-  const url = [Method.GET, Method.DELETE, Method.get, Method.delete].includes(
-    method
-  )
+  const url = [
+    RequestMethod.GET,
+    RequestMethod.DELETE,
+    RequestMethod.get,
+    RequestMethod.delete
+  ].includes(method)
     ? paramList
         .reduce(
           (prev, next) => prev.replace(new RegExp(next), params[next]),
