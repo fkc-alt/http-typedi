@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { v4 as uuidv4 } from 'uuid'
 import { RequestConfig } from '..'
+import { StaticMiddlewareConsumer } from './middleware'
 import {
   ModuleMetadata,
   MetadataKey,
@@ -496,7 +497,12 @@ const Factory = <T>(target: Constructor<T>, token: string): T => {
     console.log('Container Init Error: ', error)
   }
   try {
-    return initFactory<T>(target, container, constructorProviders)
+    const HTTPClient = initFactory<T>(target, container, constructorProviders)
+    console.log(
+      (<any>HTTPClient)?.configure?.(StaticMiddlewareConsumer.apply),
+      'initFactory'
+    )
+    return HTTPClient
   } catch (error) {
     console.log('Factory Init Error: ', error)
     return new target()

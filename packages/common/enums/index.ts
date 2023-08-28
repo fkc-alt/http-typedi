@@ -27,7 +27,9 @@ export enum MetadataKey {
   REQUEST_METADATA = 'design:request',
   INTERCEPTORSREQ_METADATA = 'design:interceptorsreq',
   INTERCEPTORSRES_METADATA = 'design:interceptorsres',
-  TIMEOUTCALLBACK_METADATA = 'design:timeoutcallback'
+  TIMEOUTCALLBACK_METADATA = 'design:timeoutcallback',
+  MIDDLEWARECONFIGPROXYEXCLUDE_METADATA = 'design:exclude',
+  MIDDLEWARECONFIGPROXYFORROUTES_METADATA = 'design:forRoutes'
 }
 
 export enum Method {

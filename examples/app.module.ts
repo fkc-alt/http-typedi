@@ -1,9 +1,9 @@
 import {
   Injection,
-  MiddlewareConsumer,
   Module,
   RequestService,
-  HttpTypeDIModule
+  HttpTypeDIModule,
+  MiddlewareConsumer
 } from '@/index'
 import CommonModule from './common/common.module'
 import ArticleController from './modules/article/article.controller'
@@ -16,6 +16,7 @@ import UserModule from './modules/user/user.module'
 import OrderModule from './modules/order/order.module'
 import OrderController from './modules/order/order.controller'
 import { LoggerMiddleware } from './middleware/logger.middleware'
+import { TestMiddleware } from './middleware/test.middleware'
 
 @Module({
   imports: [
@@ -39,6 +40,14 @@ export default class AppModule implements HttpTypeDIModule {
     readonly orderController: OrderController
   ) {}
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('cats')
+    // console.log(consumer, 'consumer')
+    consumer
+      .apply(LoggerMiddleware)
+      .exclude('login')
+      .exclude('api')
+      .exclude('test')
+      .forRoutes('system')
+      .apply(TestMiddleware)
+      .exclude('TestMiddleware')
   }
 }
