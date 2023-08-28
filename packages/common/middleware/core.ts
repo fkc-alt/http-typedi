@@ -42,6 +42,8 @@ export class StaticMiddlewareConsumer {
    * @returns { MiddlewareConfigProxy } middlewareConfigProxy
    */
   static apply() {
-    return Object.assign(new this(), middlewareConfigProxy)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { execution, ...MiddlewareConfigProxy } = middlewareConfigProxy
+    return Object.assign(new this(), MiddlewareConfigProxy)
   }
 }
