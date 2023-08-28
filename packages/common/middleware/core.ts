@@ -30,7 +30,7 @@ const middlewareConfigProxy = {
     )
     console.log(
       [...originalRoutes, ...routes],
-      'exclude',
+      'originalRoutes',
       this,
       this.constructor
     )
