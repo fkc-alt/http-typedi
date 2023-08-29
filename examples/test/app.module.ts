@@ -1,6 +1,7 @@
 import {
   Controller,
   HttpFactory,
+  HttpTypeDIModule,
   MiddlewareConsumer,
   Module,
   PostMapping,
@@ -29,7 +30,7 @@ class ArticleModule {}
 @Module({
   imports: [ArticleModule]
 })
-export class AppModule {
+export class AppModule implements HttpTypeDIModule {
   constructor(readonly articleController: ArticleController) {}
   configure(consumer: MiddlewareConsumer) {
     // console.log(consumer, 'consumer')
