@@ -82,7 +82,7 @@ export const createRequestMapping = (
         target,
         params
       )
-      callHander(errors, message)
+      DTOValidate(errors, message)
       return result
     }
     return descriptor
@@ -339,7 +339,7 @@ export const getErrorMessage = (
   )
 }
 
-export const callHander = (
+export const DTOValidate = (
   errors: ValidationError[],
   message?: string | ((validationError: ValidationError[]) => any)
 ) => {
