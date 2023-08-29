@@ -1,10 +1,13 @@
 import {
   Controller,
   HttpFactory,
+  MiddlewareConsumer,
   Module,
   PostMapping,
+  RequestMethod,
   RequestService
 } from '@/index'
+import { Test2Middleware } from '~@/middleware/__test2__.middleware'
 
 @Controller('article')
 class ArticleController {
@@ -28,6 +31,17 @@ class ArticleModule {}
 })
 export class AppModule {
   constructor(readonly articleController: ArticleController) {}
+  configure(consumer: MiddlewareConsumer) {
+    // console.log(consumer, 'consumer')
+    consumer
+      .apply(Test2Middleware)
+      .exclude('Test2Middleware')
+      .exclude({
+        path: 'login',
+        method: RequestMethod.GET
+      })
+      .forRoutes('Test2Middleware')
+  }
 }
 
 export const HTTPClient2 = HttpFactory.create(AppModule)
