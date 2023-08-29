@@ -50,6 +50,7 @@ export type HttpFactoryPropertieKeys =
   | 'globalTimeoutCallback'
   | 'globalInterceptorsReq'
   | 'globalInterceptorsRes'
+  | 'globalMiddleware'
   | 'globalPrefix'
   | 'globalTimeout'
   | 'globalSleepTimer'

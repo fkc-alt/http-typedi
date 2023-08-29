@@ -106,6 +106,13 @@ export const getInterceptors = (
   )
 }
 
+export const getMiddlewares = (
+  target: Object
+): Array<InterceptorReq | InterceptorRes> => {
+  const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
+  return HttpFactoryMap.get(token).globalMiddleware ?? []
+}
+
 export const getCatchCallback = (
   target: Object,
   propertyKey: string | symbol
@@ -179,6 +186,8 @@ export async function handlerResult(
   fn: (params: any) => any
 ): Promise<any> {
   try {
+    const middlewares = getMiddlewares(target)
+    console.log(middlewares, 'getMiddleware')
     const interceptorsReq = getInterceptors(
       target,
       propertyKey,
