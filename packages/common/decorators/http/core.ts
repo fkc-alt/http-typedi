@@ -186,8 +186,23 @@ export async function handlerResult(
   fn: (params: any) => any
 ): Promise<any> {
   try {
-    const middlewares = getMiddlewares(target)
+    const middlewares = getMiddlewares(target).map(middleware => {
+      return {
+        exclude: Reflect.getMetadata(
+          MetadataKey.MIDDLEWARECONFIGPROXYEXCLUDE_METADATA,
+          middleware
+        ),
+        forRoutes: Reflect.getMetadata(
+          MetadataKey.MIDDLEWARECONFIGPROXYFORROUTES_METADATA,
+          middleware
+        )
+      }
+    })
+    /**
+     * @description 此处需要补上中间件逻辑
+     */
     console.log(middlewares, 'getMiddleware')
+
     const interceptorsReq = getInterceptors(
       target,
       propertyKey,
