@@ -2,7 +2,12 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { plainToInstance } from 'class-transformer'
 import { ValidationError, validateSync } from 'class-validator'
-import { InterceptorReq, InterceptorRes, Constructor } from '../../core'
+import {
+  InterceptorReq,
+  InterceptorRes,
+  Constructor,
+  Middleware
+} from '../../core'
 import { RequestConfig } from '../../providers'
 import { HttpFactoryMap } from '../../http-factory-map'
 import { MetaDataTypes, MetadataKey, RequestMethod } from '../../enums'
@@ -106,9 +111,7 @@ export const getInterceptors = (
   )
 }
 
-export const getMiddlewares = (
-  target: Object
-): Array<InterceptorReq | InterceptorRes> => {
+export const getMiddlewares = (target: Object): Array<Middleware> => {
   const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
   return HttpFactoryMap.get(token).globalMiddleware ?? []
 }
