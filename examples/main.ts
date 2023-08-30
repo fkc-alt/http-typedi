@@ -17,7 +17,9 @@ function createHTTPClient(): AppModule {
   })
   HTTPClient.setGlobalPrefix(import.meta.env.VITE_APP_BASE_API)
   HTTPClient.useInterceptorsReq(configure => {
+    console.log(configure, 'useInterceptorsReq')
     const Authorization = 'this is authorization'
+    configure.headers!.ack = true
     if (Authorization && configure.headers)
       configure.headers.Authorization = `Bearer ${Authorization}`
     return configure

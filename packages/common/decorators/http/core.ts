@@ -14,11 +14,14 @@ import { MetaDataTypes, MetadataKey, RequestMethod } from '../../enums'
 import { flattenErrorList } from '../../helper/param-error'
 import { isFunction } from '../../helper/utils'
 import { CONNECTSTRING } from '../../helper/constant'
+import { Type } from '../../interfaces/type.interface'
+import { createMiddlewareProxy } from '../../interfaces/middleware/middleware-proxy'
 import {
   OverrideReqEffect,
   getInjectValues,
   getMetadataType
 } from './route-params.decorator'
+import { middlewareSelfCall } from '@/common/interfaces/middleware/middleware-self-call'
 
 export type CatchCallback = (err: any) => void
 
@@ -111,7 +114,7 @@ export const getInterceptors = (
   )
 }
 
-export const getMiddlewares = (target: Object): Array<Middleware> => {
+export const getMiddlewares = (target: Object): Array<Middleware & Type> => {
   const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
   return HttpFactoryMap.get(token).globalMiddleware ?? []
 }
@@ -191,6 +194,7 @@ export async function handlerResult(
   try {
     const middlewares = getMiddlewares(target).map(middleware => {
       return {
+        use: new middleware().use,
         exclude: Reflect.getMetadata(
           MetadataKey.MIDDLEWARECONFIGPROXYEXCLUDE_METADATA,
           middleware
@@ -241,6 +245,15 @@ export async function handlerResult(
             this,
             requestConfigs
           )
+          // const middlewareReqProxy = createMiddlewareProxy(param)
+          // const middlewareResProxy = createMiddlewareProxy(result)
+          // middlewareSelfCall(
+          //   <Middleware[]>(<unknown>middlewares),
+          //   0,
+          //   middlewareReqProxy,
+          //   middlewareResProxy
+          // )
+          // 逻辑待补充......
           HttpFactoryMap.get(token)?.logger?.log?.(requestConfigs[0])
           // eslint-disable-next-line @typescript-eslint/return-await
           const response = interceptorsRes.reduce(

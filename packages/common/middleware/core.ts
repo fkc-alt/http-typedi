@@ -23,18 +23,20 @@ const middlewareConfigProxy = {
     routes: T,
     metadataKey: MetadataKey
   ) {
+    /**
+     * @class Middleware
+     * @description Object.getPrototypeOf(this).__proto__.constructor  === this.__proto__.__proto__.constructor
+     */
+    const MiddlewareProxy =
+      Object.getPrototypeOf?.(this) ??
+      (<Middleware & { __proto__: any }>(<unknown>this)).__proto__
     const originalRoutes =
-      Reflect.getMetadata(metadataKey, this.constructor) ?? []
+      Reflect.getMetadata(metadataKey, MiddlewareProxy.__proto__.constructor) ??
+      []
     Reflect.defineMetadata(
       metadataKey,
       [...originalRoutes, ...routes],
-      this.constructor
-    )
-    console.log(
-      [...originalRoutes, ...routes],
-      'originalRoutes',
-      this,
-      this.constructor
+      MiddlewareProxy.__proto__.constructor
     )
   }
 }
@@ -51,7 +53,7 @@ export class StaticMiddlewareConsumer {
   static apply() {
     const IOC: HttpFactory = HttpFactoryMap.get(this.__proto__.token)
     IOC.useMiddleware(<Middleware>(<unknown>this))
-    return new (class Middleware extends this {
+    return new (class MiddlewareProxy extends this {
       constructor() {
         super()
         Object.assign(this, MiddlewareConfigProxy)
