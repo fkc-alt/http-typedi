@@ -3,11 +3,16 @@ import { Middleware } from '../interfaces/middleware/middleware.interface'
 export const middlewareSelfCall = (
   middlewares: Middleware[],
   token: number,
-  middlewareProxy: Object,
-  result: any
+  middlewareReqProxy: Object,
+  middlewareResProxy: any
 ) => {
   middlewares[token] &&
-    middlewares[token].use(middlewareProxy, result, () =>
-      middlewareSelfCall(middlewares, token + 1, middlewareProxy, result)
+    middlewares[token].use(middlewareReqProxy, middlewareResProxy, () =>
+      middlewareSelfCall(
+        middlewares,
+        token + 1,
+        middlewareReqProxy,
+        middlewareResProxy
+      )
     )
 }
