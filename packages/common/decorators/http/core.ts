@@ -15,13 +15,12 @@ import { flattenErrorList } from '../../helper/param-error'
 import { isFunction } from '../../helper/utils'
 import { CONNECTSTRING } from '../../helper/constant'
 import { Type } from '../../interfaces/type.interface'
-import { createMiddlewareProxy } from '../../interfaces/middleware/middleware-proxy'
+import { createMiddlewareProxy, middlewareSelfCall } from '../../middleware'
 import {
   OverrideReqEffect,
   getInjectValues,
   getMetadataType
 } from './route-params.decorator'
-import { middlewareSelfCall } from '@/common/interfaces/middleware/middleware-self-call'
 
 export type CatchCallback = (err: any) => void
 

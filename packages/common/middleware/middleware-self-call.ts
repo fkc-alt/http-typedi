@@ -1,4 +1,4 @@
-import { Middleware } from './middleware.interface'
+import { Middleware } from '../interfaces/middleware/middleware.interface'
 
 export const middlewareSelfCall = (
   middlewares: Middleware[],
