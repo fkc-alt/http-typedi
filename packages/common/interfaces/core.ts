@@ -35,7 +35,7 @@ export interface RouteParamMetadata {
 
 export interface PipeTransform<T = any, R = any> {
   /**
-   * Method to implement a custom pipe.  Called with two parameters
+   * RequestMethod to implement a custom pipe.  Called with two parameters
    *
    * @param value argument before it is received by route handler method
    */
@@ -50,6 +50,7 @@ export type HttpFactoryPropertieKeys =
   | 'globalTimeoutCallback'
   | 'globalInterceptorsReq'
   | 'globalInterceptorsRes'
+  | 'globalMiddleware'
   | 'globalPrefix'
   | 'globalTimeout'
   | 'globalSleepTimer'

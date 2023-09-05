@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { v4 as uuidv4 } from 'uuid'
-import { RequestConfig } from '..'
+import { Middleware, RequestConfig } from '..'
+import { StaticMiddlewareConsumer } from './middleware'
 import {
   ModuleMetadata,
   MetadataKey,
   HttpStatus,
-  Method,
+  RequestMethod,
   RouteParamtypes,
   ContentType
 } from './enums'
@@ -25,12 +26,14 @@ import type {
   Providers,
   RouteParamMetadata
 } from './interfaces/core'
+export * from './interfaces/middleware'
+export * from './interfaces'
 import type { ResponseConfig } from './providers'
 export * from './decorators'
 export {
   MetadataKey,
   HttpStatus,
-  Method,
+  RequestMethod,
   RouteParamtypes,
   flattenErrorList,
   ContentType
@@ -103,6 +106,8 @@ export class HttpFactory {
 
   private globalInterceptorsRes: InterceptorRes[] = []
 
+  private globalMiddleware: Middleware[] = []
+
   private globalCatchCallback!: (cb: (error: any) => any) => any
 
   private globalTimeoutCallback!: (cb: () => any) => any
@@ -174,6 +179,7 @@ export class HttpFactory {
       setGlobalSleepTimer: this.setGlobalSleepTimer.bind(this),
       useInterceptorsReq: this.useInterceptorsReq.bind(this),
       useInterceptorsRes: this.useInterceptorsRes.bind(this),
+      useMiddleware: this.useMiddleware.bind(this),
       useLogger: this.useLogger.bind(this)
     }
     this.uniqueCache.token = uuidv4()
@@ -267,6 +273,17 @@ export class HttpFactory {
       this.uniqueCache.token,
       'globalInterceptorsRes',
       this.globalInterceptorsRes
+    )
+  }
+
+  public useMiddleware(...middlewares: Middleware[]) {
+    this.globalMiddleware = Array.from(
+      new Set([...this.globalMiddleware, ...middlewares])
+    )
+    this.SetHttpFactoryInstanceValue(
+      this.uniqueCache.token,
+      'globalMiddleware',
+      this.globalMiddleware
     )
   }
 
@@ -494,7 +511,18 @@ const Factory = <T>(target: Constructor<T>, token: string): T => {
     console.log('Container Init Error: ', error)
   }
   try {
-    return initFactory<T>(target, container, constructorProviders)
+    const HTTPClient = initFactory<T>(
+      target,
+      container,
+      constructorProviders
+    ) as T & { configure: Function }
+    if (HTTPClient?.configure) {
+      ;(
+        StaticMiddlewareConsumer.apply as unknown as { __proto__: any }
+      ).__proto__.token = token
+      HTTPClient?.configure?.(StaticMiddlewareConsumer.apply)
+    }
+    return HTTPClient
   } catch (error) {
     console.log('Factory Init Error: ', error)
     return new target()

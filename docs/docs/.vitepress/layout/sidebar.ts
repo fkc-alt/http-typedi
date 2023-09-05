@@ -128,6 +128,17 @@ export const Sidebar: DefaultTheme.Sidebar = {
           ]
         },
         {
+          text: '中间件',
+          link: '/guide/middleware/',
+          collapsed: true,
+          items: [
+            {
+              text: '应用中间件',
+              link: '/guide/middleware/use-middleware'
+            },
+          ]
+        },
+        {
           text: '管道',
           collapsed: true,
           link: '/guide/pipe/',

@@ -215,6 +215,21 @@ export const Req = (
 export const Request = Req
 
 /**
+ * @method Res
+ * @auther kaichao.feng
+ */
+export const Res = (
+  property?: string | string[],
+  ...pipes: Array<Constructor<any> | Object>
+) =>
+  createParamDecorator(RouteParamtypes.RESPONSE, MetaDataTypes.RESPONSE)(
+    property,
+    pipes
+  )
+
+export const Response = Res
+
+/**
  * @method Body
  * @auther kaichao.feng
  */

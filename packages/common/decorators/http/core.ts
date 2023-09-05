@@ -2,13 +2,25 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { plainToInstance } from 'class-transformer'
 import { ValidationError, validateSync } from 'class-validator'
-import { InterceptorReq, InterceptorRes, Constructor } from '../../core'
+import {
+  InterceptorReq,
+  InterceptorRes,
+  Constructor,
+  Middleware,
+  MiddlewareResponseContext
+} from '../../core'
 import { RequestConfig } from '../../providers'
 import { HttpFactoryMap } from '../../http-factory-map'
-import { MetaDataTypes, MetadataKey, Method } from '../../enums'
+import { MetaDataTypes, MetadataKey, RequestMethod } from '../../enums'
 import { flattenErrorList } from '../../helper/param-error'
 import { isFunction } from '../../helper/utils'
 import { CONNECTSTRING } from '../../helper/constant'
+import { Type } from '../../interfaces/type.interface'
+import {
+  createMiddlewareProxy,
+  middlewareSelfCall,
+  createMiddlewareResponseContext
+} from '../../middleware'
 import {
   OverrideReqEffect,
   getInjectValues,
@@ -24,11 +36,14 @@ export const factoryPropertyKey: Record<string, string> = {
 
 const swtichMetadataTypeRelationValues = (
   Req: RequestConfig,
-  metadataType: MetaDataTypes
+  metadataType: MetaDataTypes,
+  middlewareResponseContext: MiddlewareResponseContext
 ) => {
   switch (metadataType) {
     case MetaDataTypes.REQUEST:
       return Req
+    case MetaDataTypes.RESPONSE:
+      return middlewareResponseContext
     case MetaDataTypes.HEADERS:
       return Req.headers
     case MetaDataTypes.BODY:
@@ -46,7 +61,7 @@ const swtichMetadataTypeRelationValues = (
  * @module RequestFactory
  * @method createRequestMapping
  * @param { string } path
- * @param { Method } method
+ * @param { RequestMethod } method
  * @param { string | ((validationError: ValidationError[]) => any) } [message = void 0] message
  * @auther kaichao.feng
  * @returns { MethodDecorator } MethodDecorator
@@ -54,7 +69,7 @@ const swtichMetadataTypeRelationValues = (
  */
 export const createRequestMapping = (
   path: string,
-  method: Method,
+  method: RequestMethod,
   message?: string | ((validationError: ValidationError[]) => any)
 ): MethodDecorator => {
   return function (target, key, descriptor: PropertyDescriptor) {
@@ -77,7 +92,7 @@ export const createRequestMapping = (
         target,
         params
       )
-      callHander(errors, message)
+      DTOValidate(errors, message)
       return result
     }
     return descriptor
@@ -104,6 +119,11 @@ export const getInterceptors = (
     HttpFactoryMap.get(token)[factoryPropertyKey[metadataPropertyKey]] ??
     []
   )
+}
+
+export const getMiddlewares = (target: Object): Array<Middleware & Type> => {
+  const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
+  return HttpFactoryMap.get(token).globalMiddleware ?? []
 }
 
 export const getCatchCallback = (
@@ -179,6 +199,20 @@ export async function handlerResult(
   fn: (params: any) => any
 ): Promise<any> {
   try {
+    const middlewares = getMiddlewares(target).map(middleware => {
+      return {
+        use: new middleware().use,
+        exclude: Reflect.getMetadata(
+          MetadataKey.MIDDLEWARECONFIGPROXYEXCLUDE_METADATA,
+          middleware
+        ),
+        forRoutes: Reflect.getMetadata(
+          MetadataKey.MIDDLEWARECONFIGPROXYFORROUTES_METADATA,
+          middleware
+        )
+      }
+    })
+
     const interceptorsReq = getInterceptors(
       target,
       propertyKey,
@@ -199,13 +233,27 @@ export async function handlerResult(
           const metaDataType =
             getMetadataType(target, <string>propertyKey) ||
             MetaDataTypes.REQUEST
+          const middlewareRequestProxy = createMiddlewareProxy(param)
+          const middlewareResponseProxy = createMiddlewareProxy(
+            createMiddlewareResponseContext(
+              async () =>
+                await fn.apply<any, RequestConfig[], any>(this, [param])
+            )
+          )
+          middlewareSelfCall(
+            <Middleware[]>(<unknown>middlewares),
+            0,
+            middlewareRequestProxy,
+            middlewareResponseProxy
+          )
           const _interceptorsReqValue: RequestConfig = interceptorsReq.reduce(
             (prev: any, next) => next(prev),
             param
           )
           const _param = swtichMetadataTypeRelationValues(
             _interceptorsReqValue,
-            metaDataType
+            metaDataType,
+            middlewareResponseProxy
           )
           const requestConfigs: RequestConfig[] = values.length
             ? OverrideReqEffect(values, [_param])
@@ -238,7 +286,7 @@ export async function handlerResult(
 
 export const handelParam = (
   path: string,
-  method: Method,
+  method: RequestMethod,
   target: Object,
   key: string | symbol,
   params: Record<string, any>
@@ -246,7 +294,7 @@ export const handelParam = (
   const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)
   const timeout = getTimeout(target, key)
   const timeoutCallback = getTimeoutCallback(target, key)
-  const isGet = [Method.GET, Method.get].includes(method)
+  const isGet = [RequestMethod.GET, RequestMethod.get].includes(method)
   const globalPrefix: string = HttpFactoryMap.get(token).globalPrefix
   const controllerPrefix = (<any>target)[
     `${target.constructor.name}${CONNECTSTRING}`
@@ -275,9 +323,12 @@ export const handelParam = (
   const data = {
     [isGet ? 'params' : 'data']: params
   }
-  const url = [Method.GET, Method.DELETE, Method.get, Method.delete].includes(
-    method
-  )
+  const url = [
+    RequestMethod.GET,
+    RequestMethod.DELETE,
+    RequestMethod.get,
+    RequestMethod.delete
+  ].includes(method)
     ? paramList
         .reduce(
           (prev, next) => prev.replace(new RegExp(next), params[next]),
@@ -309,7 +360,7 @@ export const getErrorMessage = (
   )
 }
 
-export const callHander = (
+export const DTOValidate = (
   errors: ValidationError[],
   message?: string | ((validationError: ValidationError[]) => any)
 ) => {

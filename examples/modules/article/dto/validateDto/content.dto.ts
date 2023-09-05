@@ -22,7 +22,7 @@ export class ContentLength implements ValidatorConstraintInterface {
 
   defaultMessage(validationArguments: ValidationArguments): string {
     // here you can provide default error message if validation failed
-    return 'Text ($value) is too short or too long!<br/>test class validator Custom Valid Method decorator'
+    return 'Text ($value) is too short or too long!<br/>test class validator Custom Valid RequestMethod decorator'
   }
 }
 
