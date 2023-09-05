@@ -15,7 +15,11 @@ import { flattenErrorList } from '../../helper/param-error'
 import { isFunction } from '../../helper/utils'
 import { CONNECTSTRING } from '../../helper/constant'
 import { Type } from '../../interfaces/type.interface'
-import { createMiddlewareProxy, middlewareSelfCall } from '../../middleware'
+import {
+  createMiddlewareProxy,
+  middlewareSelfCall,
+  createMiddlewareResponseContext
+} from '../../middleware'
 import {
   OverrideReqEffect,
   getInjectValues,
@@ -229,6 +233,19 @@ export async function handlerResult(
           const metaDataType =
             getMetadataType(target, <string>propertyKey) ||
             MetaDataTypes.REQUEST
+          const middlewareRequestProxy = createMiddlewareProxy(param)
+          const middlewareResponseProxy = createMiddlewareProxy(
+            createMiddlewareResponseContext(
+              async () =>
+                await fn.apply<any, RequestConfig[], any>(this, requestConfigs)
+            )
+          )
+          middlewareSelfCall(
+            <Middleware[]>(<unknown>middlewares),
+            0,
+            middlewareRequestProxy,
+            middlewareResponseProxy
+          )
           const _interceptorsReqValue: RequestConfig = interceptorsReq.reduce(
             (prev: any, next) => next(prev),
             param
@@ -244,14 +261,6 @@ export async function handlerResult(
             this,
             requestConfigs
           )
-          // const middlewareReqProxy = createMiddlewareProxy(param)
-          // const middlewareResProxy = createMiddlewareProxy(result)
-          // middlewareSelfCall(
-          //   <Middleware[]>(<unknown>middlewares),
-          //   0,
-          //   middlewareReqProxy,
-          //   middlewareResProxy
-          // )
           // 逻辑待补充......
           HttpFactoryMap.get(token)?.logger?.log?.(requestConfigs[0])
           // eslint-disable-next-line @typescript-eslint/return-await
