@@ -6,6 +6,8 @@ export {
   Param,
   Req,
   Request,
+  Res,
+  Response,
   Body,
   Headers
 } from './route-params.decorator'

@@ -35,11 +35,14 @@ export const factoryPropertyKey: Record<string, string> = {
 
 const swtichMetadataTypeRelationValues = (
   Req: RequestConfig,
-  metadataType: MetaDataTypes
+  metadataType: MetaDataTypes,
+  dispatchRequest: Function
 ) => {
   switch (metadataType) {
     case MetaDataTypes.REQUEST:
       return Req
+    case MetaDataTypes.RESPONSE:
+      return dispatchRequest()
     case MetaDataTypes.HEADERS:
       return Req.headers
     case MetaDataTypes.BODY:
@@ -252,7 +255,8 @@ export async function handlerResult(
           )
           const _param = swtichMetadataTypeRelationValues(
             _interceptorsReqValue,
-            metaDataType
+            metaDataType,
+            middlewareResponseProxy.switchToHttp().getRequest
           )
           const requestConfigs: RequestConfig[] = values.length
             ? OverrideReqEffect(values, [_param])
@@ -261,7 +265,6 @@ export async function handlerResult(
             this,
             requestConfigs
           )
-          // 逻辑待补充......
           HttpFactoryMap.get(token)?.logger?.log?.(requestConfigs[0])
           // eslint-disable-next-line @typescript-eslint/return-await
           const response = interceptorsRes.reduce(

@@ -85,7 +85,8 @@ export enum MetaDataTypes {
   BODY = 'data',
   PARAM = 'param',
   HEADERS = 'headers',
-  CUSTOMARGS = 'customArgs'
+  CUSTOMARGS = 'customArgs',
+  RESPONSE = 'response'
 }
 
 export enum ContentType {
