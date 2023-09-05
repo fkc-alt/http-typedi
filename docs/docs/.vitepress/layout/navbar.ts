@@ -64,6 +64,11 @@ export const Navbar: DefaultTheme.NavItem[] = [
         link: '/guide/module/'
       },
       {
+        text: '中间件',
+        activeMatch: '^/guide/middleware',
+        link: '/guide/middleware/'
+      },
+      {
         text: '管道',
         activeMatch: '^/guide/pipe',
         link: '/guide/pipe/'
