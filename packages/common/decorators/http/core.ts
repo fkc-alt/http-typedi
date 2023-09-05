@@ -6,7 +6,8 @@ import {
   InterceptorReq,
   InterceptorRes,
   Constructor,
-  Middleware
+  Middleware,
+  MiddlewareResponseContext
 } from '../../core'
 import { RequestConfig } from '../../providers'
 import { HttpFactoryMap } from '../../http-factory-map'
@@ -36,13 +37,13 @@ export const factoryPropertyKey: Record<string, string> = {
 const swtichMetadataTypeRelationValues = (
   Req: RequestConfig,
   metadataType: MetaDataTypes,
-  dispatchRequest: Function
+  middlewareResponseContext: MiddlewareResponseContext
 ) => {
   switch (metadataType) {
     case MetaDataTypes.REQUEST:
       return Req
     case MetaDataTypes.RESPONSE:
-      return dispatchRequest()
+      return middlewareResponseContext
     case MetaDataTypes.HEADERS:
       return Req.headers
     case MetaDataTypes.BODY:
@@ -211,10 +212,6 @@ export async function handlerResult(
         )
       }
     })
-    /**
-     * @description 此处需要补上中间件逻辑
-     */
-    console.log(middlewares, 'getMiddleware')
 
     const interceptorsReq = getInterceptors(
       target,
@@ -240,7 +237,7 @@ export async function handlerResult(
           const middlewareResponseProxy = createMiddlewareProxy(
             createMiddlewareResponseContext(
               async () =>
-                await fn.apply<any, RequestConfig[], any>(this, requestConfigs)
+                await fn.apply<any, RequestConfig[], any>(this, [param])
             )
           )
           middlewareSelfCall(
@@ -256,7 +253,7 @@ export async function handlerResult(
           const _param = swtichMetadataTypeRelationValues(
             _interceptorsReqValue,
             metaDataType,
-            middlewareResponseProxy.switchToHttp().getRequest
+            middlewareResponseProxy
           )
           const requestConfigs: RequestConfig[] = values.length
             ? OverrideReqEffect(values, [_param])

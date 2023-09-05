@@ -15,7 +15,8 @@ import {
   DefaultValuePipe,
   Request,
   RequestConfig,
-  Logger
+  Logger,
+  Res
 } from '@/index'
 
 class CustomValidationPipe implements PipeTransform {
@@ -44,7 +45,8 @@ export default class ArticleController {
   public async GetArticleList<
     T = Service.ArticleListReq,
     U = Service.ArticleListRes
-  >(@Request() configure: ArticleListDto): ServerRes<U> {
+  >(@Res() configure: ArticleListDto): ServerRes<U> {
+    console.log(configure, 'configure')
     const { data } = await this.helperController.getApidoc({
       pageSize: 0,
       currentPage: 0
