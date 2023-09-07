@@ -1,6 +1,6 @@
 # 特性
 
-- 🚀 使用DI(Dependency Injection)、IoC(Inversion of Control)设计模式编写
+- 🚀 针对特殊路由支持中间件配置
 + 🐳 前置后置请求拦截器
 * 🔔 DTO（Interface Validate）
 + ☎️ 异常处理器
