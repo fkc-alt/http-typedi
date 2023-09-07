@@ -36,6 +36,33 @@ body::-webkit-scrollbar-thumb:hover {
   /* background-color: #0000004d; */
   cursor: pointer;
 }
+
+.shiki::-webkit-scrollbar {
+  width: 5px;
+  height: 7px;
+}
+
+.shiki::-webkit-scrollbar-track {
+  /* background-color: var(--c-border); */
+  background-color: transparent;
+}
+.shiki::-webkit-scrollbar-thumb {
+  background-color: var(--vp-c-brand);
+  border-radius: 10px;
+}
+.shiki::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.shiki::-webkit-scrollbar-thumb {
+  /* background-color: #0003; */
+  background-color: var(--vp-c-brand);
+  border-radius: 10px;
+}
+.shiki::-webkit-scrollbar-thumb:hover {
+  /* background-color: #0000004d; */
+  cursor: pointer;
+}
+
 body,
 .VPSidebar,
 .curtain,

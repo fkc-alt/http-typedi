@@ -26,5 +26,5 @@ features:
     details: 使用DI(Dependency Injection)和IoC(Inversion of Control)设计模式
   - icon: 📠
     title: Type Strong
-    details: 完全使用 Typescript 编写，完美支持Typescript
+    details: 完全使用 TypeScript 编写，完美支持TypeScript
 ---
