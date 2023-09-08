@@ -1,4 +1,4 @@
-import { ModuleMetadataType } from '../../interfaces/core'
+import { ModuleMetadataType } from '../../interfaces/core.interface'
 
 type ModuleMetadataTypeKeys = keyof ModuleMetadataType
 

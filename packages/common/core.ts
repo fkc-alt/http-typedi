@@ -25,7 +25,7 @@ import type {
   PipeTransform,
   Providers,
   RouteParamMetadata
-} from './interfaces/core'
+} from './interfaces/core.interface'
 export * from './interfaces/middleware'
 export * from './interfaces'
 import type { ResponseConfig } from './providers'

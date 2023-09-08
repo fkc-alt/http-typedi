@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { MetaDataTypes, MetadataKey, RouteParamtypes } from '../../enums'
 import { isArray, isString } from '../../helper'
-import { Constructor } from '../../interfaces/core'
+import { Constructor } from '../../interfaces/core.interface'
 import {
   CustomParamFactory,
   ExecutionContext

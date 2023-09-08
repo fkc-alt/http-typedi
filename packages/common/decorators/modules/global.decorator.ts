@@ -1,4 +1,4 @@
-import { Constructor } from '../../interfaces/core'
+import { Constructor } from '../../interfaces/core.interface'
 import { MetadataKey } from '../../enums'
 
 /**
