@@ -14,17 +14,19 @@ export const getMiddlewares = (target: Object): Array<Middleware & Type> => {
 export const transformMiddleware = (middlewares: Array<Middleware & Type>) => {
   return middlewares.map(Middleware => {
     const instance = new Middleware()
-    return Object.assign(instance, {
-      use: instance.use,
-      exclude: Reflect.getMetadata(
-        MetadataKey.MIDDLEWARECONFIGPROXYEXCLUDE_METADATA,
-        instance.constructor
-      ),
-      forRoutes: Reflect.getMetadata(
-        MetadataKey.MIDDLEWARECONFIGPROXYFORROUTES_METADATA,
-        instance.constructor
-      )
-    })
+    return {
+      instance,
+      config: {
+        exclude: Reflect.getMetadata(
+          MetadataKey.MIDDLEWARECONFIGPROXYEXCLUDE_METADATA,
+          instance.constructor
+        ),
+        forRoutes: Reflect.getMetadata(
+          MetadataKey.MIDDLEWARECONFIGPROXYFORROUTES_METADATA,
+          instance.constructor
+        )
+      }
+    }
   })
 }
 
@@ -57,13 +59,13 @@ export const createMiddlewareResponseContext = (dispatchRequest: Function) => {
 }
 
 export const middlewareSelfCall = (
-  middlewares: Middleware[],
+  middlewares: { instance: Middleware }[],
   step: number,
   middlewareReqProxy: Object,
   middlewareResProxy: any
 ) => {
   middlewares[step] &&
-    middlewares[step].use(middlewareReqProxy, middlewareResProxy, () =>
+    middlewares[step].instance.use(middlewareReqProxy, middlewareResProxy, () =>
       middlewareSelfCall(
         middlewares,
         step + 1,
