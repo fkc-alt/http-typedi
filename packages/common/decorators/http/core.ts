@@ -171,7 +171,7 @@ async function requestContext(
             )
           )
           middlewareSelfCall(
-            <Middleware[]>(<unknown>middlewares),
+            <Middleware & { instance: Middleware }[]>(<unknown>middlewares),
             0,
             middlewareRequestProxy,
             middlewareResponseProxy

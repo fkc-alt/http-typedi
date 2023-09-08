@@ -49,8 +49,7 @@
     "docs:dev": "cd ./docs && npm run docs:dev",
     "docs:build": "cd ./docs && npm run docs:build",
     "docs:preview": "cd ./docs && npm run docs:preview",
-    "pre-commit": "lint-staged",
-    "crawler": "node ./docs/docs/.vitepress/scripts/crawler.js"
+    "pre-commit": "lint-staged"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",
