@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { MetaDataTypes, MetadataKey, RouteParamtypes } from '../../enums'
 import { isArray, isFunction, isString } from '../../helper'
-import { Constructor, RouteParamMetadata } from '../../interfaces/core.interface'
+import {
+  Constructor,
+  RouteParamMetadata
+} from '../../interfaces/core.interface'
 import { ExecutionContext } from '../core/interfaces/create-route-param-decorator.interface'
 
 /**
