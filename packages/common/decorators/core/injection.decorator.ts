@@ -1,7 +1,7 @@
 /* eslint-disable new-cap */
 import { MetadataKey, ModuleMetadata } from '../../enums'
 import { isString } from '../../helper'
-import { Constructor } from '../../interfaces/core'
+import { Constructor } from '../../interfaces/core.interface'
 
 const registerDeepClass = (
   providers: Array<Constructor<any>>

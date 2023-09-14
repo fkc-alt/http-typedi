@@ -30,7 +30,7 @@ const middlewareConfigProxy = {
     const MiddlewareProxy =
       Object.getPrototypeOf?.(this) ??
       (<Middleware & { __proto__: any }>(<unknown>this)).__proto__
-    const originalRoutes =
+    const originalRoutes: T =
       Reflect.getMetadata(metadataKey, MiddlewareProxy.__proto__.constructor) ??
       []
     Reflect.defineMetadata(

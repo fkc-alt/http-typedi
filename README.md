@@ -43,6 +43,8 @@
   - [Optional](https://fkc-alt.github.io/http-typedi/guide/provider/optional)
   - [Attribute-DI](https://fkc-alt.github.io/http-typedi/guide/provider/attribute-di)
   - [Register-Provider](https://fkc-alt.github.io/http-typedi/guide/provider/register-provider)
++ [Middleware](https://fkc-alt.github.io/http-typedi/guide/middleware/)
+  - [useMiddleware](https://fkc-alt.github.io/http-typedi/guide/middleware/use-middleware)
 - [Pipe](https://fkc-alt.github.io/http-typedi/guide/pipe/)
   - [Resources](https://fkc-alt.github.io/http-typedi/guide/pipe/resources)
   - [Bind](https://fkc-alt.github.io/http-typedi/guide/pipe/bind)
