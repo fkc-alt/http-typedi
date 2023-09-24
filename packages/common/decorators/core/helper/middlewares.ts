@@ -1,16 +1,15 @@
-import { resolve } from 'path'
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-types */
-import { RequestConfig } from '../../../../common/providers'
-import { MetadataKey } from '../../../../common/enums'
-import { HttpFactoryMap } from '../../../../common/http-factory-map'
+import { RequestConfig } from '../../../providers'
+import { MetadataKey } from '../../../enums'
+import { HttpFactoryMap } from '../../../http-factory-map'
 import {
   Middleware,
   MiddlewareConfigProxy,
   MiddlewareResponseContext,
   RouteInfo
-} from '../../../../common/interfaces'
-import { Type } from '../../../../common/interfaces/type.interface'
+} from '../../../interfaces'
+import { Type } from '../../../interfaces/type.interface'
 
 export const getMiddlewares = (target: Object): Array<Middleware & Type> => {
   const token = Reflect.getMetadata(MetadataKey.TOKEN, target.constructor)

@@ -1,6 +1,6 @@
-import { MetaDataTypes } from '../../../../common/enums'
-import { MiddlewareResponseContext } from '../../../../common/interfaces'
-import { RequestConfig } from '../../../../common/providers'
+import { MetaDataTypes } from '../../../enums'
+import { MiddlewareResponseContext } from '../../../interfaces'
+import { RequestConfig } from '../../../providers'
 
 export const swtichMetadataTypeRelationValues = (
   Req: RequestConfig,
