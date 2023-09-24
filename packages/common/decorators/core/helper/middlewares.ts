@@ -1,8 +1,14 @@
+import { resolve } from 'path'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/ban-types */
+import { RequestConfig } from '../../../../common/providers'
 import { MetadataKey } from '../../../../common/enums'
 import { HttpFactoryMap } from '../../../../common/http-factory-map'
 import {
   Middleware,
-  MiddlewareResponseContext
+  MiddlewareConfigProxy,
+  MiddlewareResponseContext,
+  RouteInfo
 } from '../../../../common/interfaces'
 import { Type } from '../../../../common/interfaces/type.interface'
 
@@ -17,11 +23,19 @@ export const transformMiddleware = (middlewares: Array<Middleware & Type>) => {
     return {
       instance,
       config: {
-        exclude: Reflect.getMetadata(
+        exclude: <
+          Parameters<
+            MiddlewareConfigProxy extends { exclude: infer E } ? E : never
+          >
+        >Reflect.getMetadata(
           MetadataKey.MIDDLEWARECONFIGPROXYEXCLUDE_METADATA,
           instance.constructor
         ),
-        forRoutes: Reflect.getMetadata(
+        forRoutes: <
+          Parameters<
+            MiddlewareConfigProxy extends { forRoutes: infer E } ? E : never
+          >
+        >Reflect.getMetadata(
           MetadataKey.MIDDLEWARECONFIGPROXYFORROUTES_METADATA,
           instance.constructor
         )
@@ -62,15 +76,53 @@ export const middlewareSelfCall = (
   middlewares: { instance: Middleware }[],
   step: number,
   middlewareReqProxy: Object,
-  middlewareResProxy: any
+  middlewareResProxy: any,
+  resolver: Function,
+  rejecter: Function
 ) => {
-  middlewares[step] &&
-    middlewares[step].instance.use(middlewareReqProxy, middlewareResProxy, () =>
-      middlewareSelfCall(
-        middlewares,
-        step + 1,
+  try {
+    if (middlewares[step]) {
+      middlewares[step].instance.use(
         middlewareReqProxy,
-        middlewareResProxy
+        middlewareResProxy,
+        () =>
+          middlewareSelfCall(
+            middlewares,
+            step + 1,
+            middlewareReqProxy,
+            middlewareResProxy,
+            resolver,
+            rejecter
+          )
       )
+    } else {
+      resolver()
+    }
+  } catch (error) {
+    rejecter(error)
+  }
+}
+
+export const switchExcludesRoute = (
+  routes: (string | RouteInfo)[],
+  reuqestConfig: RequestConfig
+): (string | RouteInfo)[] => {
+  return routes.filter(route => {
+    if (typeof route === 'string') {
+      return reuqestConfig.url!.indexOf(route) === -1
+    }
+    return (
+      reuqestConfig.url!.indexOf((<RouteInfo>route).path) === -1 &&
+      (<RouteInfo>route).method.toUpperCase() === reuqestConfig.method
     )
+  })
+}
+
+export const MiddlewarePromise = (
+  middlewareSelfCall: Function,
+  ...args: any[]
+) => {
+  return new Promise<void>((resolver, rejecter) => {
+    middlewareSelfCall.call(null, ...args, resolver, rejecter)
+  })
 }

@@ -1,7 +1,7 @@
 {
   "name": "http-typedi",
   "private": false,
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "http Dependency Injection",
   "main": "dist/http-typedi.umd.js",
   "files": [
@@ -62,7 +62,7 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-standard-with-typescript": "^34.0.1",
     "eslint-plugin-prettier": "^4.2.1",
-    "http-typedi": "^0.4.4",
+    "http-typedi": "^1.0.6",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.1",
     "mockjs": "^1.1.0",
