@@ -1,5 +1,5 @@
-import { MetadataKey } from '../../../../common/enums'
-import { HttpFactoryMap } from '../../../../common/http-factory-map'
+import { MetadataKey } from '../../../enums'
+import { HttpFactoryMap } from '../../../http-factory-map'
 
 export type CatchCallback = (err: any) => void
 

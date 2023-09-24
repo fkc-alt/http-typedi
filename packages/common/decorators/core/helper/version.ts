@@ -1,4 +1,5 @@
-import { MetadataKey } from '../../../../common/enums'
+/* eslint-disable @typescript-eslint/ban-types */
+import { MetadataKey } from '../../../enums'
 
 export const getVersion = (
   target: Object,

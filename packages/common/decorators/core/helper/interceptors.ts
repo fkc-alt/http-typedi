@@ -1,6 +1,7 @@
-import { InterceptorReq, InterceptorRes } from '../../../../common/core'
-import { MetadataKey } from '../../../../common/enums'
-import { HttpFactoryMap } from '../../../../common/http-factory-map'
+/* eslint-disable @typescript-eslint/ban-types */
+import { InterceptorReq, InterceptorRes } from '../../../core'
+import { MetadataKey } from '../../../enums'
+import { HttpFactoryMap } from '../../../http-factory-map'
 
 export const factoryPropertyKey: Record<string, string> = {
   [MetadataKey.INTERCEPTORSREQ_METADATA]: 'globalInterceptorsReq',
