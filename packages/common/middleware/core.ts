@@ -1,6 +1,6 @@
-import { MetadataKey } from '../../common/enums'
-import { Middleware, RouteInfo } from '../../common/interfaces/middleware'
-import { Type } from '../../common/interfaces/type.interface'
+import { MetadataKey } from '../enums'
+import { Middleware, RouteInfo } from '../interfaces/middleware'
+import { Type } from '../interfaces/type.interface'
 import { HttpFactoryMap } from '../http-factory-map'
 import { HttpFactory } from '../core'
 
