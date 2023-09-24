@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-types */
 import { ValidationError } from 'class-validator'
-import { Constructor, Middleware } from '../../core'
+import { Constructor, Middleware, RouteInfo } from '../../core'
 import { RequestConfig } from '../../providers'
 import { HttpFactoryMap } from '../../http-factory-map'
 import { MetaDataTypes, MetadataKey, RequestMethod } from '../../enums'
@@ -22,7 +22,9 @@ import {
   transformMiddleware,
   createMiddlewareProxy,
   middlewareSelfCall,
-  createMiddlewareResponseContext
+  createMiddlewareResponseContext,
+  switchExcludesRoute,
+  MiddlewarePromise
 } from '../core/helper'
 import {
   OverrideReqEffect,
@@ -138,7 +140,7 @@ async function requestContext(
   this: any,
   target: Object,
   propertyKey: string | symbol,
-  param: Record<string, any>,
+  param: RequestConfig,
   fn: (params: any) => any
 ): Promise<any> {
   try {
@@ -148,6 +150,24 @@ async function requestContext(
       propertyKey,
       MetadataKey.INTERCEPTORSREQ_METADATA
     )
+    const swtichHTTPMiddlewares = middlewares.filter(middleware => {
+      if (middleware.config.forRoutes.length) {
+        const shouldRoutes = middleware.config.forRoutes.filter(route => {
+          if (typeof route === 'string') {
+            return param.url!.indexOf(route) !== -1
+          }
+          return (
+            param.url!.indexOf((<RouteInfo>route).path) !== -1 &&
+            (<RouteInfo>route).method.toUpperCase() !== param.method
+          )
+        })
+        if (shouldRoutes.length) {
+          return switchExcludesRoute(middleware.config.exclude, param).length
+        }
+        return false
+      }
+      return switchExcludesRoute(middleware.config.exclude, param).length
+    })
     const interceptorsRes = getInterceptors(
       target,
       propertyKey,
@@ -170,8 +190,11 @@ async function requestContext(
                 await fn.apply<any, RequestConfig[], any>(this, [param])
             )
           )
-          middlewareSelfCall(
-            <Middleware & { instance: Middleware }[]>(<unknown>middlewares),
+          await MiddlewarePromise(
+            middlewareSelfCall,
+            <Middleware & { instance: Middleware }[]>(
+              (<unknown>swtichHTTPMiddlewares)
+            ),
             0,
             middlewareRequestProxy,
             middlewareResponseProxy
@@ -192,6 +215,7 @@ async function requestContext(
             this,
             requestConfigs
           )
+          console.log(result, 'result')
           HttpFactoryMap.get(token)?.logger?.log?.(requestConfigs[0])
           // eslint-disable-next-line @typescript-eslint/return-await
           const response = interceptorsRes.reduce(

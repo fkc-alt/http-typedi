@@ -13,6 +13,9 @@ export class TestMiddleware implements Middleware {
     req.headers!.logger2 = true
     req.headers!.file = false
     req.headers!.ack = false
-    next()
+    // next()
+    setTimeout(() => {
+      next()
+    }, 5000)
   }
 }

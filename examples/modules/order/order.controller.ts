@@ -43,7 +43,7 @@ export default class OrderController {
   >(configure: T): ServerRes<U> {
     const data = await this.uploadService.uploadFile<T, ServerRes<U>>({
       ...(<RequestConfig<T>>configure),
-      customActions: true
+      customActions: false
     })
     return data
   }
