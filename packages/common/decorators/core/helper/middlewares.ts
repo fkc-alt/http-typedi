@@ -18,7 +18,7 @@ export const getMiddlewares = (target: Object): Array<Middleware & Type> => {
 
 export const transformMiddleware = (middlewares: Array<Middleware & Type>) => {
   return middlewares.map(Middleware => {
-    const instance = new Middleware()
+    const instance: Middleware<any, any> = new Middleware()
     return {
       instance,
       config: {
@@ -70,21 +70,34 @@ export const createMiddlewareResponseContext = (dispatchRequest: Function) => {
   return middlewareResponseContext
 }
 
-export const middlewareSelfCall = (
-  middlewares: { instance: Middleware }[],
+export function middlewareSelfCall<
+  T extends (PromiseConstructor extends new <T>(...args: infer R) => void
+    ? R
+    : never)[0] extends (Resolver: infer S, Rejecter: infer R) => void
+    ? (resolver: (value: void | PromiseLike<void>) => void, rejecter: R) => void
+    : never,
+  U extends ReturnType<typeof transformMiddleware> extends Array<infer R>
+    ? Partial<R>
+    : never
+>(
+  this: U,
+  middlewares: U[],
   step: number,
   middlewareReqProxy: Object,
-  middlewareResProxy: any,
-  resolver: (value: void | PromiseLike<void>) => void,
-  rejecter: (reason?: any) => void
-) => {
+  middlewareResProxy: Object,
+  resolver: T extends (Resolver: infer R, Rejecter: infer P) => void
+    ? R
+    : never,
+  rejecter: T extends (Resolver: infer P, Rejecter: infer R) => void ? R : never
+) {
   try {
     if (middlewares[step]) {
-      middlewares[step].instance.use(
+      middlewares[step].instance?.use(
         middlewareReqProxy,
         middlewareResProxy,
         () =>
-          middlewareSelfCall(
+          middlewareSelfCall.call(
+            middlewares[step + 1],
             middlewares,
             step + 1,
             middlewareReqProxy,
@@ -127,6 +140,6 @@ export const MiddlewarePromise = (
     : never
 ) => {
   return new Promise<void>((resolver, rejecter) => {
-    selfFn.call(null, ...args, resolver, rejecter)
+    selfFn.call(args[0][args[1]], ...args, resolver, rejecter)
   })
 }
