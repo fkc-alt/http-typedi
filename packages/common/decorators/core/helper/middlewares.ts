@@ -54,7 +54,6 @@ export const createMiddlewareProxy = <T extends Object>(target: T): T => {
   })
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const createMiddlewareResponseContext = (dispatchRequest: Function) => {
   const middlewareResponseContext: MiddlewareResponseContext = {
     switchToHttp() {
@@ -76,8 +75,8 @@ export const middlewareSelfCall = (
   step: number,
   middlewareReqProxy: Object,
   middlewareResProxy: any,
-  resolver: Function,
-  rejecter: Function
+  resolver: PromiseConstructor extends { resolve: infer R } ? R : never,
+  rejecter: PromiseConstructor extends { reject: infer R } ? R : never
 ) => {
   try {
     if (middlewares[step]) {
