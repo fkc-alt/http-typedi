@@ -75,8 +75,8 @@ export const middlewareSelfCall = (
   step: number,
   middlewareReqProxy: Object,
   middlewareResProxy: any,
-  resolver: PromiseConstructor extends { resolve: infer R } ? R : never,
-  rejecter: PromiseConstructor extends { reject: infer R } ? R : never
+  resolver: (value: void | PromiseLike<void>) => void,
+  rejecter: (reason?: any) => void
 ) => {
   try {
     if (middlewares[step]) {
@@ -117,10 +117,16 @@ export const switchExcludesRoute = (
 }
 
 export const MiddlewarePromise = (
-  middlewareSelfCall: Function,
-  ...args: any[]
+  selfFn: typeof middlewareSelfCall,
+  ...args: Parameters<typeof middlewareSelfCall> extends [
+    ...Rest: infer R,
+    Resolver: infer E,
+    Rejecter: infer T
+  ]
+    ? R
+    : never
 ) => {
   return new Promise<void>((resolver, rejecter) => {
-    middlewareSelfCall.call(null, ...args, resolver, rejecter)
+    selfFn.call(null, ...args, resolver, rejecter)
   })
 }
