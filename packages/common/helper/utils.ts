@@ -25,7 +25,7 @@ export const isSymbol = (target: any): boolean => {
 }
 
 export const isUndefined = (obj: any): obj is undefined =>
-  typeof obj === 'undefined'
+  typeof obj === typeof void 0
 
 export const isNil = (val: any): val is null | undefined =>
   isUndefined(val) || val === null
