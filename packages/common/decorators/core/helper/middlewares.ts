@@ -18,7 +18,7 @@ export const getMiddlewares = (target: Object): Array<Middleware & Type> => {
 
 export const transformMiddleware = (middlewares: Array<Middleware & Type>) => {
   return middlewares.map(Middleware => {
-    const instance = new Middleware()
+    const instance: Middleware<any, any> = new Middleware()
     return {
       instance,
       config: {
@@ -54,7 +54,6 @@ export const createMiddlewareProxy = <T extends Object>(target: T): T => {
   })
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const createMiddlewareResponseContext = (dispatchRequest: Function) => {
   const middlewareResponseContext: MiddlewareResponseContext = {
     switchToHttp() {
@@ -71,32 +70,42 @@ export const createMiddlewareResponseContext = (dispatchRequest: Function) => {
   return middlewareResponseContext
 }
 
-export const middlewareSelfCall = (
-  middlewares: { instance: Middleware }[],
+export function middlewareSelfCall<
+  T extends (PromiseConstructor extends new (...args: infer R) => void
+    ? R
+    : never)[0] extends (Resolver: infer S, Rejecter: infer R) => void
+    ? (resolver: (value: void | PromiseLike<void>) => void, rejecter: R) => void
+    : never,
+  U extends ReturnType<typeof transformMiddleware> extends Array<infer R>
+    ? R
+    : never
+>(
+  this: U,
+  middlewares: U[],
   step: number,
   middlewareReqProxy: Object,
-  middlewareResProxy: any,
-  resolver: Function,
-  rejecter: Function
-) => {
+  middlewareResProxy: Object,
+  resolver: T extends (Resolver: infer R, Rejecter: infer P) => void
+    ? R
+    : never,
+  rejecter: T extends (Resolver: infer P, Rejecter: infer R) => void ? R : never
+) {
   try {
-    if (middlewares[step]) {
-      middlewares[step].instance.use(
-        middlewareReqProxy,
-        middlewareResProxy,
-        () =>
-          middlewareSelfCall(
-            middlewares,
-            step + 1,
-            middlewareReqProxy,
-            middlewareResProxy,
-            resolver,
-            rejecter
-          )
+    if (this) {
+      this.instance?.use(middlewareReqProxy, middlewareResProxy, () =>
+        middlewareSelfCall.call(
+          middlewares[step + 1],
+          middlewares,
+          step + 1,
+          middlewareReqProxy,
+          middlewareResProxy,
+          resolver,
+          rejecter
+        )
       )
-    } else {
-      resolver()
+      return
     }
+    resolver()
   } catch (error) {
     rejecter(error)
   }
@@ -118,10 +127,16 @@ export const switchExcludesRoute = (
 }
 
 export const MiddlewarePromise = (
-  middlewareSelfCall: Function,
-  ...args: any[]
+  selfFn: typeof middlewareSelfCall,
+  ...args: Parameters<typeof middlewareSelfCall> extends [
+    ...Rest: infer R,
+    Resolver: infer E,
+    Rejecter: infer T
+  ]
+    ? R
+    : never
 ) => {
   return new Promise<void>((resolver, rejecter) => {
-    middlewareSelfCall.call(null, ...args, resolver, rejecter)
+    selfFn.call(args[0][args[1]], ...args, resolver, rejecter)
   })
 }
