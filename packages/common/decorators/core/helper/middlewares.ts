@@ -127,7 +127,7 @@ export const switchExcludesRoute = (
 }
 
 export const MiddlewarePromise = (
-  selfFn: typeof middlewareSelfCall,
+  self: typeof middlewareSelfCall,
   ...args: Parameters<typeof middlewareSelfCall> extends [
     ...Rest: infer R,
     Resolver: infer E,
@@ -137,6 +137,6 @@ export const MiddlewarePromise = (
     : never
 ) => {
   return new Promise<void>((resolver, rejecter) => {
-    selfFn.call(args[0][args[1]], ...args, resolver, rejecter)
+    self.call(args[0][args[1]], ...args, resolver, rejecter)
   })
 }
