@@ -71,13 +71,13 @@ export const createMiddlewareResponseContext = (dispatchRequest: Function) => {
 }
 
 export function middlewareSelfCall<
-  T extends (PromiseConstructor extends new <T>(...args: infer R) => void
+  T extends (PromiseConstructor extends new (...args: infer R) => void
     ? R
     : never)[0] extends (Resolver: infer S, Rejecter: infer R) => void
     ? (resolver: (value: void | PromiseLike<void>) => void, rejecter: R) => void
     : never,
   U extends ReturnType<typeof transformMiddleware> extends Array<infer R>
-    ? Partial<R>
+    ? R
     : never
 >(
   this: U,
@@ -91,24 +91,21 @@ export function middlewareSelfCall<
   rejecter: T extends (Resolver: infer P, Rejecter: infer R) => void ? R : never
 ) {
   try {
-    if (middlewares[step]) {
-      middlewares[step].instance?.use(
-        middlewareReqProxy,
-        middlewareResProxy,
-        () =>
-          middlewareSelfCall.call(
-            middlewares[step + 1],
-            middlewares,
-            step + 1,
-            middlewareReqProxy,
-            middlewareResProxy,
-            resolver,
-            rejecter
-          )
+    if (this) {
+      this.instance?.use(middlewareReqProxy, middlewareResProxy, () =>
+        middlewareSelfCall.call(
+          middlewares[step + 1],
+          middlewares,
+          step + 1,
+          middlewareReqProxy,
+          middlewareResProxy,
+          resolver,
+          rejecter
+        )
       )
-    } else {
-      resolver()
+      return
     }
+    resolver()
   } catch (error) {
     rejecter(error)
   }

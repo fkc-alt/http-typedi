@@ -192,9 +192,7 @@ async function requestContext(
           )
           await MiddlewarePromise(
             middlewareSelfCall,
-            <Middleware & { instance: Middleware }[]>(
-              (<unknown>swtichHTTPMiddlewares)
-            ),
+            swtichHTTPMiddlewares,
             0,
             middlewareRequestProxy,
             middlewareResponseProxy
