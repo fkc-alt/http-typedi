@@ -25,7 +25,7 @@ export const isSymbol = (target: any): boolean => {
 }
 
 export const isUndefined = (obj: any): obj is undefined =>
-  typeof obj === 'undefined'
+  typeof obj === typeof void 0
 
 export const isNil = (val: any): val is null | undefined =>
   isUndefined(val) || val === null
@@ -36,25 +36,4 @@ export const isPromise = (obj: any): obj is Promise<any> => {
     (typeof obj === 'object' || typeof obj === 'function') &&
     typeof obj.then === 'function'
   )
-}
-
-type InferCapitalize<T extends string> = T extends `${infer U}${infer R}`
-  ? `${Uppercase<U>}${R}`
-  : T
-
-type InferCapitalizeUpperCaseLetter<T extends string> = T extends `${infer U}`
-  ? `${Uppercase<U>}`
-  : T
-
-export const capitalizeFirstLetter = <T extends string>(
-  string: T
-): InferCapitalize<T> => {
-  return (string.charAt(0).toUpperCase() +
-    string.slice(1)) as InferCapitalize<T>
-}
-
-export const capitalizeUpperCaseLetter = <T extends string>(
-  string: T
-): InferCapitalizeUpperCaseLetter<T> => {
-  return string.toUpperCase() as InferCapitalizeUpperCaseLetter<T>
 }
