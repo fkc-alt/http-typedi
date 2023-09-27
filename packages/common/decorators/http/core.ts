@@ -153,6 +153,12 @@ async function requestContext(
     const swtichHTTPMiddlewares = middlewares.filter(middleware => {
       if (middleware.config.forRoutes.length) {
         const shouldRoutes = middleware.config.forRoutes.filter(route => {
+          if (isFunction(route)) {
+            const _route = (route as Record<string, any>).prototype[
+              `${(route as any).name}${CONNECTSTRING}`
+            ]
+            return param.url!.indexOf(_route) !== -1
+          }
           if (typeof route === 'string') {
             return param.url!.indexOf(route) !== -1
           }
