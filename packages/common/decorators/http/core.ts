@@ -219,7 +219,6 @@ async function requestContext(
             this,
             requestConfigs
           )
-          console.log(result, 'result')
           HttpFactoryMap.get(token)?.logger?.log?.(requestConfigs[0])
           // eslint-disable-next-line @typescript-eslint/return-await
           const response = interceptorsRes.reduce(
