@@ -17,6 +17,7 @@ export function GR(this: XMLHttpRequest) {
     responseText,
     responseType,
     timeout,
+    responseHeaders: this.getAllResponseHeaders(),
     data: this.response && JSON.parse(this.response)
   }
   return response
