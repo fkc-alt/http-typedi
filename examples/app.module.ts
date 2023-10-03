@@ -54,6 +54,6 @@ export default class AppModule implements HttpTypeDIModule {
         path: 'login',
         method: RequestMethod.GET
       })
-      .forRoutes('order')
+      .forRoutes(UserController)
   }
 }
