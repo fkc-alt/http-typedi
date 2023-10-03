@@ -5,6 +5,11 @@
 name: http-typedi
  
 on: 
+  push: 
+    branches: 
+    - main
+    paths-ignore:
+      - 'docs/**'
   pull_request: 
     branches: 
     - main 
