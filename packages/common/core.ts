@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { v4 as uuidv4 } from 'uuid'
-import { Middleware, RequestConfig } from '..'
+import { Middleware, Reflector, RequestConfig } from '..'
 import { StaticMiddlewareConsumer } from './middleware'
 import {
   ModuleMetadata,
@@ -499,6 +499,8 @@ const getAllModuleAndProviders: GetAllModuleAndProviders = (target, token) => {
 const Factory = <T>(target: Constructor<T>, token: string): T => {
   const { providers, constructorProviders, deepAllProvider } =
     getAllModuleAndProviders<T>(target, token)
+  // Http-Typedi 自动注入Reflector内置类
+  deepAllProvider.push(Reflector)
   deepAllProvider.forEach(target => {
     Reflect.defineMetadata(MetadataKey.TOKEN, token, target)
     providers.add(target)

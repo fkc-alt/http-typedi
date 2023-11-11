@@ -3,7 +3,8 @@ import {
   GetMapping,
   PostMapping,
   RequestService,
-  RequestConfig
+  RequestConfig,
+  Reflector
 } from '@/index'
 import { Route, UserRouteChildren } from '..'
 import UserService from './user.service'
@@ -14,7 +15,8 @@ import UserInfoDto from './dto/userInfo.dto'
 export default class UserController {
   constructor(
     private readonly requestService: RequestService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly reflector: Reflector
   ) {}
 
   @PostMapping(UserRouteChildren.LOGIN)
@@ -33,7 +35,7 @@ export default class UserController {
     U extends Service.UserInfoRes
   >(configure: UserInfoDto): ServerRes<U> {
     const { ...Rest } = <RequestConfig<T>>configure
-    console.log(Rest)
+    console.log(Rest, 'reflector', this.reflector.get('roles', this))
     console.log(this, 'this')
     return await this.requestService.request<T, ServerRes<U>>(
       <RequestConfig<T>>configure
