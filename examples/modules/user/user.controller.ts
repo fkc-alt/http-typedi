@@ -10,6 +10,7 @@ import { Route, UserRouteChildren } from '..'
 import UserService from './user.service'
 import LoginDto from './dto/login.dto'
 import UserInfoDto from './dto/userInfo.dto'
+import { Auth } from './decorators/auth.decorator'
 
 @Controller(Route.USER)
 export default class UserController {
@@ -30,6 +31,7 @@ export default class UserController {
   }
 
   @GetMapping(UserRouteChildren.INFO)
+  @Auth()
   public async UserInfo<
     T extends Service.UserInfoReq,
     U extends Service.UserInfoRes

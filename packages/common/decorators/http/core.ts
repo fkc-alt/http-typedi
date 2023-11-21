@@ -14,6 +14,7 @@ import {
   getCatchCallback,
   getDataTransferObject,
   getSleepTimer,
+  getGuards,
   getTimeout,
   getTimeoutCallback,
   DTOValidate,
@@ -23,8 +24,12 @@ import {
   createMiddlewareProxy,
   middlewareSelfCall,
   createMiddlewareResponseContext,
+  createGuardsResponseContext,
   switchExcludesRoute,
-  MiddlewarePromise
+  MiddlewarePromise,
+  GuardsPromise,
+  guardsSelfCall,
+  transformGuards
 } from '../core/helper'
 import {
   OverrideReqEffect,
@@ -193,6 +198,14 @@ async function requestContext(
           const middlewareRequestProxy = createMiddlewareProxy(param)
           const middlewareResponseProxy = createMiddlewareProxy(
             createMiddlewareResponseContext(
+              () => middlewareRequestProxy,
+              async () =>
+                await fn.apply<any, RequestConfig[], any>(this, [param])
+            )
+          )
+          const guardResponseProxy = createMiddlewareProxy(
+            createGuardsResponseContext(
+              () => middlewareRequestProxy,
               async () =>
                 await fn.apply<any, RequestConfig[], any>(this, [param])
             )
@@ -203,6 +216,14 @@ async function requestContext(
             0,
             middlewareRequestProxy,
             middlewareResponseProxy
+          )
+          const guards = getGuards(target, propertyKey)
+          await GuardsPromise(
+            guardsSelfCall,
+            transformGuards(guards),
+            0,
+            middlewareRequestProxy,
+            guardResponseProxy
           )
           const _interceptorsReqValue: RequestConfig = interceptorsReq.reduce(
             (prev: any, next) => next(prev),

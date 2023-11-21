@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { v4 as uuidv4 } from 'uuid'
-import { Middleware, Reflector, RequestConfig } from '..'
+import { CanActivate, Middleware, Reflector, RequestConfig } from '..'
 import { StaticMiddlewareConsumer } from './middleware'
 import {
   ModuleMetadata,
@@ -107,6 +107,8 @@ export class HttpFactory {
   private globalInterceptorsRes: InterceptorRes[] = []
 
   private globalMiddleware: Middleware[] = []
+
+  private globalGuard: (CanActivate | Function)[] = []
 
   private globalCatchCallback!: (cb: (error: any) => any) => any
 
@@ -283,6 +285,15 @@ export class HttpFactory {
     this.SetHttpFactoryInstanceValue(
       this.uniqueCache.token,
       'globalMiddleware',
+      this.globalMiddleware
+    )
+  }
+
+  public useGuard(...guards: (CanActivate | Function)[]) {
+    this.globalGuard = Array.from(new Set([...this.globalGuard, ...guards]))
+    this.SetHttpFactoryInstanceValue(
+      this.uniqueCache.token,
+      'globalGuard',
       this.globalMiddleware
     )
   }

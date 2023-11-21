@@ -54,12 +54,18 @@ export const createMiddlewareProxy = <T extends Object>(target: T): T => {
   })
 }
 
-export const createMiddlewareResponseContext = (dispatchRequest: Function) => {
+export const createMiddlewareResponseContext = (
+  dispatchRequest: Function,
+  dispatchResponse: Function
+) => {
   const middlewareResponseContext: MiddlewareResponseContext = {
     switchToHttp() {
       return {
         getRequest() {
           return dispatchRequest()
+        },
+        getResponse() {
+          return dispatchResponse()
         }
       }
     },
