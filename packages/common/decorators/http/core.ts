@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { ValidationError } from 'class-validator'
 import { Constructor, Middleware, RouteInfo } from '../../core'
-import { RequestConfig } from '../../providers'
+import { Reflector, RequestConfig } from '../../providers'
 import { HttpFactoryMap } from '../../http-factory-map'
 import { MetaDataTypes, MetadataKey, RequestMethod } from '../../enums'
 import { isFunction } from '../../helper/utils'
@@ -36,6 +36,7 @@ import {
   getInjectValues,
   getMetadataType
 } from './route-params.decorator'
+import { Type } from '../../interfaces/type.interface'
 
 /**
  * @module RequestFactory
@@ -150,6 +151,10 @@ async function requestContext(
   fn: (params: any) => any
 ): Promise<any> {
   try {
+    const reflector: Reflector = Reflect.getMetadata(
+      MetadataKey.REFLECTOR,
+      target.constructor
+    )
     const middlewares = transformMiddleware(getMiddlewares(target))
     const interceptorsReq = getInterceptors(
       target,
@@ -203,13 +208,15 @@ async function requestContext(
                 await fn.apply<any, RequestConfig[], any>(this, [param])
             )
           )
-          const guardResponseProxy = createMiddlewareProxy(
-            createGuardsResponseContext(
+          const guardResponseProxy = createMiddlewareProxy({
+            ...createGuardsResponseContext(
               () => middlewareRequestProxy,
               async () =>
                 await fn.apply<any, RequestConfig[], any>(this, [param])
-            )
-          )
+            ),
+            getClass: () => <Type>target,
+            getHandler: () => fn
+          })
           await MiddlewarePromise(
             middlewareSelfCall,
             swtichHTTPMiddlewares,
@@ -220,7 +227,7 @@ async function requestContext(
           const guards = getGuards(target, propertyKey)
           await GuardsPromise(
             guardsSelfCall,
-            transformGuards(guards),
+            transformGuards(guards, new (<Constructor>(<unknown>reflector))()),
             0,
             middlewareRequestProxy,
             guardResponseProxy

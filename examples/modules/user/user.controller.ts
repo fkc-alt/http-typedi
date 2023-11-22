@@ -4,20 +4,22 @@ import {
   PostMapping,
   RequestService,
   RequestConfig,
-  Reflector
+  Reflector,
+  SetMetadata,
+  UseGuards
 } from '@/index'
 import { Route, UserRouteChildren } from '..'
 import UserService from './user.service'
 import LoginDto from './dto/login.dto'
 import UserInfoDto from './dto/userInfo.dto'
 import { Auth } from './decorators/auth.decorator'
+import { RoleGuard } from './guards/role.guard'
 
 @Controller(Route.USER)
 export default class UserController {
   constructor(
     private readonly requestService: RequestService,
-    private readonly userService: UserService,
-    private readonly reflector: Reflector
+    private readonly userService: UserService
   ) {}
 
   @PostMapping(UserRouteChildren.LOGIN)
@@ -30,14 +32,14 @@ export default class UserController {
     )
   }
 
+  @SetMetadata('roles', ['admin'])
+  @UseGuards(RoleGuard)
   @GetMapping(UserRouteChildren.INFO)
-  @Auth()
   public async UserInfo<
     T extends Service.UserInfoReq,
     U extends Service.UserInfoRes
   >(configure: UserInfoDto): ServerRes<U> {
     const { ...Rest } = <RequestConfig<T>>configure
-    console.log(Rest, 'reflector', this.reflector.get('roles', this))
     console.log(this, 'this')
     return await this.requestService.request<T, ServerRes<U>>(
       <RequestConfig<T>>configure

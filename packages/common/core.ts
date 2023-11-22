@@ -514,6 +514,7 @@ const Factory = <T>(target: Constructor<T>, token: string): T => {
   deepAllProvider.push(Reflector)
   deepAllProvider.forEach(target => {
     Reflect.defineMetadata(MetadataKey.TOKEN, token, target)
+    Reflect.defineMetadata(MetadataKey.REFLECTOR, Reflector, target)
     providers.add(target)
   })
   Reflect.defineMetadata(ModuleMetadata.PROVIDERS, deepAllProvider, target)

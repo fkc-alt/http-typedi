@@ -1,16 +1,20 @@
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '../decorators'
-import { MetadataKey } from '../enums'
-import { HttpFactoryMap } from '../http-factory-map'
+import { Type } from '../interfaces/type.interface'
 
 @Injectable()
 export class Reflector {
-  public get(token: string, ctx: any): any {
-    const IOC_RELATION_token = Reflect.getMetadata(
-      MetadataKey.TOKEN,
-      ctx.constructor
-    )
-    const IOC = HttpFactoryMap.get(IOC_RELATION_token)
-    console.log(IOC, 'IOC', IOC_RELATION_token, HttpFactoryMap)
-    return IOC
+  public get<TResult = any, TKey = any>(
+    metadataKey: TKey,
+    target: Type<any> | Function,
+    func?: Function
+  ): TResult {
+    const _args: any = [
+      metadataKey,
+      target,
+      func?.name?.replace(/^bound /, '')
+    ].filter(Boolean)
+    return Reflect.getMetadata.apply(null, _args)
   }
 }

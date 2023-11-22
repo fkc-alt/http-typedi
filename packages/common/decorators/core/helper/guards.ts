@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { MiddlewareResponseContext } from '@/common/interfaces'
+import { ExecutionContext } from '../create-route-param-decorator'
+import { CanActivate } from '../interfaces/can-activate.interface'
 import { MetadataKey } from '../../../enums'
 import { HttpFactoryMap } from '../../../http-factory-map'
-import { CanActivate } from '../interfaces/can-activate.interface'
-import { Type } from '@/common/interfaces/type.interface'
-import { ExecutionContext } from '../create-route-param-decorator'
+import { Type } from '../../../interfaces/type.interface'
+import { isFunction } from '../../../helper'
+import { GuardContext } from '../../../interfaces/middleware/guard-context'
+import { Reflector } from '../../../providers'
 
 export const getGuards = (
   target: Object,
@@ -20,16 +22,19 @@ export const getGuards = (
 }
 
 export const transformGuards = (
-  guards: Array<CanActivate | Function>
+  guards: Array<CanActivate | Function>,
+  reflector: Reflector
 ): Array<CanActivate | Function> => {
-  return guards.map(guard => new (<CanActivate & Type>guard)())
+  return guards.map(guard =>
+    isFunction(guard) ? new (<CanActivate & Type>guard)(reflector) : guard
+  )
 }
 
 export const createGuardsResponseContext = (
   dispatchRequest: Function,
   dispatchResponse: Function
 ) => {
-  const middlewareResponseContext: MiddlewareResponseContext = {
+  const guardContext: GuardContext = {
     switchToHttp() {
       return {
         getRequest() {
@@ -42,9 +47,15 @@ export const createGuardsResponseContext = (
     },
     body: {},
     params: {},
-    query: {}
+    query: {},
+    getClass: function <T = any>(): Type<T> {
+      throw new Error('Function not implemented.')
+    },
+    getHandler: function (): Function {
+      throw new Error('Function not implemented.')
+    }
   }
-  return middlewareResponseContext
+  return guardContext
 }
 
 export async function guardsSelfCall<
@@ -67,23 +78,33 @@ export async function guardsSelfCall<
     : never,
   rejecter: T extends (Resolver: infer P, Rejecter: infer R) => void ? R : never
 ) {
+  const callback = () =>
+    guardsSelfCall.call(
+      guards[step + 1],
+      guards,
+      step + 1,
+      guardReqProxy,
+      guardResProxy,
+      resolver,
+      rejecter
+    )
   try {
     if (this) {
+      if (
+        !Reflect.getMetadata(MetadataKey.INJECTABLE_WATERMARK, this.constructor)
+      ) {
+        console.warn(
+          `Http-Typedi: Please use @Injectable() ${this.constructor.name}`
+        )
+        callback()
+        return
+      }
       const validateSync = await (<CanActivate>this).canActivate(guardResProxy)
       validateSync
-        ? guardsSelfCall.call(
-            guards[step + 1],
-            guards,
-            step + 1,
-            guardReqProxy,
-            guardResProxy,
-            resolver,
-            rejecter
-          )
+        ? callback()
         : rejecter({
             error: 'canActivate'
           })
-      console.log(validateSync, 'canActivate')
       return
     }
     resolver()
