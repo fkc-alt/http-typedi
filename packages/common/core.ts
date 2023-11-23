@@ -183,7 +183,7 @@ export class HttpFactory {
       useInterceptorsRes: this.useInterceptorsRes.bind(this),
       useMiddleware: this.useMiddleware.bind(this),
       useLogger: this.useLogger.bind(this),
-      useGuard: this.useGuard.bind(this)
+      useGlobalGuards: this.useGlobalGuards.bind(this)
     }
     this.uniqueCache.token = uuidv4()
     HttpFactoryMap.set(this.uniqueCache.token, this)
@@ -290,7 +290,7 @@ export class HttpFactory {
     )
   }
 
-  public useGuard(...guards: (CanActivate | Function)[]) {
+  public useGlobalGuards(...guards: (CanActivate | Function)[]) {
     this.globalGuard = Array.from(new Set([...this.globalGuard, ...guards]))
     this.SetHttpFactoryInstanceValue(
       this.uniqueCache.token,

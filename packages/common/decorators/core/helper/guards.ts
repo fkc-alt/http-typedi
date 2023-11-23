@@ -103,7 +103,9 @@ export async function guardsSelfCall<
       validateSync
         ? callback()
         : rejecter({
-            error: 'canActivate'
+            statusCode: 403,
+            message: 'Forbidden resource',
+            error: 'Forbidden'
           })
       return
     }
