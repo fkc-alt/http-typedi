@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { ValidationError } from 'class-validator'
 import { Constructor, Middleware, RouteInfo } from '../../core'
-import { RequestConfig } from '../../providers'
+import { Reflector, RequestConfig } from '../../providers'
 import { HttpFactoryMap } from '../../http-factory-map'
 import { MetaDataTypes, MetadataKey, RequestMethod } from '../../enums'
 import { isFunction } from '../../helper/utils'
@@ -14,6 +14,7 @@ import {
   getCatchCallback,
   getDataTransferObject,
   getSleepTimer,
+  getGuards,
   getTimeout,
   getTimeoutCallback,
   DTOValidate,
@@ -23,14 +24,19 @@ import {
   createMiddlewareProxy,
   middlewareSelfCall,
   createMiddlewareResponseContext,
+  createGuardsResponseContext,
   switchExcludesRoute,
-  MiddlewarePromise
+  MiddlewarePromise,
+  GuardsPromise,
+  guardsSelfCall,
+  transformGuards
 } from '../core/helper'
 import {
   OverrideReqEffect,
   getInjectValues,
   getMetadataType
 } from './route-params.decorator'
+import { Type } from '../../interfaces/type.interface'
 
 /**
  * @module RequestFactory
@@ -145,6 +151,10 @@ async function requestContext(
   fn: (params: any) => any
 ): Promise<any> {
   try {
+    const reflector: Reflector = Reflect.getMetadata(
+      MetadataKey.REFLECTOR,
+      target.constructor
+    )
     const middlewares = transformMiddleware(getMiddlewares(target))
     const interceptorsReq = getInterceptors(
       target,
@@ -193,16 +203,34 @@ async function requestContext(
           const middlewareRequestProxy = createMiddlewareProxy(param)
           const middlewareResponseProxy = createMiddlewareProxy(
             createMiddlewareResponseContext(
+              () => middlewareRequestProxy,
               async () =>
                 await fn.apply<any, RequestConfig[], any>(this, [param])
             )
           )
+          const guardResponseProxy = createMiddlewareProxy({
+            ...createGuardsResponseContext(
+              () => middlewareRequestProxy,
+              async () =>
+                await fn.apply<any, RequestConfig[], any>(this, [param])
+            ),
+            getClass: () => <Type>target,
+            getHandler: () => fn
+          })
           await MiddlewarePromise(
             middlewareSelfCall,
             swtichHTTPMiddlewares,
             0,
             middlewareRequestProxy,
             middlewareResponseProxy
+          )
+          const guards = getGuards(target, propertyKey)
+          await GuardsPromise(
+            guardsSelfCall,
+            transformGuards(guards, new (<Constructor>(<unknown>reflector))()),
+            0,
+            middlewareRequestProxy,
+            guardResponseProxy
           )
           const _interceptorsReqValue: RequestConfig = interceptorsReq.reduce(
             (prev: any, next) => next(prev),

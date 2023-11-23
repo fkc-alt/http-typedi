@@ -16,6 +16,8 @@ export enum MetadataKey {
   CUSTOM_ROUTE_ARGS_METADATA = '__customRouteArguments__',
   PARSE_INT_PIPE = '__parseIntPipe__',
   DEFAULT_VALUE_PIPE = '__defaultValuePipe__',
+  GUARDS = '__guards__',
+  REFLECTOR = '__reflector__',
   INJECTIONS = '__injections__',
   SLEEPTIMER = '__sleepTimer__',
   TIMEOUT = '__timeout__',

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { v4 as uuidv4 } from 'uuid'
-import { Middleware, RequestConfig } from '..'
+import { CanActivate, Middleware, Reflector, RequestConfig } from '..'
 import { StaticMiddlewareConsumer } from './middleware'
 import {
   ModuleMetadata,
@@ -108,6 +108,8 @@ export class HttpFactory {
 
   private globalMiddleware: Middleware[] = []
 
+  private globalGuard: (CanActivate | Function)[] = []
+
   private globalCatchCallback!: (cb: (error: any) => any) => any
 
   private globalTimeoutCallback!: (cb: () => any) => any
@@ -180,7 +182,8 @@ export class HttpFactory {
       useInterceptorsReq: this.useInterceptorsReq.bind(this),
       useInterceptorsRes: this.useInterceptorsRes.bind(this),
       useMiddleware: this.useMiddleware.bind(this),
-      useLogger: this.useLogger.bind(this)
+      useLogger: this.useLogger.bind(this),
+      useGlobalGuards: this.useGlobalGuards.bind(this)
     }
     this.uniqueCache.token = uuidv4()
     HttpFactoryMap.set(this.uniqueCache.token, this)
@@ -284,6 +287,15 @@ export class HttpFactory {
       this.uniqueCache.token,
       'globalMiddleware',
       this.globalMiddleware
+    )
+  }
+
+  public useGlobalGuards(...guards: (CanActivate | Function)[]) {
+    this.globalGuard = Array.from(new Set([...this.globalGuard, ...guards]))
+    this.SetHttpFactoryInstanceValue(
+      this.uniqueCache.token,
+      'globalGuard',
+      this.globalGuard
     )
   }
 
@@ -499,8 +511,11 @@ const getAllModuleAndProviders: GetAllModuleAndProviders = (target, token) => {
 const Factory = <T>(target: Constructor<T>, token: string): T => {
   const { providers, constructorProviders, deepAllProvider } =
     getAllModuleAndProviders<T>(target, token)
+  // Http-Typedi 自动注入Reflector内置类
+  deepAllProvider.push(Reflector)
   deepAllProvider.forEach(target => {
     Reflect.defineMetadata(MetadataKey.TOKEN, token, target)
+    Reflect.defineMetadata(MetadataKey.REFLECTOR, Reflector, target)
     providers.add(target)
   })
   Reflect.defineMetadata(ModuleMetadata.PROVIDERS, deepAllProvider, target)

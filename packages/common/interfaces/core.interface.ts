@@ -56,3 +56,4 @@ export type HttpFactoryPropertieKeys =
   | 'globalSleepTimer'
   | 'module'
   | 'prefix'
+  | 'globalGuard'

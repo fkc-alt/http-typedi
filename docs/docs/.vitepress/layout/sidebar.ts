@@ -158,6 +158,37 @@ export const Sidebar: DefaultTheme.Sidebar = {
           ]
         },
         {
+          text: '守卫',
+          collapsed: true,
+          link: '/guide/guard/',
+          items: [
+            {
+              text: '授权守卫',
+              link: '/guide/guard/authorize'
+            },
+            {
+              text: '执行上下文',
+              link: '/guide/guard/context'
+            },
+            {
+              text: '基于角色认知',
+              link: '/guide/guard/role-authorize'
+            },
+            {
+              text: '绑定守卫',
+              link: '/guide/guard/bind'
+            },
+            {
+              text: '为每个处理器设置角色',
+              link: '/guide/guard/set-role'
+            },
+            {
+              text: '小结',
+              link: '/guide/guard/brief'
+            }
+          ]
+        },
+        {
           text: '内置装饰器',
           collapsed: true,
           items: [

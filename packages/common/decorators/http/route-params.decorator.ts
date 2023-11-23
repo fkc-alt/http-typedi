@@ -5,7 +5,7 @@ import {
   Constructor,
   RouteParamMetadata
 } from '../../interfaces/core.interface'
-import { ExecutionContext } from '../core/interfaces/create-route-param-decorator.interface'
+import { HttpArgumentsHost } from '../core/interfaces/create-route-param-decorator.interface'
 
 /**
  * @param { Object } target
@@ -73,7 +73,9 @@ export const OverrideReqEffect = (
   values: RouteParamMetadata[],
   args: any[]
 ) => {
-  const executionContext: ExecutionContext = {
+  const executionContext: {
+    switchToHttp(): Pick<HttpArgumentsHost, 'getRequest'>
+  } = {
     switchToHttp() {
       return {
         getRequest() {

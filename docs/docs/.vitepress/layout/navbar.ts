@@ -74,6 +74,11 @@ export const Navbar: DefaultTheme.NavItem[] = [
         link: '/guide/pipe/'
       },
       {
+        text: '守卫',
+        activeMatch: '^/guide/guard',
+        link: '/guide/guard/'
+      },
+      {
         text: '内置装饰器',
         activeMatch: '^/guide/decorators',
         link: '/guide/decorators/param-decorators'

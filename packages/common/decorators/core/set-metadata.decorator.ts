@@ -13,12 +13,10 @@
  * @publicApi
  */
 
+import { createDecoratorBind } from '../../helper'
+
 export const SetMetadata = <K = string, V = any>(
   metadataKey: K,
   metadataValue: V
-): MethodDecorator => {
-  return (target, propertyKey, descriptor: PropertyDescriptor) => {
-    Reflect.defineMetadata(metadataKey, metadataValue, target, propertyKey)
-    return descriptor
-  }
-}
+): MethodDecorator & ClassDecorator =>
+  createDecoratorBind(<any>metadataKey, metadataValue)
