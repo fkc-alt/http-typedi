@@ -227,7 +227,7 @@ async function requestContext(
           const guards = getGuards(target, propertyKey)
           await GuardsPromise(
             guardsSelfCall,
-            transformGuards(guards, new (<Constructor>(<unknown>reflector))()),
+            transformGuards(guards),
             0,
             middlewareRequestProxy,
             guardResponseProxy
