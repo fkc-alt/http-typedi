@@ -1,7 +1,7 @@
 {
   "name": "http-typedi",
   "private": false,
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "http Dependency Injection",
   "main": "dist/http-typedi.umd.js",
   "files": [
