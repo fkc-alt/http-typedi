@@ -171,7 +171,7 @@ export const Sidebar: DefaultTheme.Sidebar = {
               link: '/guide/guard/context'
             },
             {
-              text: '基于角色认知',
+              text: '基于角色认证',
               link: '/guide/guard/role-authorize'
             },
             {
