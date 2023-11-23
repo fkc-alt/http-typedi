@@ -6,7 +6,7 @@ import { HttpFactoryMap } from '../../../http-factory-map'
 import { Type } from '../../../interfaces/type.interface'
 import { isFunction } from '../../../helper'
 import { GuardContext } from '../../../interfaces/middleware/guard-context'
-import { Reflector } from '../../../providers'
+import { Constructor } from '../../../interfaces/core.interface'
 
 export const getGuards = (
   target: Object,
@@ -21,13 +21,55 @@ export const getGuards = (
   )
 }
 
-export const transformGuards = (
-  guards: Array<CanActivate | Function>,
-  reflector: Reflector
-): Array<CanActivate | Function> => {
-  return guards.map(guard =>
-    isFunction(guard) ? new (<CanActivate & Type>guard)(reflector) : guard
+const registerDeepClass = (
+  providers: Array<Constructor<any>>
+): Array<Constructor<any>> => {
+  return (
+    providers?.map((provider: any) => {
+      const childrenProviders = Reflect.getMetadata(
+        MetadataKey.PARAMTYPES_METADATA,
+        provider
+      )
+      const isFactoryProvide = isFunction(provider)
+      let instance
+      if (!childrenProviders) {
+        instance = isFactoryProvide ? new provider() : provider
+      } else {
+        instance = new provider(...registerDeepClass(childrenProviders))
+      }
+      registerPropertes(provider, instance)
+      return instance
+    }) ?? []
   )
+}
+
+/**
+ * @param { Constructor<any> } target
+ * @param { any } instance
+ * @description Object register properties
+ */
+const registerPropertes = (target: Constructor<any>, instance: any) => {
+  const properties: Array<{
+    propertyName: string
+    provide: Constructor<any>
+  }> = Reflect.getMetadata(MetadataKey.INJECTIONS, target)
+  properties?.forEach(
+    ({ propertyName, provide }) => (instance[propertyName] = provide)
+  )
+}
+
+export const transformGuards = (
+  guards: Array<CanActivate | Function>
+): Array<CanActivate | Function> => {
+  return guards.map(guard => {
+    const currentProviders = Reflect.getMetadata(
+      MetadataKey.PARAMTYPES_METADATA,
+      guard
+    )
+    return isFunction(guard)
+      ? new (<CanActivate & Type>guard)(...registerDeepClass(currentProviders))
+      : guard
+  })
 }
 
 export const createGuardsResponseContext = (
