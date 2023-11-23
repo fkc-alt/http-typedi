@@ -22,6 +22,8 @@ export default class UserController {
     private readonly userService: UserService
   ) {}
 
+  @UseGuards(RoleGuard)
+  @SetMetadata('roles', ['admin'])
   @PostMapping(UserRouteChildren.LOGIN)
   public async Login<T extends Service.LoginReq, U extends Service.LoginRes>(
     configure: LoginDto
@@ -32,8 +34,8 @@ export default class UserController {
     )
   }
 
-  @SetMetadata('roles', ['admin'])
   @UseGuards(RoleGuard)
+  @SetMetadata('roles', ['admin', 'editor'])
   @GetMapping(UserRouteChildren.INFO)
   public async UserInfo<
     T extends Service.UserInfoReq,

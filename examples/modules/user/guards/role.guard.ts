@@ -22,13 +22,14 @@ export class RoleGuard implements CanActivate {
     const request = await context
       .switchToHttp()
       .getRequest<RequestConfig<any>>()
-    const roles = this.reflector.get<string[]>(
-      'roles',
-      context.getClass(),
-      context.getHandler()
-    )
-    console.log(roles, 'roles')
+    const roles =
+      this.reflector.get<string[]>(
+        'roles',
+        context.getClass(),
+        context.getHandler()
+      ) || []
     const validateSync = roles.some(role => Roles.ADMIN === role)
+    console.log(roles, validateSync, request, 'RoleGuard')
     // return validateRequest(request)
     return validateSync
   }
