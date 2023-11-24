@@ -267,6 +267,10 @@ export const Sidebar: DefaultTheme.Sidebar = {
             {
               text: '请求延时器',
               link: '/guide/global-config/sleep'
+            },
+            {
+              text: '守卫',
+              link: '/guide/global-config/use-guards'
             }
           ]
         }

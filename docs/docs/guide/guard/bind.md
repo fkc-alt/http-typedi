@@ -25,10 +25,4 @@ export class CatsController {}
 
 上面的构造将守卫附加到此控制器声明的每个处理程序。如果我们希望守卫只应用于单个方法，则需在方法级别应用 **`@UseGuards()`** 装饰器。
 
-为了设置一个全局守卫，使用 **`Http-Typedi`** 应用程序实例的 **`useGlobalGuards()`** 方法：
-
-
-```ts
-const HTTPClient = await HttpFactory.create(AppModule)
-HTTPClient.useGlobalGuards(new RolesGuard())
-```
+如果你需要绑定全局拦截器, 详情可查看[全局守卫](../global-config/use-guards.md)
