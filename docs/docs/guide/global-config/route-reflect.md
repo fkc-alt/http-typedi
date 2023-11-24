@@ -36,9 +36,7 @@ export const HTTPClient = createHTTPClient()
 // 模拟调用DemoController的getDemoDetail方法
 
 HTTPClient.demoController.getDemoDetail({
-  name: 'test',
-  age: 18,
-  breed: 'test'
+  package: 'http-typedi',
 }).then(res => {
   console.log(res)
 })
