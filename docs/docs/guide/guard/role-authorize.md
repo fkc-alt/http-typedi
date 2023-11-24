@@ -5,7 +5,7 @@
 > roles.guard.ts
 
 ```ts
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext } from 'http-typedi';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
