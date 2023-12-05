@@ -16,11 +16,11 @@ import { CanActivate } from './interfaces/can-activate.interface'
  * @param guards a single guard instance or class, or a list of guard instances
  * or classes.
  *
- * @see [Guards](https://docs.nestjs.com/guards)
+ * @see [Guards](https://fkc-alt.github.io/http-typedi/guide/guard/)
  *
  * @usageNotes
  * Guards can also be set up globally for all controllers and routes
- * using `app.useGlobalGuards()`.  [See here for details](https://docs.nestjs.com/guards#binding-guards)
+ * using `app.useGlobalGuards()`.  [See here for details](https://fkc-alt.github.io/http-typedi/guide/global-config/use-guards)
  *
  * @publicApi
  */
