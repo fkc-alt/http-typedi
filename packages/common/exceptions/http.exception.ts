@@ -73,10 +73,10 @@ export class HttpException extends Error {
     if (!objectOrErrorMessage) {
       return { statusCode, message: description }
     }
-    return isObject(objectOrErrorMessage) &&
-      !Array.isArray(objectOrErrorMessage)
-      ? objectOrErrorMessage
-      : { statusCode, message: objectOrErrorMessage, error: description }
+    if (isString(objectOrErrorMessage) || Array.isArray(objectOrErrorMessage)) {
+      return { statusCode, message: objectOrErrorMessage, error: description }
+    }
+    return objectOrErrorMessage
   }
 
   public static extractDescriptionAndOptionsFrom(

@@ -153,7 +153,7 @@ export async function guardsSelfCall<
             error: 'Forbidden'
           })
          */
-        throw new ForbiddenException()
+        throw new ForbiddenException('Forbidden resource')
       }
       return
     }
