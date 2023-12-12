@@ -7,6 +7,7 @@ import { Type } from '../../../interfaces/type.interface'
 import { isFunction } from '../../../helper'
 import { GuardContext } from '../../../interfaces/middleware/guard-context'
 import { Constructor } from '../../../interfaces/core.interface'
+import { ForbiddenException } from '@/common/exceptions'
 
 export const getGuards = (
   target: Object,
@@ -142,17 +143,23 @@ export async function guardsSelfCall<
         return
       }
       const validateSync = await (<CanActivate>this).canActivate(guardResProxy)
-      validateSync
-        ? callback()
-        : rejecter({
+      if (validateSync) {
+        callback()
+      } else {
+        /**
+         * rejecter({
             statusCode: 403,
             message: 'Forbidden resource',
             error: 'Forbidden'
           })
+         */
+        throw new ForbiddenException()
+      }
       return
     }
     resolver()
   } catch (error) {
+    console.log(error, 'error')
     rejecter(error)
   }
 }
