@@ -402,6 +402,18 @@ const registerPropertes = (target: Constructor<any>, instance: any) => {
     propertyName: string
     provide: Constructor<any>
   }> = Reflect.getMetadata(MetadataKey.INJECTIONS, target)
+  const prototype = Object.getPrototypeOf(instance)
+  const methodNames = Object.getOwnPropertyNames(prototype).filter(
+    name => name !== 'constructor' && typeof prototype[name] === 'function'
+  )
+  /**
+   * @override
+   * @description Resolve this pointing issue(解决解构后this指向问题)
+   */
+  methodNames.forEach(
+    propertyKey =>
+      (instance[propertyKey] = instance[propertyKey].bind(instance))
+  )
   properties?.forEach(
     ({ propertyName, provide }) => (instance[propertyName] = provide)
   )
@@ -459,7 +471,11 @@ const initFactory = <T>(
     ) {
       throw new Error(`Please use exports Service ${target.name}`)
     }
-    return new target(...registerDeepClass(container, currentProviders))
+    const instance = new target(
+      ...registerDeepClass(container, currentProviders)
+    )
+    registerPropertes(target, instance)
+    return instance
   })
   const instance = new target(...params)
   registerPropertes(target, instance)

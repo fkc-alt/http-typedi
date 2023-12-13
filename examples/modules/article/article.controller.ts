@@ -28,6 +28,7 @@ class CustomValidationPipe implements PipeTransform {
 
 @ArticleControllerApplydecorators()
 export default class ArticleController {
+  state = 10
   constructor(
     private readonly articleService: ArticleService,
     private readonly examplesService: ExamplesService,
@@ -36,9 +37,12 @@ export default class ArticleController {
     private readonly logger: Logger
   ) {
     // 解构使用方法的话需要在构造中绑定this
-    this.GetArticleList = this.GetArticleList.bind(this)
-    this.GetTableDataList = this.GetTableDataList.bind(this)
-    this.DeleteArticle = this.DeleteArticle.bind(this)
+    /**
+     * @description 框架已处理解构this丢失问题
+     */
+    // this.GetArticleList = this.GetArticleList.bind(this)
+    // this.GetTableDataList = this.GetTableDataList.bind(this)
+    // this.DeleteArticle = this.DeleteArticle.bind(this)
   }
 
   @GetArticleListApplyDecorators()
@@ -46,7 +50,7 @@ export default class ArticleController {
     T = Service.ArticleListReq,
     U = Service.ArticleListRes
   >(@Res() configure: ArticleListDto): ServerRes<U> {
-    console.log(configure, 'configure')
+    console.log(configure, 'configure', this)
     const { data } = await this.helperController.getApidoc({
       pageSize: 0,
       currentPage: 0

@@ -32,7 +32,7 @@ export class RolesGuard implements CanActivate {
 **`matchRoles()`** 函数内部的逻辑可以根据需要简单或复杂。该示例的重点是显示防护如何适应请求/响应周期。
 :::
 
-查阅*执行上下文*章节的[反射和元数据]部分，以了解如何以上下文相关(context-sensitive)的方式利用 **`Reflector`** 。
+查阅*执行上下文*章节的 **`反射和元数据`** 部分，以了解如何以上下文相关(context-sensitive)的方式利用 **`Reflector`** 。
 
 当权限不足的用户请求端点时，**`Http-Typedi`** 会自动返回以下响应：
 

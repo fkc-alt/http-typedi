@@ -4,9 +4,10 @@ import { CanActivate } from '../interfaces/can-activate.interface'
 import { MetadataKey } from '../../../enums'
 import { HttpFactoryMap } from '../../../http-factory-map'
 import { Type } from '../../../interfaces/type.interface'
-import { isFunction } from '../../../helper'
+import { isFunction, isString } from '../../../helper'
 import { GuardContext } from '../../../interfaces/middleware/guard-context'
 import { Constructor } from '../../../interfaces/core.interface'
+import { ForbiddenException } from '../../../exceptions'
 
 export const getGuards = (
   target: Object,
@@ -142,18 +143,24 @@ export async function guardsSelfCall<
         return
       }
       const validateSync = await (<CanActivate>this).canActivate(guardResProxy)
-      validateSync
-        ? callback()
-        : rejecter({
+      if (validateSync) {
+        callback()
+      } else {
+        /**
+         * rejecter({
             statusCode: 403,
             message: 'Forbidden resource',
             error: 'Forbidden'
           })
+         */
+        throw new ForbiddenException('Forbidden resource')
+      }
       return
     }
     resolver()
-  } catch (error) {
-    rejecter(error)
+  } catch (error: any) {
+    console.log(JSON.parse(error.message), 'error')
+    rejecter(isString(error?.message) ? JSON.parse(error?.message) : error)
   }
 }
 

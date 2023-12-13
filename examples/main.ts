@@ -13,7 +13,7 @@ import './style.css'
 function createHTTPClient(): AppModule {
   const HTTPClient = HttpFactory.create(AppModule)
   HTTPClient.setGlobalCatchCallback((error: any) => {
-    console.error(error, 'global catch callback')
+    console.log(error, 'global catch callback')
   })
   HTTPClient.setGlobalPrefix(import.meta.env.VITE_APP_BASE_API)
   HTTPClient.useInterceptorsReq(configure => {
@@ -105,6 +105,6 @@ console.log(HTTPClient)
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
-   <h1>http-typedi</h1>
+   <h1>${import.meta.env.VITE_APP_PROJECT_TITLE}</h1>
   </div>
 `
