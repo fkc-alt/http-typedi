@@ -187,11 +187,7 @@ export class HttpFactory {
     }
     this.uniqueCache.token = uuidv4()
     HttpFactoryMap.set(this.uniqueCache.token, this)
-    return Object.assign(
-      HTTPClient,
-      Factory(target, this.uniqueCache.token),
-      exposeProperties
-    )
+    return { ...HTTPClient, ...Factory(target, this.uniqueCache.token) }
   }
 
   private SetHttpFactoryInstanceValue(
