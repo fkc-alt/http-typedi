@@ -129,10 +129,10 @@ export class HttpFactory {
   }
 
   static create<T>(
-    target: Constructor<T>
-    // options?: CreateOptions
+    target: Constructor<T>,
+    options?: CreateOptions
   ): HttpServicesApplication<T> {
-    return new this().factory(target)
+    return new this().factory(target, options)
   }
 
   factory<T>(
@@ -187,6 +187,7 @@ export class HttpFactory {
     }
     this.uniqueCache.token = uuidv4()
     HttpFactoryMap.set(this.uniqueCache.token, this)
+    console.log(HTTPClient, 'uniqueCache')
     return { ...HTTPClient, ...Factory(target, this.uniqueCache.token) }
   }
 
