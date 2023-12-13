@@ -37,6 +37,9 @@ export default class ArticleController {
     private readonly logger: Logger
   ) {
     // 解构使用方法的话需要在构造中绑定this
+    /**
+     * @description 框架已处理解构this丢失问题
+     */
     // this.GetArticleList = this.GetArticleList.bind(this)
     // this.GetTableDataList = this.GetTableDataList.bind(this)
     // this.DeleteArticle = this.DeleteArticle.bind(this)
