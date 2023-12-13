@@ -406,6 +406,10 @@ const registerPropertes = (target: Constructor<any>, instance: any) => {
   const methodNames = Object.getOwnPropertyNames(prototype).filter(
     name => name !== 'constructor' && typeof prototype[name] === 'function'
   )
+  /**
+   * @override
+   * @description Resolve this pointing issue(解决解构后this指向问题)
+   */
   methodNames.forEach(
     propertyKey =>
       (instance[propertyKey] = instance[propertyKey].bind(instance))
