@@ -29,7 +29,7 @@ export class RoleGuard implements CanActivate {
         context.getHandler()
       ) || []
     const validateSync = roles.some(role => Roles.ADMIN === role)
-    console.log(roles, validateSync, request, 'RoleGuard')
+    console.log(roles, validateSync, request, 'RoleGuard', this)
     // return validateRequest(request)
     return validateSync
   }

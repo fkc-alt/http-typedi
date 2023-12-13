@@ -52,7 +52,7 @@ export class HttpException extends Error {
       isObject(this.response) &&
       isString((<Record<string, any>>this.response).message)
     ) {
-      this.message = (<Record<string, any>>this.response).message
+      this.message = JSON.stringify(this.response)
     } else if (this.constructor) {
       this.message =
         <string>(
