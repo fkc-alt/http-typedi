@@ -105,6 +105,6 @@ console.log(HTTPClient)
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
-   <h1>http-typedi</h1>
+   <h1>${import.meta.env.VITE_APP_PROJECT_TITLE}</h1>
   </div>
 `
