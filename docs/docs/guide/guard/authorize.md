@@ -5,7 +5,7 @@
 > auth.guard.ts
 
 ```ts
-import { Injectable, CanActivate, ExecutionContext } from 'http-typedi';
+import { Injectable, CanActivate, ExecutionContext } from 'http-typedi'
 
 
 function validateRequest<T>(req: RequestConfig<T>): boolean | Promise<boolean> {
@@ -19,8 +19,8 @@ export class AuthGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    return validateRequest(request);
+    const request = context.switchToHttp().getRequest()
+    return validateRequest(request)
   }
 }
 ```

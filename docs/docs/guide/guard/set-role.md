@@ -23,9 +23,9 @@ async create(@Body() createCatDto: CreateCatDto) {
 > roles.decorator.ts
 
 ```ts
-import { SetMetadata } from 'http-typedi';
+import { SetMetadata } from 'http-typedi'
 
-export const Roles = (...roles: string[]) => SetMetadata('roles', roles);
+export const Roles = (...roles: string[]) => SetMetadata('roles', roles)
 
 ```
 

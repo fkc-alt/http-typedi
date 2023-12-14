@@ -34,7 +34,7 @@ TypeScript 中使用装饰器需要开启 experimentalDecorators 和 emitDecorat
     "target": "esnext", // [!code focus:3] // [!code ++:3]
     "module": "esnext", // [!code focus:3] // [!code ++:3]
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": true
   }
 }
 ```
@@ -80,13 +80,13 @@ $ npm install ts-loader babel-loader @babel/preset-env @babel/plugin-proposal-de
 
 
 ```javascript
-const path = require('path');
+const path = require('path')
 
 module.exports = {
   entry: './src/index.tsx',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist')
   },
   module: { // [!code focus:17] // [!code ++:17]
     rules: [
@@ -97,19 +97,19 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              plugins: [['@babel/plugin-proposal-decorators', { "legacy": true }]],
-            },
+              plugins: [['@babel/plugin-proposal-decorators', { "legacy": true }]]
+            }
           },
-          'ts-loader',
-        ],
-      },
-    ],
+          'ts-loader'
+        ]
+      }
+    ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
-  },
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
+  }
   ...
-};
+}
 ```
 那么现在就可以运行起来您的应用程序啦~
 
