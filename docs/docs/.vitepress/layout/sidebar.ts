@@ -230,6 +230,10 @@ export const Sidebar: DefaultTheme.Sidebar = {
           link: '/guide/catch/'
         },
         {
+          text: '内置-http-异常',
+          link: '/guide/exception/'
+        },
+        {
           text: 'DTO',
           collapsed: true,
           items: [

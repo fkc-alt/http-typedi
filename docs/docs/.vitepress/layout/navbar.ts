@@ -94,6 +94,11 @@ export const Navbar: DefaultTheme.NavItem[] = [
         link: '/guide/catch/'
       },
       {
+        text: '内置-http-异常',
+        activeMatch: '^/guide/exception',
+        link: '/guide/exception/'
+      },
+      {
         text: 'DTO',
         activeMatch: '^/guide/support',
         link: '/guide/support/what-is-dto'
