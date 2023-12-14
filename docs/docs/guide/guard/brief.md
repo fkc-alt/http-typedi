@@ -5,20 +5,20 @@
 > roles.guard.ts
 
 ```ts
-import { Injectable, CanActivate, ExecutionContext, Reflector } from 'http-typedi';
+import { Injectable, CanActivate, ExecutionContext, Reflector } from 'http-typedi'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const roles = this.reflector.get<string[]>('roles', context.getClass(), context.getHandler());
+    const roles = this.reflector.get<string[]>('roles', context.getClass(), context.getHandler())
     if (!roles) {
-      return true;
+      return true
     }
-    const request = context.switchToHttp().getRequest();
-    const user = request.user;
-    return matchRoles(roles, user.roles);
+    const request = context.switchToHttp().getRequest()
+    const user = request.user
+    return matchRoles(roles, user.roles)
   }
 }
 
@@ -50,6 +50,6 @@ export class RolesGuard implements CanActivate {
 
 
 ```ts
-throw new UnauthorizedException();
+throw new UnauthorizedException()
 
 ```

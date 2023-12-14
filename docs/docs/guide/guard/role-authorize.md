@@ -5,14 +5,14 @@
 > roles.guard.ts
 
 ```ts
-import { Injectable, CanActivate, ExecutionContext } from 'http-typedi';
+import { Injectable, CanActivate, ExecutionContext } from 'http-typedi'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> {
-    return true;
+    return true
   }
 }
 
