@@ -19,7 +19,7 @@ throw new BadRequestException('Something bad happened', { cause: new Error(), de
 
 使用上面的内容，这就是响应的样子：
 
-```ts
+```json
 {
   "message": "Something bad happened",
   "error": "Some error description",
