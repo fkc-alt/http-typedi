@@ -1,22 +1,22 @@
 # http-typedi
 
 <div class='package-flex' style='margin-bottom: 20px'>
-  <a href='https://www.npmjs.com/package/http-typedi' target='_blank'>
+  <a href='https://www.npmjs.com/package/http-typedi' style="text-decoration: none" target='_blank'>
     <img src="https://img.shields.io/bundlephobia/minzip/http-typedi/latest" alt="Size" />
   </a>
-  <a href="https://www.npmjs.com/package/http-typedi">
+  <a href="https://www.npmjs.com/package/http-typedi" style="text-decoration: none">
     <img src="https://img.shields.io/npm/v/http-typedi" alt="Version" />
   </a>
-  <a href='https://www.npmjs.com/package/http-typedi'>
+  <a href='https://www.npmjs.com/package/http-typedi' style="text-decoration: none">
     <img src='https://img.shields.io/github/languages/top/fkc-alt/http-typedi' alt='Languages' />
   </a>
-  <a href='https://www.npmjs.com/package/http-typedi' target='_blank'>
+  <a href='https://www.npmjs.com/package/http-typedi' style="text-decoration: none" target='_blank'>
     <img src='https://img.shields.io/npm/l/http-typedi' alt='License' />
   </a>
-  <a href='https://github.com/fkc-alt/http-typedi' target='_blank'>
+  <a href='https://github.com/fkc-alt/http-typedi' style="text-decoration: none" target='_blank'>
     <img src='https://img.shields.io/github/stars/fkc-alt' alt='Star' />
   </a>
-  <a href='https://www.npmjs.com/package/http-typedi' target='_blank'>
+  <a href='https://www.npmjs.com/package/http-typedi' style="text-decoration: none" target='_blank'>
     <img src='https://img.shields.io/npm/dm/http-typedi' alt='Download' />
   </a>
 </div>
@@ -64,6 +64,7 @@
   - [UseInterceptorsReq](https://fkc-alt.github.io/http-typedi/guide/interceptor/use-interceptors-req)
   - [UseInterceptorsRes](https://fkc-alt.github.io/http-typedi/guide/interceptor/use-interceptors-res)
 * [Catch](https://fkc-alt.github.io/http-typedi/guide/catch)
+- [Exception](https://fkc-alt.github.io/http-typedi/guide/exception)
 + [DTO](https://fkc-alt.github.io/http-typedi/guide/support/what-is-dto)
   + [What-is-DTO](https://fkc-alt.github.io/http-typedi/guide/support/what-is-dto)
   + [DTO](https://fkc-alt.github.io/http-typedi/guide/support/dto)
