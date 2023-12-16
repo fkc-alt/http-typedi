@@ -6,7 +6,7 @@ import { ExecutionContext } from './create-route-param-decorator.interface'
  * allowed to proceed.  Return can be either synchronous (`boolean`)
  * or asynchronous (`Promise` or `Observable`).
  *
- * @see [Guards](https://docs.nestjs.com/guards)
+ * @see [Guards](https://fkc-alt.github.io/http-typedi/guide/guard/)
  *
  * @publicApi
  */
