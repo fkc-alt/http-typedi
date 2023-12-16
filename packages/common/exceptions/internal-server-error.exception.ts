@@ -4,7 +4,7 @@ import { HttpException, HttpExceptionOptions } from './http.exception'
 /**
  * Defines an HTTP exception for *Internal Server Error* type errors.
  *
- * @see [Built-in HTTP exceptions](https://docs.nestjs.com/exception-filters#built-in-http-exceptions)
+ * @see [Built-in HTTP exceptions](https://fkc-alt.github.io/http-typedi/guide/exception/)
  *
  * @publicApi
  */

@@ -33,12 +33,6 @@ export const GenerateTags = ({ icon, title }: Props): HtmlTagDescriptor[] => [
             }
           },
           {
-            tag: 'script',
-            attrs: {
-              src: 'https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js'
-            }
-          },
-          {
             tag: 'title',
             children: title
           }
