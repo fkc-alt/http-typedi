@@ -16,6 +16,7 @@ export class Reflector {
       func?.name?.replace(/^bound /, '')
     ].filter(Boolean)
     _args.length === 2 && (_args[1] = _args[1].constructor)
-    return Reflect.getMetadata.apply(null, _args)
+    // eslint-disable-next-line prefer-spread
+    return Reflect.getMetadata.apply(Reflect, _args)
   }
 }
