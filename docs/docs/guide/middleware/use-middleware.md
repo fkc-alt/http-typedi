@@ -1,6 +1,24 @@
 # useMiddleware
 
+您可以在函数中或在具有 **`@Injectable()`** 装饰器的类中实现自定义 **`Http-Typedi`**中间件。 这个类应该实现 **`Middleware`** 接口, 而函数没有任何特殊的要求。 让我们首先使用类方法实现一个简单的中间件功能
+
+> logger.middleware.ts
+
+```ts
+import { Injectable, Middleware, NextFunction, MiddlewareResponseContext } from 'http-typedi';
+
+@Injectable()
+export class LoggerMiddleware implements Middleware {
+  use(req: RequestConfig, res: MiddlewareResponseContext, next: NextFunction) {
+    console.log('Request...');
+    next();
+  }
+}
+
+```
+
 `@Module()` 装饰器中没有中间件的位置。 相反，我们使用模块类的 `configure()` 方法设置它们。 包含中间件的模块必须实现 `HttpTypeDIModule` 接口。 让我们在 `AppModule` 级别设置 `LoggerMiddleware`。
+
 
 > app.module.ts
 
