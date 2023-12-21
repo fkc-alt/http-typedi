@@ -1,3 +1,4 @@
+/* eslint-disable prefer-spread */
 /* eslint-disable @typescript-eslint/ban-types */
 import { MetadataKey } from '../../enums'
 
@@ -25,9 +26,9 @@ export const Header = (
       propertyKey
     ].filter(Boolean)
     const headers: Record<string, any> =
-      Reflect.getMetadata.apply(null, metadataArgs) ?? {}
+      Reflect.getMetadata.apply(Reflect, metadataArgs) ?? {}
     Object.assign(headers, { [name]: value })
     metadataArgs.splice(1, 0, headers)
-    Reflect.defineMetadata.apply(null, metadataArgs)
+    Reflect.defineMetadata.apply(Reflect, metadataArgs)
   }
 }
