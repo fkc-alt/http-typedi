@@ -6,5 +6,6 @@ export const getVersion = (
   propertyKey?: string | symbol
 ): string => {
   const args: any = [MetadataKey.VERSION, target, propertyKey].filter(Boolean)
-  return Reflect.getMetadata.apply(null, args) ?? ''
+  // eslint-disable-next-line prefer-spread
+  return Reflect.getMetadata.apply(Reflect, args) ?? ''
 }
