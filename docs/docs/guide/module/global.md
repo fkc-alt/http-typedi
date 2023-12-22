@@ -3,7 +3,7 @@
 如果你不得不在任何地方导入相同的模块，那可能很烦人。在 [Angular](https://angular.io/) 中，提供者是在全局范围内注册的。一旦定义，他们到处可用。另一方面，http-typedi 将提供者封装在模块范围内。您无法在其他地方使用模块的提供者而不导入他们。但是有时候，你可能只想提供一组随时可用的东西 - 例如：helper，http请求类等等。这就是为什么你能够使模块成为全局模块。
 
 ```ts{5}
-import { Module, Global } from '@nestjs/common';
+import { Module, Global } from 'http-typedi';
 import { DemoController } from './demo.controller';
 import { DemoService } from './demo.service';
 

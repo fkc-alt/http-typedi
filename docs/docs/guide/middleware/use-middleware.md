@@ -1,6 +1,6 @@
 # useMiddleware
 
-您可以在函数中或在具有 **`@Injectable()`** 装饰器的类中实现自定义 **`Http-Typedi`**中间件。 这个类应该实现 **`Middleware`** 接口, 而函数没有任何特殊的要求。 让我们首先使用类方法实现一个简单的中间件功能
+您可以在函数中或在具有 **`@Injectable()`** 装饰器的类中实现自定义 **`Http-Typedi`** 中间件。 这个类应该实现 **`Middleware`** 接口, 而函数没有任何特殊的要求。 让我们首先使用类方法实现一个简单的中间件功能
 
 > logger.middleware.ts
 
