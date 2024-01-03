@@ -16,6 +16,7 @@ import { Auth } from './decorators/auth.decorator'
 import { RoleGuard } from './guards/role.guard'
 
 @Controller(Route.USER)
+@SetMetadata('roles', ['UserController'])
 export default class UserController {
   constructor(
     private readonly requestService: RequestService,
