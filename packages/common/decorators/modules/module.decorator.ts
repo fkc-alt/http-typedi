@@ -8,7 +8,7 @@ type ModuleMetadataTypeKeys = keyof ModuleMetadataType
  * @auther kaichao.feng
  * @description 模块管理函数
  */
-export const Module = (metadata: ModuleMetadataType): ClassDecorator => {
+export const Module = (metadata: ModuleMetadataType = {}): ClassDecorator => {
   //   const propsKeys = Object.keys(metadata)
   return (target: any) => {
     for (const property in metadata) {

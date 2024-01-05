@@ -30,6 +30,7 @@ export * from './interfaces/middleware'
 export * from './interfaces'
 import type { ResponseConfig } from './providers'
 export * from './decorators'
+export * from './schedule'
 export {
   MetadataKey,
   HttpStatus,
