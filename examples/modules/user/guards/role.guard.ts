@@ -5,9 +5,12 @@ import {
   ExecutionContext,
   RequestConfig,
   RequestMethod,
-  Reflector
+  Reflector,
+  MetadataKey
 } from '@/index'
 import { Roles } from '~@/enum'
+import ArticleController from '~@/modules/article/article.controller'
+import UserController from '../user.controller'
 
 function validateRequest<T>(req: RequestConfig<T>): boolean | Promise<boolean> {
   // custom validation
@@ -17,7 +20,7 @@ function validateRequest<T>(req: RequestConfig<T>): boolean | Promise<boolean> {
 
 @Injectable()
 export class RoleGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) {}
+  constructor(private readonly reflector: Reflector = new Reflector()) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = await context
       .switchToHttp()
@@ -29,6 +32,13 @@ export class RoleGuard implements CanActivate {
         context.getHandler()
       ) || []
     const validateSync = roles.some(role => Roles.ADMIN === role)
+    console.log(
+      this.reflector.getAll(MetadataKey.INJECTABLE_WATERMARK, [
+        ArticleController,
+        UserController
+      ]),
+      'test getAll'
+    )
     console.log(roles, validateSync, request, 'RoleGuard', this)
     // return validateRequest(request)
     return validateSync

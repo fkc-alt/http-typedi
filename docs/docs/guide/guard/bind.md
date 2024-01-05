@@ -14,12 +14,12 @@ export class CatsController {}
 **`UseGuards`** 需要从 **`http-typedi`** 包导入。
 :::
 
-上例，我们已经传递了 **`RolesGuard`** 类型而不是实例, 让框架进行实例化，并启用了依赖注入。与管道和异常过滤器一样，我们也可以传递一个实例:
+上例，我们已经传递了 **`RolesGuard`** 类型而不是实例, 让框架进行实例化，并启用了依赖注入。与管道和异常过滤器一样，我们也可以传递一个实例(ps: **`构造函数必须传入Reflector的实例`**):
 
 
 ```ts
 @Controller('cats')
-@UseGuards(new RolesGuard())
+@UseGuards(new RolesGuard(new Reflector()))
 export class CatsController {}
 ```
 
