@@ -20,7 +20,7 @@ function validateRequest<T>(req: RequestConfig<T>): boolean | Promise<boolean> {
 
 @Injectable()
 export class RoleGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) {}
+  constructor(private readonly reflector: Reflector = new Reflector()) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = await context
       .switchToHttp()

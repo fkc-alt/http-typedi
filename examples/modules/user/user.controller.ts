@@ -35,7 +35,7 @@ export default class UserController {
     )
   }
 
-  @UseGuards(RoleGuard)
+  @UseGuards(new RoleGuard())
   @SetMetadata('roles', ['admin', 'editor'])
   @GetMapping(UserRouteChildren.INFO)
   public async UserInfo<
