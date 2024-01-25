@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { HttpFactory, Logger, ResponseConfig } from '@/index'
+import { HttpFactory, Logger, ResponseConfig, UtilsService } from '@/index'
 import AppModule from './app.module'
 import { HTTPClient2 } from './test/app.module'
 import './style.css'
@@ -105,6 +105,13 @@ console.log(HTTPClient)
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
-   <h1>${import.meta.env.VITE_APP_PROJECT_TITLE}</h1>
+   <h1 id='d1'>${import.meta.env.VITE_APP_PROJECT_TITLE}</h1>
   </div>
 `
+document.querySelector<HTMLDivElement>('h1')!.onclick = function () {
+  console.log('onclick')
+  new UtilsService().DOMPrint({
+    el: 'app',
+    noPrintSelector: '#d1'
+  })
+}
