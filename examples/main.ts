@@ -112,7 +112,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 document.querySelector<HTMLDivElement>('h1')!.onclick = function () {
   console.log('onclick')
   UtilsService.jsonToExcel(
-    'test',
+    'test.csv',
     [{ name: '冯凯超', age: 23 }],
     ['name', 'age']
   )
@@ -124,10 +124,10 @@ document.querySelector<HTMLDivElement>('input')!.onchange = async function (
   e: any
 ) {
   console.log('input', e)
-  const list = await UtilsService.excelToJson(e.target.files[0], [
-    'name',
-    'age'
-  ])
+  const list = await UtilsService.excelToJson<{ name: string; age: string }>(
+    e.target.files[0],
+    ['name', 'age']
+  )
   console.log(list, 'excelToJson')
   // new UtilsService().DOMPrint({
   //   el: 'app'

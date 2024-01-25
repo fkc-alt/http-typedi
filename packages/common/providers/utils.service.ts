@@ -101,37 +101,48 @@ export class UtilsService {
     const book = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(book, sheet, fileName)
 
-    XLSX.writeFile(book, `${fileName}.xlsx`)
+    XLSX.writeFile(book, `${fileName}`)
   }
 
   public jsonToExcel = UtilsService.jsonToExcel
 
+  /**
+   *
+   * @static
+   * @template T
+   * @param {File} data
+   * @param {string[]} keys
+   * @return {*}  {Promise<T[]>}
+   * @memberof UtilsService
+   */
   static excelToJson<T>(data: File, keys: string[]): Promise<T[]> {
     return new Promise(resolve => {
       const render = new FileReader()
       render.onload = e => {
-        const workbook = XLSX.read(e.target?.result, {
+        const wb = XLSX.read(e.target?.result, {
           // 以字符编码的方式解析
           type: 'binary'
         })
         // 生成json表格内容并进行处理
         try {
-          const list: T[] = XLSX.utils.sheet_to_json(
-            workbook.Sheets[workbook.SheetNames[0]]
+          const wbData: T[] = XLSX.utils.sheet_to_json(
+            wb.Sheets[wb.SheetNames[0]]
           )
           resolve(
-            <any>list.map((item: any) =>
+            <any>wbData.map((item: any) =>
               keys.reduce((pre: Record<string, any>, cur, index) => {
                 return { ...pre, [cur]: item[Object.keys(item)[index]] || '' }
               }, {})
             )
           )
         } catch (error) {
-          console.log(error)
+          console.log(`excel to json error: ${error}`)
           resolve([])
         }
       }
-      render.readAsBinaryString(data)
+      render.readAsArrayBuffer(data)
     })
   }
+
+  public excelToJson = UtilsService.excelToJson
 }
