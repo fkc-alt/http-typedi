@@ -110,8 +110,12 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 document.querySelector<HTMLDivElement>('h1')!.onclick = function () {
   console.log('onclick')
-  new UtilsService().DOMPrint({
-    el: 'app',
-    noPrintSelector: '#d1'
-  })
+  UtilsService.jsonToExcel(
+    'test',
+    [{ name: '冯凯超', age: 23 }],
+    ['name', 'age']
+  )
+  // new UtilsService().DOMPrint({
+  //   el: 'app'
+  // })
 }

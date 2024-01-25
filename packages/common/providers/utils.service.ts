@@ -1,3 +1,4 @@
+import * as XLSX from 'xlsx'
 import { Injectable } from '../core'
 
 interface PrintOpts {
@@ -10,6 +11,11 @@ interface PrintOpts {
   hidden?: boolean
 }
 
+/**
+ *
+ * @export
+ * @class UtilsService
+ */
 @Injectable()
 export class UtilsService {
   static printDefaultOpts = {
@@ -24,11 +30,12 @@ export class UtilsService {
 
   /**
    *
+   * @static
    * @param {PrintOpts} options
    * @memberof UtilsService
    * @description 打印指定DOM
    */
-  public DOMPrint(options: PrintOpts): void {
+  static DOMPrint(options: PrintOpts): void {
     options = Object.assign(UtilsService.printDefaultOpts, options)
     if (!options.el) {
       console.warn('Please pass in the DOM ID')
@@ -78,4 +85,24 @@ export class UtilsService {
       document.body.removeChild(iframe)
     }, 0)
   }
+
+  public DOMPrint = UtilsService.DOMPrint
+
+  /**
+   *
+   * @static
+   * @param {string} fileName
+   * @param {unknown[]} data
+   * @param {string[]} [header]
+   * @memberof UtilsService
+   */
+  static jsonToExcel(fileName: string, data: unknown[], header?: string[]) {
+    const sheet = XLSX.utils.json_to_sheet(data, { header })
+    const book = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(book, sheet, fileName)
+
+    XLSX.writeFile(book, `${fileName}.xlsx`)
+  }
+
+  public jsonToExcel = UtilsService.jsonToExcel
 }
