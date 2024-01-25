@@ -133,3 +133,4 @@ document.querySelector<HTMLDivElement>('input')!.onchange = async function (
   //   el: 'app'
   // })
 }
+console.log(UtilsService.getSearchParams(), 'getSearchParams')

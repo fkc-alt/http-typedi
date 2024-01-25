@@ -95,8 +95,13 @@ export class UtilsService {
    * @param {unknown[]} data
    * @param {string[]} [header]
    * @memberof UtilsService
+   * @description JSON转为Excel
    */
-  static jsonToExcel(fileName: string, data: unknown[], header?: string[]) {
+  static jsonToExcel(
+    fileName: string,
+    data: unknown[],
+    header?: string[]
+  ): void {
     const sheet = XLSX.utils.json_to_sheet(data, { header })
     const book = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(book, sheet, fileName)
@@ -114,6 +119,7 @@ export class UtilsService {
    * @param {string[]} keys
    * @return {*}  {Promise<T[]>}
    * @memberof UtilsService
+   * @description Excel转为JSON
    */
   static excelToJson<T>(data: File, keys: string[]): Promise<T[]> {
     return new Promise(resolve => {
@@ -145,4 +151,20 @@ export class UtilsService {
   }
 
   public excelToJson = UtilsService.excelToJson
+
+  /**
+   *
+   * @static
+   * @memberof UtilsService
+   */
+  static getSearchParams = <T = Record<string, any>>(): T => {
+    const searchPar = new URLSearchParams(window.location.search)
+    const paramsObj = <any>{}
+    for (const [key, value] of searchPar.entries()) {
+      paramsObj[key] = value
+    }
+    return <T>paramsObj
+  }
+
+  public getSearchParams = UtilsService.getSearchParams
 }
