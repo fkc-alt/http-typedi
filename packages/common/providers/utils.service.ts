@@ -105,4 +105,33 @@ export class UtilsService {
   }
 
   public jsonToExcel = UtilsService.jsonToExcel
+
+  static excelToJson<T>(data: File, keys: string[]): Promise<T[]> {
+    return new Promise(resolve => {
+      const render = new FileReader()
+      render.onload = e => {
+        const workbook = XLSX.read(e.target?.result, {
+          // 以字符编码的方式解析
+          type: 'binary'
+        })
+        // 生成json表格内容并进行处理
+        try {
+          const list: T[] = XLSX.utils.sheet_to_json(
+            workbook.Sheets[workbook.SheetNames[0]]
+          )
+          resolve(
+            <any>list.map((item: any) =>
+              keys.reduce((pre: Record<string, any>, cur, index) => {
+                return { ...pre, [cur]: item[Object.keys(item)[index]] || '' }
+              }, {})
+            )
+          )
+        } catch (error) {
+          console.log(error)
+          resolve([])
+        }
+      }
+      render.readAsBinaryString(data)
+    })
+  }
 }

@@ -106,6 +106,7 @@ console.log(HTTPClient)
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
    <h1 id='d1'>${import.meta.env.VITE_APP_PROJECT_TITLE}</h1>
+   <input type='file' />
   </div>
 `
 document.querySelector<HTMLDivElement>('h1')!.onclick = function () {
@@ -115,6 +116,19 @@ document.querySelector<HTMLDivElement>('h1')!.onclick = function () {
     [{ name: '冯凯超', age: 23 }],
     ['name', 'age']
   )
+  // new UtilsService().DOMPrint({
+  //   el: 'app'
+  // })
+}
+document.querySelector<HTMLDivElement>('input')!.onchange = async function (
+  e: any
+) {
+  console.log('input', e)
+  const list = await UtilsService.excelToJson(e.target.files[0], [
+    'name',
+    'age'
+  ])
+  console.log(list, 'excelToJson')
   // new UtilsService().DOMPrint({
   //   el: 'app'
   // })
