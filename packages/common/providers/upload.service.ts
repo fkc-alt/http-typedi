@@ -3,10 +3,23 @@ import { RequestService } from './request.service'
 import { RequestConfig } from './interfaces/request.service.interface'
 import { ContentType } from '../enums'
 
+/**
+ *
+ * @export
+ * @class UploadService
+ */
 @Injectable()
 export class UploadService {
   constructor(private readonly requestService: RequestService) {}
 
+  /**
+   *
+   * @template T
+   * @template U
+   * @param {RequestConfig<T>} configure
+   * @return {*}  {Promise<U>}
+   * @memberof UploadService
+   */
   public async uploadFile<T extends { file: any }, U = unknown>(
     configure: RequestConfig<T>
   ): Promise<U> {
@@ -32,6 +45,14 @@ export class UploadService {
       : await this.requestService.request<T, U>(_config)
   }
 
+  /**
+   *
+   * @template T
+   * @template U
+   * @param {RequestConfig<T>} configure
+   * @return {*}  {Promise<U>}
+   * @memberof UploadService
+   */
   public async uploadBase64<T extends { file: any }, U = unknown>(
     configure: RequestConfig<T>
   ): Promise<U> {
@@ -45,7 +66,7 @@ export class UploadService {
         const render = new FileReader()
         render.onload = (e: ProgressEvent<FileReader>) => {
           const base64 = (<string>e.target?.result)?.split(',').pop() ?? ''
-          const ext = `.${<string>(<any>file).name.split('.').pop()}`
+          const ext = `.${file.name.split('.').pop()}`
           const _config = {
             ...requestConfig,
             data: <T>(<unknown>{ base64, ext, ...(params || {}) })
@@ -56,7 +77,7 @@ export class UploadService {
               : this.requestService.request<T, U>(_config)
           )
         }
-        render.readAsDataURL(<Blob>(<any>file).raw)
+        render.readAsDataURL(<Blob>file.raw)
       } catch (error) {
         reject(error)
       } finally {

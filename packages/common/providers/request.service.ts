@@ -3,6 +3,11 @@ import { ContentType, HttpStatus, RequestMethod } from '../enums'
 import { RequestConfig } from './interfaces/request.service.interface'
 import { ObjectToURLParameter, GR } from './utils'
 
+/**
+ *
+ * @export
+ * @class RequestService
+ */
 @Injectable()
 export class RequestService {
   private static readonly timeoutResponse = {
@@ -11,6 +16,15 @@ export class RequestService {
     message: 'ECONNABORTED'
   }
 
+  /**
+   *
+   * @private
+   * @template P
+   * @template R
+   * @param {RequestConfig<P>} rc
+   * @return {*}  {Promise<R>}
+   * @memberof RequestService
+   */
   private dispatchRequest<P, R>(rc: RequestConfig<P>): Promise<R> {
     const XHR = new XMLHttpRequest()
 
