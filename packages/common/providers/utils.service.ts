@@ -13,8 +13,9 @@ interface PrintOpts {
 
 /**
  *
- * @export
+ * @export {DOMPrint jsonToExcel excelToJson getSearchParams omit pick}
  * @class UtilsService
+ * @description 这是帮助类，包含很多常用功能
  */
 @Injectable()
 export class UtilsService {
@@ -167,4 +168,60 @@ export class UtilsService {
   }
 
   public getSearchParams = UtilsService.getSearchParams
+
+  private static omitOrPick(
+    object: Record<string | symbol | any, any>,
+    props: string[] = [],
+    type: 'omit' | 'pick'
+  ): string[] {
+    return Object.keys(object).filter(key =>
+      type === 'omit' ? !props.includes(key) : props.includes(key)
+    )
+  }
+
+  /**
+   *
+   * @static
+   * @template T
+   * @param {(Record<string | symbol | any, any>)} object
+   * @param {string[]} [props=[]]
+   * @return {*}  {T}
+   * @memberof UtilsService
+   */
+  static omit<T>(
+    object: Record<string | symbol | any, any>,
+    props: string[] = []
+  ): T {
+    return <T>(
+      this.omitOrPick(object, props, 'omit').reduce(
+        (_, key) => ({ ..._, [key]: object[key] }),
+        {}
+      )
+    )
+  }
+
+  public omit = UtilsService.omit
+
+  /**
+   *
+   * @static
+   * @template T
+   * @param {(Record<string | symbol | any, any>)} object
+   * @param {string[]} [props=[]]
+   * @return {*}  {T}
+   * @memberof UtilsService
+   */
+  static pick<T>(
+    object: Record<string | symbol | any, any>,
+    props: string[] = []
+  ): T {
+    return <T>(
+      this.omitOrPick(object, props, 'pick').reduce(
+        (_, key) => ({ ..._, [key]: object[key] }),
+        {}
+      )
+    )
+  }
+
+  public pick = UtilsService.pick
 }

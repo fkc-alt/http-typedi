@@ -133,4 +133,8 @@ document.querySelector<HTMLDivElement>('input')!.onchange = async function (
   //   el: 'app'
   // })
 }
-console.log(UtilsService.getSearchParams(), 'getSearchParams')
+console.log(
+  UtilsService.getSearchParams(),
+  'getSearchParams',
+  UtilsService.omit({ name: '123', age: 22 }, ['name'])
+)
