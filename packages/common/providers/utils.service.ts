@@ -13,9 +13,9 @@ interface PrintOpts {
 
 /**
  *
- * @export {DOMPrint jsonToExcel excelToJson getSearchParams omit pick}
+ * @export {sliceByNum DOMPrint jsonToExcel excelToJson getSearchParams omit pick}
  * @class UtilsService
- * @description 这是帮助类，包含很多常用功能
+ * @description sliceByNum | DOMPrint | jsonToExcel | excelToJson | getSearchParams | omit | pick
  */
 @Injectable()
 export class UtilsService {
@@ -28,6 +28,26 @@ export class UtilsService {
     prepend: '',
     hidden: false
   }
+
+  /**
+   *
+   * @static
+   * @param {any[]} arr
+   * @param {number} num
+   * @return {*}
+   * @memberof UtilsService
+   */
+  static sliceByNum(arr: any[], num: number) {
+    if (!Array.isArray(arr)) {
+      console.warn('It should be an array')
+      return []
+    }
+    return [...new Array(Math.ceil(arr.length / num))].map((_, index) =>
+      arr.slice(index * num, index * num + num)
+    )
+  }
+
+  public sliceByNum = UtilsService.sliceByNum
 
   /**
    *
@@ -169,14 +189,16 @@ export class UtilsService {
 
   public getSearchParams = UtilsService.getSearchParams
 
-  private static omitOrPick(
+  private static omitOrPick<T>(
     object: Record<string | symbol | any, any>,
     props: string[] = [],
     type: 'omit' | 'pick'
-  ): string[] {
-    return Object.keys(object).filter(key =>
-      type === 'omit' ? !props.includes(key) : props.includes(key)
-    )
+  ): T {
+    return <T>Object.keys(object)
+      .filter(key =>
+        type === 'omit' ? !props.includes(key) : props.includes(key)
+      )
+      .reduce((_, key) => ({ ..._, [key]: object[key] }), {})
   }
 
   /**
@@ -192,12 +214,7 @@ export class UtilsService {
     object: Record<string | symbol | any, any>,
     props: string[] = []
   ): T {
-    return <T>(
-      this.omitOrPick(object, props, 'omit').reduce(
-        (_, key) => ({ ..._, [key]: object[key] }),
-        {}
-      )
-    )
+    return this.omitOrPick<T>(object, props, 'omit')
   }
 
   public omit = UtilsService.omit
@@ -215,12 +232,7 @@ export class UtilsService {
     object: Record<string | symbol | any, any>,
     props: string[] = []
   ): T {
-    return <T>(
-      this.omitOrPick(object, props, 'pick').reduce(
-        (_, key) => ({ ..._, [key]: object[key] }),
-        {}
-      )
-    )
+    return this.omitOrPick<T>(object, props, 'pick')
   }
 
   public pick = UtilsService.pick

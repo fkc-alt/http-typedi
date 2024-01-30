@@ -138,3 +138,4 @@ console.log(
   'getSearchParams',
   UtilsService.omit({ name: '123', age: 22 }, ['name'])
 )
+console.log('sliceByNum', UtilsService.sliceByNum([1, 2, 3, 4, 5, 6, 7, 8], 4))
