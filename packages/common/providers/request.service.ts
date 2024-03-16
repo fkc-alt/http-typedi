@@ -29,9 +29,9 @@ export class RequestService {
     const XHR = new XMLHttpRequest()
 
     return new Promise<R>((r, j) => {
-      const isGet = [RequestMethod.GET, RequestMethod.get].includes(rc.method!)
+      const bool = [RequestMethod.GET, RequestMethod.get].includes(rc.method!)
       const URLParameter = ObjectToURLParameter(rc.params!)
-      const URL = isGet
+      const URL = bool
         ? `${rc.url}${URLParameter ? `?${URLParameter}` : ''}}`
         : rc.url
 
