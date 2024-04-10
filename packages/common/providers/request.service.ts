@@ -79,7 +79,9 @@ export class RequestService {
         case RequestMethod.post:
         case RequestMethod.PUT:
         case RequestMethod.put:
-          XHR.send(JSON.stringify(rc.data))
+          XHR.send(
+            rc.data instanceof FormData ? rc.data : JSON.stringify(rc.data)
+          )
           break
         default:
           XHR.send()

@@ -1,48 +1,16 @@
+/* eslint-disable no-async-promise-executor */
 /* eslint-disable @typescript-eslint/ban-types */
 import { Injectable } from '../core'
 import { ContentType } from '../enums'
 import { RequestService } from './request.service'
 import { RequestConfig } from './interfaces/request.service.interface'
 import { hexStringToMD5, uint8ArrayToHexString } from './utils'
-
-interface ChunkUploadOptions {
-  /**
-   * @description 需要上传的文件
-   */
-  chooseFiles: File[]
-  /**
-   * @description 每个分片的大小 单位为MB
-   */
-  chunkSizeLimit: number
-  /**
-   * @description 当前文件分片上传完毕回调
-   */
-  chunkItemComplate?: (...args: any[]) => void
-}
-
-interface CustomFile {
-  mb: number
-  fileName: string
-  filetype: string
-  chunk: number
-  uint8Array: Uint8Array
-}
-
-interface TaskChunksItem extends CreateChunksOptions {
-  progress: number
-  md5: string
-  chunkItem: File
-}
-
-interface CreateChunksOptions
-  extends Pick<ChunkUploadOptions, 'chunkSizeLimit'> {
-  fileItem: CustomFile
-  fileIndex: number
-}
-
-interface ChunkItem extends CustomFile {
-  taskChunks: Promise<TaskChunksItem>[]
-}
+import {
+  ChunkItem,
+  ChunkUploadOptions,
+  CreateChunksOptions,
+  TaskChunksItem
+} from './interfaces/upload.service.interface'
 
 /**
  *
@@ -71,7 +39,7 @@ export class UploadService {
       ...requestConfig
     } = configure
     const fileLoder = new FormData()
-    Object.assign(headers, { 'Conent-Type': ContentType.FORM_DATA })
+    Object.assign(headers, { 'Content-Type': ContentType.FORM_DATA })
     fileLoder.append('file', <Blob>file?.raw)
     const _config = {
       ...requestConfig,
@@ -146,7 +114,7 @@ export class UploadService {
             filetype: file.type,
             chunk: Math.ceil(mb / chunkSizeLimit),
             uint8Array: new Uint8Array(result.target!.result as ArrayBuffer),
-            taskChunks: <Promise<TaskChunksItem>[]>[]
+            taskChunks: <Function[]>[]
           }
           fileItem.taskChunks = this.createChunks(
             {
@@ -165,14 +133,26 @@ export class UploadService {
         fileRender.readAsArrayBuffer(file)
       })
     })
-    const files = await Promise.allSettled(
+    const uploadFileTasks = await Promise.allSettled(
       fileTransformerUint8ArrayAndToChunkTransformerMD5
     )
-    console.log(files, 'tempFiles')
-    return files
+    const _uploadFileTasks = uploadFileTasks
+      .filter(task => task.status === 'fulfilled')
+      .map(task => <ChunkItem>(<any>task).value)
+    const results = await Promise.allSettled(
+      _uploadFileTasks.map(async item => {
+        const chunkResults = await Promise.allSettled(
+          item.taskChunks.map(run => run())
+        )
+        return chunkResults
+      })
+    )
+    console.log(results, '分片上传完返回的数据')
+    return results
   }
 
   private createChunks(options: CreateChunksOptions, configure: RequestConfig) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { fileItem, chunkSizeLimit, fileIndex } = options
     const taskChunks = new Array(fileItem.chunk)
       .fill(void 0)
@@ -189,23 +169,18 @@ export class UploadService {
         const file = new File([blob], fileItem.fileName, {
           type: fileItem.filetype
         })
-        return new Promise<TaskChunksItem>((resolve, reject) => {
-          try {
-            resolve(
-              this.uploadPartFile(
-                {
-                  progress: 0,
-                  md5,
-                  chunkItem: file,
-                  ...options
-                },
-                configure
-              )
-            )
-          } catch (error) {
-            reject(error)
-          }
-        })
+        return async () =>
+          await this.uploadPartFile(
+            {
+              progress: 0,
+              md5,
+              file,
+              chunkItem: chunkItem.buffer,
+              chunkIndex: chunk,
+              ...options
+            },
+            configure
+          )
       })
     return taskChunks
   }
@@ -214,17 +189,33 @@ export class UploadService {
     options: TaskChunksItem,
     configure: RequestConfig
   ): Promise<TaskChunksItem> {
-    const { headers = {}, ...config } = configure
-    const fileLoder = new FormData()
-    Object.assign(headers!, { 'Conent-Type': ContentType.FORM_DATA })
-    fileLoder.append('file', options.chunkItem)
-    fileLoder.append('md5', options.md5)
-    const _config = {
-      ...config,
-      headers,
-      data: fileLoder
-    }
-    console.log(_config, '_config')
-    return this.requestService.request(_config)
+    return new Promise(async (resolve, reject) => {
+      const { headers = {}, ...config } = configure
+      const fileLoder = new FormData()
+      Object.assign(headers!, { 'Content-Type': ContentType.FORM_DATA })
+      fileLoder.append('file', options.file)
+      fileLoder.append('md5', options.md5)
+      const _config: RequestConfig<any> = {
+        ...config,
+        headers,
+        data: fileLoder
+      }
+      try {
+        const data = await this.requestService.request<
+          RequestConfig<any>,
+          Record<string, any>
+        >(_config)
+        const progress =
+          ((options.chunkIndex + 1) / options.fileItem.chunk) * 100
+        // 每次分片上传完应该执行回调函数，并把progress暴露提示给用户上传进度
+        resolve({
+          ...options,
+          progress,
+          result: data.data
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
   }
 }

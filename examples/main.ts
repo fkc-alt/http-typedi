@@ -1,5 +1,11 @@
 import 'reflect-metadata'
-import { HttpFactory, Logger, ResponseConfig, UtilsService } from '@/index'
+import {
+  HttpFactory,
+  Logger,
+  RequestMethod,
+  ResponseConfig,
+  UtilsService
+} from '@/index'
 import AppModule from './app.module'
 import { HTTPClient2 } from './test/app.module'
 import './style.css'
@@ -129,7 +135,8 @@ document.querySelector<HTMLDivElement>('input')!.onchange = async function (
       chunkSizeLimit: 1
     },
     {
-      url: 'uploadPart/file'
+      url: '/rsapi/order/uploadFile',
+      method: RequestMethod.POST
     }
   )
   // const list = await UtilsService.excelToJson<{ name: string; age: string }>(
