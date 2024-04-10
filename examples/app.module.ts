@@ -5,7 +5,8 @@ import {
   HttpTypeDIModule,
   MiddlewareConsumer,
   RequestMethod,
-  ScheduleModule
+  ScheduleModule,
+  UploadService
 } from '@/index'
 import CommonModule from './common/common.module'
 import ArticleController from './modules/article/article.controller'
@@ -40,7 +41,8 @@ export default class AppModule implements HttpTypeDIModule {
     readonly articleController: ArticleController,
     readonly demoController: DemoController,
     readonly userController: UserController,
-    readonly orderController: OrderController
+    readonly orderController: OrderController,
+    readonly uploadService: UploadService
   ) {}
   configure(consumer: MiddlewareConsumer) {
     // console.log(consumer, 'consumer')

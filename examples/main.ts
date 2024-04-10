@@ -123,12 +123,20 @@ document.querySelector<HTMLDivElement>('h1')!.onclick = function () {
 document.querySelector<HTMLDivElement>('input')!.onchange = async function (
   e: any
 ) {
-  console.log('input', e)
-  const list = await UtilsService.excelToJson<{ name: string; age: string }>(
-    e.target.files[0],
-    ['name', 'age']
+  HTTPClient.uploadService.chunkUpload(
+    {
+      chooseFiles: e.target.files,
+      chunkSizeLimit: 1
+    },
+    {
+      url: 'uploadPart/file'
+    }
   )
-  console.log(list, 'excelToJson')
+  // const list = await UtilsService.excelToJson<{ name: string; age: string }>(
+  //   e.target.files[0],
+  //   ['name', 'age']
+  // )
+  // console.log(list, 'excelToJson')
   // new UtilsService().DOMPrint({
   //   el: 'app'
   // })
