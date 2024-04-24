@@ -147,7 +147,7 @@ document.querySelector<HTMLDivElement>('input')!.onchange = async function (
   // new UtilsService().DOMPrint({
   //   el: 'app'
   // })
-  HTTPClient.orderController.UploadFile({ file: e.target.files[0] })
+  HTTPClient.orderController.UploadFile({ file: e.target.files[0], id: 99 })
 }
 console.log(
   UtilsService.getSearchParams(),
