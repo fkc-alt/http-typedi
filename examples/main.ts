@@ -44,70 +44,70 @@ function createHTTPClient(): AppModule {
 }
 
 const HTTPClient = createHTTPClient()
-console.log(HTTPClient, HTTPClient2, '222222')
-HTTPClient.orderController.UploadFile({ file: 123, x: 1 })
-HTTPClient.userController.Login({ username: '123', password: '15732943481' })
-HTTPClient2.articleController
-  .GetArticleList({})
-  .then(res => {
-    console.log(res, 'HTTPClient2')
-  })
-  .catch(err => console.error(err, 'HTTPClient2 error'))
-const {
-  articleController: { GetTableDataList, GetArticleList, DeleteArticle }
-} = HTTPClient
-HTTPClient.userController.UserInfo({ id: 1, phone: '157' }).then(res => {
-  console.log(res, 'UserInfo')
-})
-DeleteArticle({ currentPage: 1, pageSize: 10 }).then(res => {
-  console.log(res, 'DeleteArticle')
-})
-HTTPClient.demoController
-  .GetArticleList({
-    currentPage: 1,
-    pageSize: 10,
-    channel: ['1', '2'],
-    checkDemoList: [
-      {
-        age: 1,
-        name: '11111'
-      }
-    ],
-    content: '123123',
-    param: {
-      status: 1,
-      text: '123121111111',
-      title: '11231223'
-    }
-  })
-  .then(res => {
-    console.log(res, 'resss')
-  })
-GetTableDataList({
-  currentPage: 1,
-  pageSize: 10
-}).then(res => {
-  console.log(res, 'ressss')
-})
-GetArticleList({
-  currentPage: 1,
-  pageSize: 10,
-  channel: ['1', '2'],
-  checkDemoList: [
-    {
-      age: 1,
-      name: '11111'
-    }
-  ],
-  content: '123123',
-  param: {
-    status: 1,
-    text: '123121111111',
-    title: '11231223'
-  }
-})
+// console.log(HTTPClient, HTTPClient2, '222222')
+// // HTTPClient.orderController.UploadFile({ file: 123, x: 1 })
+// HTTPClient.userController.Login({ username: '123', password: '15732943481' })
+// HTTPClient2.articleController
+//   .GetArticleList({})
+//   .then(res => {
+//     console.log(res, 'HTTPClient2')
+//   })
+//   .catch(err => console.error(err, 'HTTPClient2 error'))
+// const {
+//   articleController: { GetTableDataList, GetArticleList, DeleteArticle }
+// } = HTTPClient
+// HTTPClient.userController.UserInfo({ id: 1, phone: '157' }).then(res => {
+//   console.log(res, 'UserInfo')
+// })
+// DeleteArticle({ currentPage: 1, pageSize: 10 }).then(res => {
+//   console.log(res, 'DeleteArticle')
+// })
+// HTTPClient.demoController
+//   .GetArticleList({
+//     currentPage: 1,
+//     pageSize: 10,
+//     channel: ['1', '2'],
+//     checkDemoList: [
+//       {
+//         age: 1,
+//         name: '11111'
+//       }
+//     ],
+//     content: '123123',
+//     param: {
+//       status: 1,
+//       text: '123121111111',
+//       title: '11231223'
+//     }
+//   })
+//   .then(res => {
+//     console.log(res, 'resss')
+//   })
+// GetTableDataList({
+//   currentPage: 1,
+//   pageSize: 10
+// }).then(res => {
+//   console.log(res, 'ressss')
+// })
+// GetArticleList({
+//   currentPage: 1,
+//   pageSize: 10,
+//   channel: ['1', '2'],
+//   checkDemoList: [
+//     {
+//       age: 1,
+//       name: '11111'
+//     }
+//   ],
+//   content: '123123',
+//   param: {
+//     status: 1,
+//     text: '123121111111',
+//     title: '11231223'
+//   }
+// })
 
-console.log(HTTPClient)
+// console.log(HTTPClient)
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -147,7 +147,7 @@ document.querySelector<HTMLDivElement>('input')!.onchange = async function (
   // new UtilsService().DOMPrint({
   //   el: 'app'
   // })
-  HTTPClient.orderController.UploadFile({ file: e.target.files[0], x: 1 })
+  HTTPClient.orderController.UploadFile({ file: e.target.files[0] })
 }
 console.log(
   UtilsService.getSearchParams(),

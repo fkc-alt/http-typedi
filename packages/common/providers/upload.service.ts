@@ -30,20 +30,14 @@ export class UploadService {
    * @return {*}  {Promise<U>}
    * @memberof UploadService
    */
-  public async uploadFile<T extends { file: any }, U = unknown>(
+  public async uploadFile<T extends Record<string, any>, U = unknown>(
     configure: RequestConfig<T>
   ): Promise<U> {
-    const {
-      data: { file, ...params } = {},
-      customActions,
-      headers = {},
-      ...requestConfig
-    } = configure
+    const { data, customActions, headers = {}, ...requestConfig } = configure
     const fileLoder = new FormData()
     Object.assign(headers, { 'Content-Type': ContentType.FORM_DATA })
-    fileLoder.append('file', file)
-    for (const key in params) {
-      fileLoder.append(key, (<any>params)[key])
+    for (const key in data) {
+      fileLoder.append(key, data[key])
     }
     const _config = {
       ...requestConfig,
@@ -194,9 +188,7 @@ export class UploadService {
       const { headers = {}, ...config } = configure
       const fileLoder = new FormData()
       Object.assign(headers!, {
-        'Content-Type': `${
-          ContentType.FORM_DATA
-        }; boundary=----WebKitFormBoundary${uuidv4().replace(/-/g, '')}`
+        'Content-Type': ContentType.FORM_DATA
       })
       console.log(options.file, 'options.file')
       fileLoder.append('file', options.file)
