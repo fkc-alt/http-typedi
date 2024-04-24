@@ -1,5 +1,6 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable @typescript-eslint/ban-types */
+import { v4 as uuidv4 } from 'uuid'
 import { Injectable } from '../core'
 import { ContentType } from '../enums'
 import { RequestService } from './request.service'
@@ -192,7 +193,11 @@ export class UploadService {
     return new Promise(async (resolve, reject) => {
       const { headers = {}, ...config } = configure
       const fileLoder = new FormData()
-      Object.assign(headers!, { 'Content-Type': ContentType.FORM_DATA })
+      Object.assign(headers!, {
+        'Content-Type': `${
+          ContentType.FORM_DATA
+        }; boundary=----WebKitFormBoundary${uuidv4().replace(/-/g, '')}`
+      })
       fileLoder.append('file', options.file)
       fileLoder.append('md5', options.md5)
       const _config: RequestConfig<any> = {
