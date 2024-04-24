@@ -41,14 +41,14 @@ export class UploadService {
     } = configure
     const fileLoder = new FormData()
     Object.assign(headers, { 'Content-Type': ContentType.FORM_DATA })
-    fileLoder.append('file', <Blob>file?.raw)
+    fileLoder.append('file', file)
+    for (const key in params) {
+      fileLoder.append(key, (<any>params)[key])
+    }
     const _config = {
       ...requestConfig,
       headers,
-      data: <T>{
-        file: fileLoder.get('file'),
-        ...(params || {})
-      }
+      data: <T>(<unknown>fileLoder)
     }
     return customActions
       ? <U>_config
@@ -198,6 +198,7 @@ export class UploadService {
           ContentType.FORM_DATA
         }; boundary=----WebKitFormBoundary${uuidv4().replace(/-/g, '')}`
       })
+      console.log(options.file, 'options.file')
       fileLoder.append('file', options.file)
       fileLoder.append('md5', options.md5)
       const _config: RequestConfig<any> = {
