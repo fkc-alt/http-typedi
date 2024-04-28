@@ -34,6 +34,12 @@ export interface LoggerService {
   verbose?(message: any, ...optionalParams: any[]): void
 }
 
+/**
+ *
+ * @export
+ * @class Logger
+ * @implements {LoggerService}
+ */
 @Injectable()
 export class Logger implements LoggerService {
   private static WrapBuffer: MethodDecorator = (

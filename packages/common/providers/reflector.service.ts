@@ -3,8 +3,23 @@
 import { Injectable } from '../decorators'
 import { Type } from '../interfaces/type.interface'
 
+/**
+ *
+ * @export
+ * @class Reflector
+ */
 @Injectable()
 export class Reflector {
+  /**
+   *
+   * @template TResult
+   * @template TKey
+   * @param {TKey} metadataKey
+   * @param {(Type<any> | Function)} target
+   * @param {Function} [func]
+   * @return {*}  {TResult}
+   * @memberof Reflector
+   */
   public get<TResult = any, TKey = any>(
     metadataKey: TKey,
     target: Type<any> | Function,
@@ -21,6 +36,15 @@ export class Reflector {
     return Reflect.getMetadata.apply(Reflect, _args)
   }
 
+  /**
+   *
+   * @template TResult
+   * @template TKey
+   * @param {TKey} metadataKey
+   * @param {((Type<any> | Function)[])} targets
+   * @return {*}  {TResult}
+   * @memberof Reflector
+   */
   public getAll<TResult extends any[] = any[], TKey = any>(
     metadataKey: TKey,
     targets: (Type<any> | Function)[]

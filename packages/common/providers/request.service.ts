@@ -3,6 +3,11 @@ import { ContentType, HttpStatus, RequestMethod } from '../enums'
 import { RequestConfig } from './interfaces/request.service.interface'
 import { ObjectToURLParameter, GR } from './utils'
 
+/**
+ *
+ * @export
+ * @class RequestService
+ */
 @Injectable()
 export class RequestService {
   private static readonly timeoutResponse = {
@@ -11,13 +16,22 @@ export class RequestService {
     message: 'ECONNABORTED'
   }
 
+  /**
+   *
+   * @private
+   * @template P
+   * @template R
+   * @param {RequestConfig<P>} rc
+   * @return {*}  {Promise<R>}
+   * @memberof RequestService
+   */
   private dispatchRequest<P, R>(rc: RequestConfig<P>): Promise<R> {
     const XHR = new XMLHttpRequest()
 
     return new Promise<R>((r, j) => {
-      const isGet = [RequestMethod.GET, RequestMethod.get].includes(rc.method!)
+      const bool = [RequestMethod.GET, RequestMethod.get].includes(rc.method!)
       const URLParameter = ObjectToURLParameter(rc.params!)
-      const URL = isGet
+      const URL = bool
         ? `${rc.url}${URLParameter ? `?${URLParameter}` : ''}}`
         : rc.url
 
@@ -35,8 +49,10 @@ export class RequestService {
       for (const key in rc.headers) {
         XHR.setRequestHeader(key, rc.headers![key])
       }
-      !Object.hasOwn(rc.headers || {}, 'Content-Type') &&
-        XHR.setRequestHeader('Content-Type', ContentType.JSON)
+      if (!Object.values(rc.data!).every(value => value instanceof File)) {
+        !Object.hasOwn(rc.headers || {}, 'Content-Type') &&
+          XHR.setRequestHeader('Content-Type', ContentType.JSON)
+      }
 
       XHR.onreadystatechange = function () {
         if (XHR.readyState === XHR.DONE) {
@@ -65,7 +81,9 @@ export class RequestService {
         case RequestMethod.post:
         case RequestMethod.PUT:
         case RequestMethod.put:
-          XHR.send(JSON.stringify(rc.data))
+          XHR.send(
+            rc.data instanceof FormData ? rc.data : JSON.stringify(rc.data)
+          )
           break
         default:
           XHR.send()

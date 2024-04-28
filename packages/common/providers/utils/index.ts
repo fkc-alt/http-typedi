@@ -1,3 +1,5 @@
+import CryptoJS from 'crypto-js'
+
 export const ObjectToURLParameter = (
   object: Record<string, any> = {}
 ): string => {
@@ -35,4 +37,24 @@ export function GR(this: XMLHttpRequest) {
     data: this.response && JSON.parse(this.response)
   }
   return response
+}
+
+// 将Uint8Array转换为十六进制字符串
+export function uint8ArrayToHexString(uint8Array: Uint8Array) {
+  return Array.from(uint8Array)
+    .map(byte => byte.toString(16).padStart(2, '0'))
+    .join('')
+}
+
+// 将十六进制字符串转换为MD5
+export function hexStringToMD5(hexString: string) {
+  return CryptoJS.MD5(hexString).toString()
+}
+
+/**
+ *
+ * @deprecated
+ */
+export function generateBoundary() {
+  return `boundary=----WebKitFormBoundary${Math.random().toString(16).slice(2)}`
 }
