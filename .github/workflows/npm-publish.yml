@@ -76,7 +76,7 @@ jobs:
           registry-url: ${{ env.REGISTRY_URL }}
 
       - name: Download Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ env.DIST_NAME }}
           path: ${{ env.DIST_NAME }}
