@@ -111,6 +111,16 @@ export const Navbar: DefaultTheme.NavItem[] = [
     ]
   },
   {
+    text: '工具类',
+    items: [
+      {
+        text: '文件上传',
+        activeMatch: '^/guide/utils/upload',
+        link: '/guide/utils/upload'
+      },
+    ]
+  },
+  {
     text: '关于我',
     activeMatch: '^/about',
     link: '/about'

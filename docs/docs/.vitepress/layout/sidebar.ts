@@ -277,6 +277,17 @@ export const Sidebar: DefaultTheme.Sidebar = {
               link: '/guide/global-config/use-guards'
             }
           ]
+        },
+        {
+          text: '工具类',
+          link: '/guide/utils/',
+          collapsed: true,
+          items: [
+            {
+              text: '文件上传',
+              link: '/guide/utils/upload'
+            },
+          ]
         }
       ]
     },
