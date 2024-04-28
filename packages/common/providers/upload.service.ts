@@ -66,7 +66,7 @@ export class UploadService {
         } = configure
         const render = new FileReader()
         render.onload = (e: ProgressEvent<FileReader>) => {
-          const base64 = (<string>e.target?.result)?.split(',').pop() ?? ''
+          const base64 = e.target?.result
           const ext = `.${file.name.split('.').pop()}`
           const _config = {
             ...requestConfig,
@@ -78,11 +78,9 @@ export class UploadService {
               : this.requestService.request<T, U>(_config)
           )
         }
-        render.readAsDataURL(<Blob>file.raw)
+        render.readAsDataURL(file)
       } catch (error) {
         reject(error)
-      } finally {
-        console.log('upload success')
       }
     })
   }
