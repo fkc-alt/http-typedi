@@ -119,7 +119,7 @@ export class UploadService {
           resolve(fileItem)
         }
         fileRender.onerror = function (error) {
-          console.log('File to ArrayBuffer Error', error)
+          console.error('File to ArrayBuffer Error', error)
           reject(error)
         }
         fileRender.readAsArrayBuffer(file)
@@ -198,7 +198,7 @@ export class UploadService {
         >(_config)
         const progress =
           ((options.chunkIndex + 1) / options.fileItem.chunk) * 100
-        // 每次分片上传完应该执行回调函数，并把progress暴露提示给用户上传进度
+        // 每次分片上传完应该执行回调函数，并把progress暴露提示给客户端上传进度
         resolve({
           ...options,
           progress,
