@@ -51,6 +51,10 @@ export function hexStringToMD5(hexString: string) {
   return CryptoJS.MD5(hexString).toString()
 }
 
+/**
+ *
+ * @deprecated
+ */
 export function generateBoundary() {
   return `boundary=----WebKitFormBoundary${Math.random().toString(16).slice(2)}`
 }

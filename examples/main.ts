@@ -129,16 +129,16 @@ document.querySelector<HTMLDivElement>('h1')!.onclick = function () {
 document.querySelector<HTMLDivElement>('input')!.onchange = async function (
   e: any
 ) {
-  // HTTPClient.uploadService.chunkUpload(
-  //   {
-  //     chooseFiles: e.target.files,
-  //     chunkSizeLimit: 1
-  //   },
-  //   {
-  //     url: '/rsapi/order/uploadFile',
-  //     method: RequestMethod.POST
-  //   }
-  // )
+  HTTPClient.uploadService.chunkUpload(
+    {
+      chooseFiles: e.target.files,
+      chunkSizeLimit: 5
+    },
+    {
+      url: '/rsapi/order/uploadFile',
+      method: RequestMethod.POST
+    }
+  )
   // const list = await UtilsService.excelToJson<{ name: string; age: string }>(
   //   e.target.files[0],
   //   ['name', 'age']
@@ -147,7 +147,7 @@ document.querySelector<HTMLDivElement>('input')!.onchange = async function (
   // new UtilsService().DOMPrint({
   //   el: 'app'
   // })
-  HTTPClient.orderController.UploadFile({ file: e.target.files[0], id: 99 })
+  // HTTPClient.orderController.UploadFile({ file: e.target.files[0], id: 99 })
 }
 console.log(
   UtilsService.getSearchParams(),

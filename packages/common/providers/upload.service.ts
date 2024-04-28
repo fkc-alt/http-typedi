@@ -1,14 +1,9 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable @typescript-eslint/ban-types */
 import { Injectable } from '../core'
-import { ContentType } from '../enums'
 import { RequestService } from './request.service'
 import { RequestConfig } from './interfaces/request.service.interface'
-import {
-  generateBoundary,
-  hexStringToMD5,
-  uint8ArrayToHexString
-} from './utils'
+import { hexStringToMD5, uint8ArrayToHexString } from './utils'
 import {
   ChunkItem,
   ChunkUploadOptions,
@@ -38,9 +33,6 @@ export class UploadService {
   ): Promise<U> {
     const { data, customActions, headers = {}, ...requestConfig } = configure
     const fileLoder = new FormData()
-    Object.assign(headers, {
-      'Content-Type': `${ContentType.FORM_DATA}; ${generateBoundary()}`
-    })
     for (const key in data) {
       fileLoder.append(key, data[key])
     }
@@ -153,7 +145,7 @@ export class UploadService {
 
   private createChunks(options: CreateChunksOptions, configure: RequestConfig) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { fileItem, chunkSizeLimit, fileIndex } = options
+    const { fileItem, chunkSizeLimit } = options
     const taskChunks = new Array(fileItem.chunk)
       .fill(void 0)
       .map((_, chunk) => {
@@ -192,10 +184,6 @@ export class UploadService {
     return new Promise(async (resolve, reject) => {
       const { headers = {}, ...config } = configure
       const fileLoder = new FormData()
-      Object.assign(headers, {
-        'Content-Type': `${ContentType.FORM_DATA}; ${generateBoundary()}`
-      })
-      console.log(options.file, 'options.file')
       fileLoder.append('file', options.file)
       fileLoder.append('md5', options.md5)
       const _config: RequestConfig<any> = {

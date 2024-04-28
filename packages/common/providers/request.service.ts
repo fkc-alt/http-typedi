@@ -49,8 +49,10 @@ export class RequestService {
       for (const key in rc.headers) {
         XHR.setRequestHeader(key, rc.headers![key])
       }
-      !Object.hasOwn(rc.headers || {}, 'Content-Type') &&
-        XHR.setRequestHeader('Content-Type', ContentType.JSON)
+      if (!Object.values(rc.data!).every(value => value instanceof File)) {
+        !Object.hasOwn(rc.headers || {}, 'Content-Type') &&
+          XHR.setRequestHeader('Content-Type', ContentType.JSON)
+      }
 
       XHR.onreadystatechange = function () {
         if (XHR.readyState === XHR.DONE) {
