@@ -287,6 +287,10 @@ export const Sidebar: DefaultTheme.Sidebar = {
               text: '文件上传',
               link: '/guide/utils/upload'
             },
+            {
+              text: '网络请求',
+              link: '/guide/utils/request'
+            },
           ]
         }
       ]

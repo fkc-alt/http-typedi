@@ -118,6 +118,11 @@ export const Navbar: DefaultTheme.NavItem[] = [
         activeMatch: '^/guide/utils/upload',
         link: '/guide/utils/upload'
       },
+      {
+        text: '网络请求',
+        activeMatch: '^/guide/utils/request',
+        link: '/guide/utils/request'
+      },
     ]
   },
   {
