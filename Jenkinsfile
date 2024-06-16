@@ -9,9 +9,9 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-               nodejs(nodeJSInstallationName: 'Node 18') {
-                    sh 'npm config ls'
-                }
+              node {
+                sh 'node -v'
+              }
             }
         }
         // stage('Install Packages') {
