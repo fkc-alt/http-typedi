@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Artifact') {
             steps {
-                echo 'ls'
+                sh 'ls'
             }
         }
         stage('Deploy') {
