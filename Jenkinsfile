@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 npm install --force
-                echo 'Building...'
+                echo 'Building....'
                 sh 'make build2'  // Replace with your actual build command
             }
         }
