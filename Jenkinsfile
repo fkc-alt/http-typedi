@@ -25,9 +25,9 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage('Artifact') {
+        stage('Archive') {
             steps {
-                sh 'ls'
+                archiveArtifacts artifacts: 'dist/**', allowEmptyArchive: true
             }
         }
         stage('Deploy') {
