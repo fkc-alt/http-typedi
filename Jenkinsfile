@@ -25,9 +25,9 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage('Test') {
+        stage('Artifact') {
             steps {
-                echo 'Testing..'
+                echo 'ls'
             }
         }
         stage('Deploy') {
