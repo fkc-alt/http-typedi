@@ -9,8 +9,8 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-              node {
-                sh 'node -v'
+              nodejs(nodeJSInstallationName: 'Node 18.20.3') {
+                    sh 'npm config ls'
               }
             }
         }
