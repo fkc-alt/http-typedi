@@ -9,13 +9,8 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                script {
-                    // 设置 Node.js 版本管理工具 (如 nvm 或 n)
-                    sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash'
-                    sh 'nvm install ${NODE_VERSION}'
-                    sh 'nvm use ${NODE_VERSION}'
-                    sh 'node -v'
-                    // sh '. ~/.nvm/nvm.sh && nvm install ${NODE_VERSION} && nvm use ${NODE_VERSION}'
+               nodejs(nodeJSInstallationName: 'Node 18') {
+                    sh 'npm config ls'
                 }
             }
         }
