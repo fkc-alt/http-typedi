@@ -6,30 +6,25 @@ pipeline {
       GITHUB_SECRET = credentials('github_secret')
       NODE_VERSION = '18.20.3'
     }
+    tools {
+        nodejs 'Node 18.20.3'  // 这里的名称应与在 Jenkins 中配置的名称匹配
+    }
     stages {
         stage('Prepare') {
             steps {
-              nodejs(nodeJSInstallationName: 'Node 18.20.3') {
-                    sh 'npm config ls'
-              }
+                sh 'npm config ls'
             }
         }
-        // stage('Install Packages') {
-        //     steps {
-        //         script {
-        //             // 安装 npm 包
-        //             sh '. ~/.nvm/nvm.sh && nvm use ${NODE_VERSION} && npm install --force'
-        //         }
-        //     }
-        // }
-        // stage('Build') {
-        //     steps {
-        //         script {
-        //             // 执行构建任务
-        //             sh '. ~/.nvm/nvm.sh && nvm use ${NODE_VERSION} && npm run build'
-        //         }
-        //     }
-        // }
+        stage('Install Packages') {
+            steps {
+                sh 'npm install --force'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
         stage('Test') {
             steps {
                 echo 'Testing..'
