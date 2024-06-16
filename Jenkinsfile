@@ -6,6 +6,12 @@ pipeline {
     }
     stages {
         stage('Build') {
+            environment { 
+                DEBUG_FLAGS = '-g'
+            }
+            steps {
+                sh 'printenv'
+            }
             steps {
                 echo 'Building..'
                 echo "Running ${BUILD_ID} on ${JENKINS_URL} ${projectName}-${version}"
