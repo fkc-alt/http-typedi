@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...'
-                sh 'make build'  // Replace with your actual build command
+                sh 'make build2'  // Replace with your actual build command
             }
         }
         stage('Test') {
