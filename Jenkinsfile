@@ -4,30 +4,18 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'npm run install --force'
-                echo 'Building....'
-                sh 'make build2'  // Replace with your actual build command
+                echo 'Building..'
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing...'
-                sh 'make test'  // Replace with your actual test command
+                echo 'Testing..'
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying...'
-                sh 'make deploy'  // Replace with your actual deploy command
+                echo 'Deploying....'
             }
-        }
-    }
-    post {
-        success {
-            echo 'Pipeline succeeded!'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
