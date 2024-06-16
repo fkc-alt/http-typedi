@@ -3,6 +3,7 @@ pipeline {
     environment { 
       version = '1.0.0'
       projectName = 'http-typedi'
+      GITHUB_SECRET = credentials('github_secret')
     }
     stages {
         stage('Build') {
