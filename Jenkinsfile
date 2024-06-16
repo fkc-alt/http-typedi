@@ -8,7 +8,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL} ${projectName}-${version}"
+                echo "Running ${BUILD_ID} on ${JENKINS_URL} ${projectName}-${version}"
             }
         }
         stage('Test') {
