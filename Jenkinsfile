@@ -12,6 +12,7 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
+                sh 'git branch'
                 sh 'npm config ls'
             }
         }
