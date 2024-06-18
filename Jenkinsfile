@@ -26,11 +26,11 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        // stage('Archive') {
-        //     steps {
-        //         archiveArtifacts artifacts: 'dist/**', allowEmptyArchive: true
-        //     }
-        // }
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'dist/**', allowEmptyArchive: true
+            }
+        }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
