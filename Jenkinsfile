@@ -26,6 +26,7 @@ pipeline {
                 sh 'npm run build'
             }
         }
+        
         stage('Archive') {
             steps {
                 archiveArtifacts artifacts: 'dist/**', allowEmptyArchive: true
