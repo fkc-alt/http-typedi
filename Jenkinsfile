@@ -33,6 +33,7 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/**', allowEmptyArchive: true
             }
         }
+        
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
