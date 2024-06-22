@@ -14,6 +14,7 @@ pipeline {
             steps {
                 sh 'git branch'
                 sh 'npm config ls'
+                sh 'echo hello world'
             }
         }
         stage('Install Packages') {
