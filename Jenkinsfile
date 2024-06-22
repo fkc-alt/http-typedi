@@ -14,7 +14,6 @@ pipeline {
             steps {
                 sh 'git branch'
                 sh 'npm config ls'
-                sh '$BRANCH_NAME'
             }
         }
         stage('Install Packages') {
