@@ -207,5 +207,4 @@ export class UploadService {
       }
     })
   }
-  
 }
