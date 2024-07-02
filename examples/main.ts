@@ -139,17 +139,20 @@ document.querySelector<HTMLDivElement>('input')!.onchange = async function (
   //     method: RequestMethod.POST
   //   }
   // )
-  // const list = await UtilsService.excelToJson<{ name: string; age: string }>(
-  //   e.target.files[0],
-  //   ['name', 'age']
-  // )
-  // console.log(list, 'excelToJson')
+  const list = await UtilsService.excelToJson<{ 设备号: string }>(
+    e.target.files[0],
+    ['设备号']
+  )
+  console.log(
+    list.map(v => v.设备号),
+    'excelToJson'
+  )
   // new UtilsService().DOMPrint({
   //   el: 'app'
   // })
   // HTTPClient.orderController.UploadFile({ file: e.target.files[0], id: 99 })
 
-  HTTPClient.orderController.UploadBase64({ file: e.target.files[0], id: 99 })
+  // HTTPClient.orderController.UploadBase64({ file: e.target.files[0], id: 99 })
 }
 console.log(
   UtilsService.getSearchParams(),
