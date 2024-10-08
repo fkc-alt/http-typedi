@@ -127,7 +127,7 @@ export class UtilsService {
     const book = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(book, sheet, fileName)
 
-    XLSX.writeFile(book, `${fileName}`)
+    XLSX.writeFile(book, fileName)
   }
 
   public jsonToExcel = UtilsService.jsonToExcel
