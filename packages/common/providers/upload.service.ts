@@ -97,7 +97,7 @@ export class UploadService {
       const mb = file.size / 1024 / 1024
       const fileRender = new FileReader()
       return new Promise((resolve, reject) => {
-        fileRender.onload = async result => {
+        fileRender.onload = result => {
           const fileItem = {
             mb,
             fileName: file.name,
@@ -110,7 +110,8 @@ export class UploadService {
             {
               fileItem,
               fileIndex,
-              chunkSizeLimit
+              chunkSizeLimit,
+              chunkItemComplate: options.chunkItemComplate
             },
             configure
           )
@@ -181,6 +182,7 @@ export class UploadService {
   ): Promise<TaskChunksItem> {
     return new Promise(async (resolve, reject) => {
       const { headers = {}, ...config } = configure
+      const { chunkItemComplate, ...rest } = options
       const fileLoder = new FormData()
       fileLoder.append('file', options.file)
       fileLoder.append('md5', options.md5)
@@ -197,11 +199,13 @@ export class UploadService {
         const progress =
           ((options.chunkIndex + 1) / options.fileItem.chunk) * 100
         // 每次分片上传完应该执行回调函数，并把progress暴露提示给客户端上传进度
-        resolve({
-          ...options,
+        const chunkResult = {
+          ...rest,
           progress,
           result: data.data
-        })
+        }
+        chunkItemComplate?.(chunkResult)
+        resolve(chunkResult)
       } catch (error) {
         reject(error)
       }

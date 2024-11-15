@@ -129,24 +129,24 @@ document.querySelector<HTMLDivElement>('h1')!.onclick = function () {
 document.querySelector<HTMLDivElement>('input')!.onchange = async function (
   e: any
 ) {
-  // HTTPClient.uploadService.chunkUpload(
-  //   {
-  //     chooseFiles: e.target.files,
-  //     chunkSizeLimit: 5
-  //   },
-  //   {
-  //     url: '/rsapi/order/uploadFile',
-  //     method: RequestMethod.POST
-  //   }
+  HTTPClient.uploadService.chunkUpload(
+    {
+      chooseFiles: e.target.files,
+      chunkSizeLimit: 1,
+      chunkItemComplate(...args) {
+        console.log(args, 'chunkItemComplate')
+      }
+    },
+    {
+      url: '/rsapi/order/uploadFile',
+      method: RequestMethod.POST
+    }
+  )
+  // const list = await UtilsService.excelToJson<{ name: string; age: string }>(
+  //   e.target.files[0],
+  //   ['name', 'age']
   // )
-  const list = await UtilsService.excelToJson<{ 设备号: string }>(
-    e.target.files[0],
-    ['设备号']
-  )
-  console.log(
-    list.map(v => v.设备号),
-    'excelToJson'
-  )
+  // console.log(list, 'excelToJson')
   // new UtilsService().DOMPrint({
   //   el: 'app'
   // })
