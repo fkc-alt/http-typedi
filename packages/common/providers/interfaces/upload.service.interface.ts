@@ -32,7 +32,7 @@ export interface TaskChunksItem extends CreateChunksOptions {
 }
 
 export interface CreateChunksOptions
-  extends Pick<ChunkUploadOptions, 'chunkSizeLimit'> {
+  extends Pick<ChunkUploadOptions, 'chunkSizeLimit' | 'chunkItemComplate'> {
   fileItem: CustomFile
   fileIndex: number
 }
