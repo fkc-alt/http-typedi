@@ -127,7 +127,7 @@ export class UtilsService {
     const book = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(book, sheet, fileName)
 
-    XLSX.writeFile(book, `${fileName}`)
+    XLSX.writeFile(book, fileName)
   }
 
   public jsonToExcel = UtilsService.jsonToExcel
@@ -142,7 +142,7 @@ export class UtilsService {
    * @memberof UtilsService
    * @description Excel转为JSON
    */
-  static excelToJson<T>(data: File, keys: string[]): Promise<T[]> {
+  static excelToJson<T>(data: File, keys: (keyof T)[]): Promise<T[]> {
     return new Promise(resolve => {
       const render = new FileReader()
       render.onload = e => {
@@ -158,7 +158,7 @@ export class UtilsService {
           resolve(
             <any>wbData.map((item: any) =>
               keys.reduce((pre: Record<string, any>, cur, index) => {
-                return { ...pre, [cur]: item[Object.keys(item)[index]] || '' }
+                return { ...pre, [cur]: item[cur] || '' }
               }, {})
             )
           )
