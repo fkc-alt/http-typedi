@@ -23,6 +23,7 @@ import { TestMiddleware } from './middleware/test.middleware'
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     CommonModule,
     ArticleModule,
     ExampleModule,

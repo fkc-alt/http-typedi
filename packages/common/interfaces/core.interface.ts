@@ -10,8 +10,15 @@ export type Providers = Array<
     }
 >
 
+export interface DynamicModule {
+  global: boolean
+  module: Constructor<any>
+  providers: Providers
+  exports: Providers
+}
+
 export interface ModuleMetadataType {
-  imports?: Array<Constructor<any>>
+  imports?: Array<Constructor<any> | DynamicModule>
   controllers?: Array<Constructor<any>>
   providers?: Providers
   exports?: Providers
