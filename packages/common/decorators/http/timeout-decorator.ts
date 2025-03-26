@@ -18,7 +18,7 @@ type TimeoutCallback = Required<RequestConfig> extends {
  * @auther kaichao.feng
  * @publicApi
  */
-export const Timeout = (
+export const SendTimeout = (
   timer: number,
   callback?: TimeoutCallback
 ): MethodDecorator & ClassDecorator =>

@@ -24,7 +24,8 @@ import type {
   ParamData,
   PipeTransform,
   Providers,
-  RouteParamMetadata
+  RouteParamMetadata,
+  DynamicModule
 } from './interfaces/core.interface'
 export * from './interfaces/middleware'
 export * from './interfaces'
@@ -47,7 +48,8 @@ export type {
   ParamData,
   PipeTransform,
   Providers,
-  RouteParamMetadata
+  RouteParamMetadata,
+  DynamicModule
 }
 
 /**
@@ -142,6 +144,9 @@ export class HttpFactory {
   ): HttpServicesApplication<T> {
     const imports: Array<Constructor<any>> =
       Reflect.getMetadata(ModuleMetadata.IMPORTS, target) ?? []
+    imports.forEach(target => {
+      Reflect.defineMetadata(MetadataKey.REFLECTOR, Reflector, target)
+    })
     const deepGlobalModule = (
       modules: Array<Constructor<any>>
     ): Array<Constructor<any>> => {
@@ -188,7 +193,6 @@ export class HttpFactory {
     }
     this.uniqueCache.token = uuidv4()
     HttpFactoryMap.set(this.uniqueCache.token, this)
-    console.log(HTTPClient, 'uniqueCache')
     return { ...HTTPClient, ...Factory(target, this.uniqueCache.token) }
   }
 
@@ -362,6 +366,7 @@ const registerDeepClass = (
 ): Array<Constructor<any>> => {
   return (
     providers?.map((provider: any) => {
+      console.log(provider, 'registerDeepClass')
       const currentProvide: Constructor<any> = container.inject(provider)
       if (!currentProvide) {
         throw new Error(`Please use exports Service ${<string>provider.name}`)
@@ -371,6 +376,7 @@ const registerDeepClass = (
         provider
       )
       const isFactoryProvide = isFunction(currentProvide)
+      console.log(isFactoryProvide, 'isFactoryProvide', currentProvide)
       let instance
       if (!childrenProviders) {
         instance = isFactoryProvide ? new currentProvide() : currentProvide

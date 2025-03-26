@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-types */
 import chalk from 'chalk'
 import { name as PACKAGE_NAME } from '../../../package.json'
@@ -98,4 +99,6 @@ export class Logger implements LoggerService {
   verbose?(message: any, ...optionalParams: any[]) {
     console.log(message, ...optionalParams)
   }
+
+  constructor(...args: any) {}
 }
