@@ -49,7 +49,7 @@ export class RequestService {
       for (const key in rc.headers) {
         XHR.setRequestHeader(key, rc.headers![key])
       }
-      if (!Object.values(rc.data!).every(value => value instanceof File)) {
+      if (!Object.values(rc.data || {}).every(value => value instanceof File)) {
         !Object.hasOwn(rc.headers || {}, 'Content-Type') &&
           XHR.setRequestHeader('Content-Type', ContentType.JSON)
       }
