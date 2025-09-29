@@ -5,7 +5,7 @@ import { DUPLICATE_SCHEDULER, NO_SCHEDULER_FOUND } from './schedule.messages'
 
 @Injectable()
 export class SchedulerRegistry {
-  private readonly logger = new Logger(SchedulerRegistry.name)
+  private readonly logger = new Logger()
 
   private readonly cronJobs = new Map<string, CronJob>()
   private readonly timeouts = new Map<string, any>()

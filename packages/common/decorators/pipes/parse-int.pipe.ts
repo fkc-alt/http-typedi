@@ -4,8 +4,8 @@
  * @auther kaichao.feng
  * @description transfer Data to Number
  */
-export class ParseIntPipe<T = number> {
-  transform(integer: any): T {
+export class ParseIntPipe {
+  transform(integer: any): number | string {
     return /^\d+$/g.test(integer) ? ~~integer : integer
   }
 }

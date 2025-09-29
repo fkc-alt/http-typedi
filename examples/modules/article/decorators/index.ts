@@ -66,10 +66,10 @@ export const GetTableDataApplyDecorators = () => {
     Catch(catchCallback),
     PostMapping(ArticleRouteChildren.TABLEDATA, validationErrorMessage),
     Sleep(3000),
-    Version(''),
-    Timeout(2000, error => {
-      console.log('timeout callback', error)
-    })
+    Version('')
+    // Timeout(2000, (error: any) => {
+    //   console.log('timeout callback', error)
+    // })
   )
 }
 
