@@ -62,3 +62,38 @@ export class UploadController {
 
 以上代码客户端直接调用`uploadBase64`会直接把`file`和`id`进行处理一并上传至服务端,
 客户端直接传入选中的 file 对象即可，如有其它参数需要将数据发送至服务端可参考本例进行配置
+
+## 二进制分片上传
+
+现在我们可以在 `UploadController` 中添加一个简单的（`分片`）上传接口。我们使用 `Http-Typedi` 包提供的 `UploadService`来实现上传接口。
+
+> upload.controller.ts
+
+```ts{10}
+import { RequestConfig, UploadService, PostMapping } from 'http-typedi'
+
+interface TUploadFile {
+  file: File
+  id: number
+}
+
+@Controller('/upload')
+export class UploadController {
+  constructor(readonly uploadService: UploadService)
+  @PostMapping('chunkUpload')
+  async uploadFile<T = TUploadFile>(configure: RequestConfig<T>) {
+    return await this.uploadService.chunkUpload<T, Record<string, any>>(
+      {
+        chooseFiles: configure.data.file,
+        chunkSizeLimit: 5,
+        chunkItemComplate(...args) {
+          console.log(args, 'chunkItemComplate')
+        }
+      },
+      <RequestConfig<T>>configure
+    )
+  }
+}
+```
+
+以上代码客户端直接调用`chunkUpload`会直接把`file`进行处理分片并上传至服务端。每次分片会携带唯一`md5`值，方便服务端进行文件合并。
