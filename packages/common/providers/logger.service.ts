@@ -99,6 +99,6 @@ export class Logger implements LoggerService {
   verbose?(message: any, ...optionalParams: any[]) {
     console.log(message, ...optionalParams)
   }
-
-  constructor(...args: any) {}
+  // 没有参数一定不要写形参
+  // constructor(...args: any) {}
 }
