@@ -82,4 +82,6 @@ $ npm install http-typedi reflect-metadata --save
 ```
 
 ## Getting started
+![](https://api.star-history.com/svg?repos=fkc-alt/http-typedi&type=Timeline)
 - 要查看中文 指南, 请访问 [https://fkc-alt.github.io/http-typedi](https://fkc-alt.github.io/http-typedi)📚
+
